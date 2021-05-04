@@ -11,15 +11,20 @@ namespace LiveSplit.TwitchPredictions
 {
 	public class TwitchConnection
 	{
+		internal static TwitchConnection _Instance; 
+
 		string USER_DIRECTORY => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LiveSplit.TwitchPredictions");
 		string USER_FILE => "Config.xml";
 
 		private TwitchPredictionsSettings settings;
 		private TwitchConnectionData _connectionData;
+		private IrcDotNet.IrcClient _irc;
 
 		[Serializable]
 		public class TwitchConnectionData
 		{
+			public string Address { get; set; }
+			public int Port { get; set; }
 
 			public string Username { get; set; }
 			public string Oauth { get; set; }
@@ -28,6 +33,8 @@ namespace LiveSplit.TwitchPredictions
 
 			public TwitchConnectionData()
 			{
+				Address = "irc.chat.twitch.tv";
+				Port = 6667;
 				Username = "";
 				Oauth = "";
 				Channel = "";
@@ -42,9 +49,16 @@ namespace LiveSplit.TwitchPredictions
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
 
+		internal void Connect()
+		{
+			if (_irc == null)
+				_irc = new IrcDotNet.IrcClient();
+		}
+
 		internal void Disconnect()
 		{
-			//throw new NotImplementedException();
+			if (_irc != null && _irc.IsConnected)
+				_irc.Disconnect();
 		}
 
 		public static T ReadFromXMLFile<T>(string filePath) where T : new()
