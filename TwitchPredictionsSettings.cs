@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,14 +19,25 @@ namespace LiveSplit.TwitchPredictions
 			InitializeComponent();
 		}
 
-		internal XmlNode GetSettings(XmlDocument document)
+		internal XmlNode GetSettings(XmlDocument doc)
 		{
-			throw new NotImplementedException();
+			XmlElement settingsNode = doc.CreateElement("Settings");
+
+			settingsNode.AppendChild(ToElement(doc, "Version", Assembly.GetExecutingAssembly().GetName().Version.ToString(3)));
+
+			return settingsNode;
+		}
+
+		static XmlElement ToElement<T>(XmlDocument document, string name, T value)
+		{
+			XmlElement str = document.CreateElement(name);
+			str.InnerText = value.ToString();
+			return str;
 		}
 
 		internal void SetSettings(XmlNode settings)
 		{
-			throw new NotImplementedException();
+			//this.UseNonSafeMemoryReading = ParseBool(settings, "NonSafeMemoryReader", DEFAULT_UNSAFEREADER);
 		}
 	}
 }

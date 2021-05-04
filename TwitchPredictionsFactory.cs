@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace LiveSplit.CrashCounter
+namespace LiveSplit.TwitchPredictions
 {
     public class TwitchPredictionsFactory : IComponentFactory
     {
@@ -19,7 +19,7 @@ namespace LiveSplit.CrashCounter
         }
         public ComponentCategory Category
         {
-            get { return ComponentCategory.Other; }
+            get { return ComponentCategory.Control; }
         }
         public string Description
         {
@@ -43,7 +43,7 @@ namespace LiveSplit.CrashCounter
                 }
 
                 MessageBox.Show(
-                    "LiveSplit.ThiefDS is already loaded in the " +
+                    "LiveSplit.TwitchPredictions is already loaded in the " +
                         (_instance.IsLayoutComponent ? "Layout Editor" : "Splits Editor") + "!",
                     "Error",
                     MessageBoxButtons.OK,

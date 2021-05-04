@@ -9,10 +9,9 @@ using System.Linq;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using LiveSplit.TwitchPredictions;
 using System.Xml;
 
-namespace LiveSplit.CrashCounter
+namespace LiveSplit.TwitchPredictions
 {
 	public class TwitchPredictionsComponent : LogicComponent
 	{

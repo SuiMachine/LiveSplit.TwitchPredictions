@@ -17,7 +17,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal void Disconnect()
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 	}
 }
