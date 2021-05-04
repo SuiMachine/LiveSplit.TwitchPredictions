@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveSplit.TwitchPredictions", "LiveSplit.TwitchPredictions\LiveSplit.TwitchPredictions.csproj", "{D19A111F-1B3B-4500-9D3B-84B985BEFCBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveSplit.TwitchPredictions", "LiveSplit.TwitchPredictions.csproj", "{D19A111F-1B3B-4500-9D3B-84B985BEFCBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D14AD957-7AB9-4DFF-9913-EBC39DA740FF}
+		SolutionGuid = {7C0051EC-861B-431E-BCD8-925B58545750}
 	EndGlobalSection
 EndGlobal
