@@ -11,13 +11,14 @@ namespace LiveSplit.TwitchPredictions
 {
 	public class TwitchConnection
 	{
-		internal static TwitchConnection _Instance; 
+		private static TwitchConnection _Instance;
+
+		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
 
 		string USER_DIRECTORY => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LiveSplit.TwitchPredictions");
 		string USER_FILE => "Config.xml";
 
-		private TwitchPredictionsSettings settings;
-		private TwitchConnectionData _connectionData;
+		internal TwitchConnectionData _connectionData;
 		private IrcDotNet.IrcClient _irc;
 
 		[Serializable]
@@ -30,7 +31,6 @@ namespace LiveSplit.TwitchPredictions
 			public string Oauth { get; set; }
 			public string Channel { get; set; }
 
-
 			public TwitchConnectionData()
 			{
 				Address = "irc.chat.twitch.tv";
@@ -41,10 +41,9 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		public TwitchConnection(TwitchPredictionsSettings settings)
+		public TwitchConnection()
 		{
 			_connectionData = ReadFromXMLFile<TwitchConnectionData>(Path.Combine(USER_DIRECTORY, USER_FILE));
-			this.settings = settings;
 		}
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
@@ -53,6 +52,8 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
+
+			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { UserName = _connectionData.Username, Password = _connectionData.Oauth });
 		}
 
 		internal void Disconnect()
@@ -82,6 +83,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal void SaveConfig()
 		{
+
 			SaveObjectToXML(_connectionData, Path.Combine(USER_DIRECTORY, USER_FILE));
 		}
 

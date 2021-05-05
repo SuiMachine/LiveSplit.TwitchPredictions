@@ -32,8 +32,7 @@ namespace LiveSplit.TwitchPredictions
 			this.Settings = new TwitchPredictionsSettings();
 
 			_timer = new TimerModel { CurrentState = state };
-
-			_twitchConnection = new TwitchConnection(this.Settings);
+			_twitchConnection = TwitchConnection.GetInstance();
 			state.OnStart += State_OnStart;
 		}
 
