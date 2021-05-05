@@ -21,15 +21,25 @@ namespace LiveSplit.TwitchPredictions
 		public string Oauth { get; set; }
 		public string Channel { get; set; }
 
-		public TwitchPredictionsSettings()
+		private string Filename;
+
+		Model.LiveSplitState splitStates;
+
+		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
 		{
 			InitializeComponent();
+			this.splitStates = splitStates;
 			_twitchConnection = TwitchConnection.GetInstance();
 			TB_ServerAdress.DataBindings.Add("Text", this, "Address", false, DataSourceUpdateMode.OnPropertyChanged);
 			NumB_Port.DataBindings.Add("Value", this, "Port", false, DataSourceUpdateMode.OnPropertyChanged);
 			TB_UserName.DataBindings.Add("Text", this, "Username", false, DataSourceUpdateMode.OnPropertyChanged);
 			TB_Oauth.DataBindings.Add("Text", this, "Oauth", false, DataSourceUpdateMode.OnPropertyChanged);
 			TB_Channel.DataBindings.Add("Text", this, "Channel", false, DataSourceUpdateMode.OnPropertyChanged);
+		}
+
+		internal void _state_RunManuallyModified(object sender, EventArgs e)
+		{
+			GetNewSplits();
 		}
 
 		internal XmlNode GetSettings(XmlDocument doc)
@@ -55,8 +65,12 @@ namespace LiveSplit.TwitchPredictions
 			Username = _twitchConnection._connectionData.Username;
 			Oauth = _twitchConnection._connectionData.Oauth;
 			Channel = _twitchConnection._connectionData.Channel;
+			GetNewSplits();
+		}
 
-			//this.UseNonSafeMemoryReading = ParseBool(settings, "NonSafeMemoryReader", DEFAULT_UNSAFEREADER);
+		internal void GetNewSplits()
+		{
+			Filename = splitStates != null && splitStates.Run != null ? splitStates.Run.GameName + "##" + splitStates.Run.CategoryName : "Unknown";
 		}
 	}
 }

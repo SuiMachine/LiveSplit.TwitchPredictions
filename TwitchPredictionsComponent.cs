@@ -29,7 +29,8 @@ namespace LiveSplit.TwitchPredictions
 		{
 			_state = state;
 			this.IsLayoutComponent = isLayoutComponent;
-			this.Settings = new TwitchPredictionsSettings();
+			this.Settings = new TwitchPredictionsSettings(state);
+			_state.RunManuallyModified += Settings._state_RunManuallyModified;
 
 			_timer = new TimerModel { CurrentState = state };
 			_twitchConnection = TwitchConnection.GetInstance();
@@ -37,11 +38,13 @@ namespace LiveSplit.TwitchPredictions
 		}
 
 
+
 		public override void Dispose()
 		{
 			this.Disposed = true;
 
 			_state.OnStart -= State_OnStart;
+			_state.RunManuallyModified -= Settings._state_RunManuallyModified;
 
 			if (_twitchConnection != null)
 			{

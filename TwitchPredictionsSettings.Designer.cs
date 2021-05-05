@@ -245,6 +245,7 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// SegmentName
 			// 
+			this.SegmentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
 			this.SegmentName.HeaderText = "Segment name";
 			this.SegmentName.Name = "SegmentName";
 			this.SegmentName.ReadOnly = true;
