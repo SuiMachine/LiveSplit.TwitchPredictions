@@ -47,6 +47,8 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.grid_SplitSettings = new System.Windows.Forms.DataGridView();
 			this.SegmentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Event = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.Delay = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Action = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
@@ -236,6 +238,8 @@ namespace LiveSplit.TwitchPredictions
 			this.grid_SplitSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.grid_SplitSettings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.SegmentName,
+            this.Event,
+            this.Delay,
             this.Action});
 			this.grid_SplitSettings.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.grid_SplitSettings.Location = new System.Drawing.Point(3, 72);
@@ -249,6 +253,16 @@ namespace LiveSplit.TwitchPredictions
 			this.SegmentName.HeaderText = "Segment name";
 			this.SegmentName.Name = "SegmentName";
 			this.SegmentName.ReadOnly = true;
+			// 
+			// Event
+			// 
+			this.Event.HeaderText = "Event";
+			this.Event.Name = "Event";
+			// 
+			// Delay
+			// 
+			this.Delay.HeaderText = "Delay";
+			this.Delay.Name = "Delay";
 			// 
 			// Action
 			// 
@@ -292,6 +306,8 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.DataGridView grid_SplitSettings;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SegmentName;
+		private System.Windows.Forms.DataGridViewComboBoxColumn Event;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Delay;
 		private System.Windows.Forms.DataGridViewComboBoxColumn Action;
 	}
 }
