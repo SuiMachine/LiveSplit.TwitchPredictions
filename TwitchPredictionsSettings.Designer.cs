@@ -50,11 +50,15 @@ namespace LiveSplit.TwitchPredictions
 			this.Event = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.Delay = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Action = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.label6 = new System.Windows.Forms.Label();
+			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
 			this.groupBox2.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).BeginInit();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -224,6 +228,7 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.grid_SplitSettings, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -269,6 +274,33 @@ namespace LiveSplit.TwitchPredictions
 			this.Action.HeaderText = "Action";
 			this.Action.Name = "Action";
 			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.comboBox1);
+			this.panel1.Controls.Add(this.label6);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(443, 63);
+			this.panel1.TabIndex = 1;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(3, 6);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(68, 13);
+			this.label6.TabIndex = 0;
+			this.label6.Text = "On run reset:";
+			// 
+			// comboBox1
+			// 
+			this.comboBox1.FormattingEnabled = true;
+			this.comboBox1.Location = new System.Drawing.Point(77, 3);
+			this.comboBox1.Name = "comboBox1";
+			this.comboBox1.Size = new System.Drawing.Size(121, 21);
+			this.comboBox1.TabIndex = 1;
+			// 
 			// TwitchPredictionsSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +315,8 @@ namespace LiveSplit.TwitchPredictions
 			this.groupBox2.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).EndInit();
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -309,5 +343,8 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.DataGridViewComboBoxColumn Event;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Delay;
 		private System.Windows.Forms.DataGridViewComboBoxColumn Action;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.Label label6;
 	}
 }

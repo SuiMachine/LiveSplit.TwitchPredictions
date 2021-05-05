@@ -43,7 +43,7 @@ namespace LiveSplit.TwitchPredictions
 
 		public TwitchConnection()
 		{
-			_connectionData = ReadFromXMLFile<TwitchConnectionData>(Path.Combine(USER_DIRECTORY, USER_FILE));
+			_connectionData = XmlSerialiationDeserilation.ReadFromXMLFile<TwitchConnectionData>(Path.Combine(USER_DIRECTORY, USER_FILE));
 		}
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
@@ -62,52 +62,15 @@ namespace LiveSplit.TwitchPredictions
 				_irc.Disconnect();
 		}
 
-		public static T ReadFromXMLFile<T>(string filePath) where T : new()
-		{
-			StreamReader reader = null;
-			try
-			{
-				if (!File.Exists(filePath))
-					return new T();
-
-				XmlSerializer serializer = new XmlSerializer(typeof(T));
-				reader = new StreamReader(filePath);
-				return (T)serializer.Deserialize(reader);
-			}
-			finally
-			{
-				if (reader != null)
-					reader.Close();
-			}
-		}
-
 		internal void SaveConfig()
 		{
-
-			SaveObjectToXML(_connectionData, Path.Combine(USER_DIRECTORY, USER_FILE));
-		}
-
-		public static void SaveObjectToXML<T>(T objectToStore, string filePath) where T : new()
-		{
-			if (!Directory.Exists(Directory.GetParent(filePath).FullName))
-				Directory.CreateDirectory(Directory.GetParent(filePath).FullName);
-
-			StreamWriter writter = null;
-
 			try
 			{
-				XmlSerializer serializer = new XmlSerializer(typeof(T));
-				writter = new StreamWriter(filePath);
-				serializer.Serialize(writter, objectToStore);
+				XmlSerialiationDeserilation.SaveObjectToXML(_connectionData, Path.Combine(USER_DIRECTORY, USER_FILE));
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				MessageBox.Show("Failed to store config data to a file:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
-			finally
-			{
-				if (writter != null)
-					writter.Close();
+				MessageBox.Show("Failed to store config to a file: " + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 	}

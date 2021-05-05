@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +15,8 @@ namespace LiveSplit.TwitchPredictions
 {
 	public partial class TwitchPredictionsSettings : UserControl
 	{
+		private string SubDir => Path.Combine("Components", "TwitchPredictions");
+
 		private TwitchConnection _twitchConnection;
 		public string Address { get; set; }
 		public int Port { get; set; }
@@ -24,6 +27,8 @@ namespace LiveSplit.TwitchPredictions
 		private string Filename;
 
 		Model.LiveSplitState splitStates;
+
+		public SplitsToEvents splitToEvents { get; set; }
 
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
 		{
@@ -70,7 +75,24 @@ namespace LiveSplit.TwitchPredictions
 
 		internal void GetNewSplits()
 		{
-			Filename = splitStates != null && splitStates.Run != null ? splitStates.Run.GameName + "##" + splitStates.Run.CategoryName : "Unknown";
+			if (!Directory.Exists(SubDir))
+				Directory.CreateDirectory(SubDir);
+
+			var newFilename = ReplaceIncorrectCharacters(splitStates != null && splitStates.Run != null ? splitStates.Run.GameName + "##" + splitStates.Run.CategoryName : "Unknown");
+
+			var fullPath = Path.Combine(SubDir, Filename + ".xml");
+			if (File.Exists(fullPath))
+				splitToEvents = XmlSerialiationDeserilation.ReadFromXMLFile<SplitsToEvents>(fullPath);
+		}
+
+		private string ReplaceIncorrectCharacters(string filename)
+		{
+			var invalidChars = Path.GetInvalidFileNameChars();
+			for (int i = 0; i < invalidChars.Length; i++)
+			{
+				filename.Replace(invalidChars[i], '_');
+			}
+			return filename;
 		}
 	}
 }

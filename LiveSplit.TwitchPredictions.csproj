@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SplitsToEvents.cs" />
     <Compile Include="TwitchPredictionsComponent.cs" />
     <Compile Include="TwitchPredictionsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="TwitchPredictionsSettings.Designer.cs">
       <DependentUpon>TwitchPredictionsSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="XmlSerialiationDeserilation.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TwitchPredictionsSettings.resx">
