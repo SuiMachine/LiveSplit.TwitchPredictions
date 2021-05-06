@@ -49,7 +49,6 @@ namespace LiveSplit.TwitchPredictions
 			if (_twitchConnection != null)
 			{
 				_twitchConnection.Disconnect();
-				_twitchConnection.SaveConfig();
 			}
 		}
 

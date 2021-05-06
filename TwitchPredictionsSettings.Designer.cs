@@ -33,7 +33,7 @@ namespace LiveSplit.TwitchPredictions
 			this.TB_Channel = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.CB_ConnectOnComponentLaunch = new System.Windows.Forms.CheckBox();
-			this.button2 = new System.Windows.Forms.Button();
+			this.B_Connect = new System.Windows.Forms.Button();
 			this.B_GenerateAouth = new System.Windows.Forms.Button();
 			this.TB_Oauth = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
@@ -44,29 +44,18 @@ namespace LiveSplit.TwitchPredictions
 			this.TB_ServerAdress = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.grid_SplitSettings = new System.Windows.Forms.DataGridView();
-			this.SegmentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Event = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.Delay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Action = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.label6 = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.B_SaveSettings = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
-			this.groupBox2.SuspendLayout();
-			this.tableLayoutPanel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).BeginInit();
-			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.B_SaveSettings);
 			this.groupBox1.Controls.Add(this.TB_Channel);
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.CB_ConnectOnComponentLaunch);
-			this.groupBox1.Controls.Add(this.button2);
+			this.groupBox1.Controls.Add(this.B_Connect);
 			this.groupBox1.Controls.Add(this.B_GenerateAouth);
 			this.groupBox1.Controls.Add(this.TB_Oauth);
 			this.groupBox1.Controls.Add(this.label4);
@@ -79,7 +68,7 @@ namespace LiveSplit.TwitchPredictions
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBox1.Location = new System.Drawing.Point(0, 0);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(455, 134);
+			this.groupBox1.Size = new System.Drawing.Size(455, 161);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Connection settings";
@@ -103,21 +92,21 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// CB_ConnectOnComponentLaunch
 			// 
-			this.CB_ConnectOnComponentLaunch.Location = new System.Drawing.Point(184, 95);
+			this.CB_ConnectOnComponentLaunch.Location = new System.Drawing.Point(315, 95);
 			this.CB_ConnectOnComponentLaunch.Name = "CB_ConnectOnComponentLaunch";
 			this.CB_ConnectOnComponentLaunch.Size = new System.Drawing.Size(126, 30);
 			this.CB_ConnectOnComponentLaunch.TabIndex = 11;
 			this.CB_ConnectOnComponentLaunch.Text = "Connect on component launch";
 			this.CB_ConnectOnComponentLaunch.UseVisualStyleBackColor = true;
 			// 
-			// button2
+			// B_Connect
 			// 
-			this.button2.Location = new System.Drawing.Point(345, 97);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(96, 23);
-			this.button2.TabIndex = 10;
-			this.button2.Text = "Connect";
-			this.button2.UseVisualStyleBackColor = true;
+			this.B_Connect.Location = new System.Drawing.Point(345, 131);
+			this.B_Connect.Name = "B_Connect";
+			this.B_Connect.Size = new System.Drawing.Size(96, 23);
+			this.B_Connect.TabIndex = 10;
+			this.B_Connect.Text = "Connect";
+			this.B_Connect.UseVisualStyleBackColor = true;
 			// 
 			// B_GenerateAouth
 			// 
@@ -214,92 +203,23 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.tableLayoutPanel1);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox2.Location = new System.Drawing.Point(0, 134);
+			this.groupBox2.Location = new System.Drawing.Point(0, 161);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(455, 403);
+			this.groupBox2.Size = new System.Drawing.Size(455, 376);
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Prediction settings";
 			// 
-			// tableLayoutPanel1
+			// B_SaveSettings
 			// 
-			this.tableLayoutPanel1.ColumnCount = 1;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.grid_SplitSettings, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 2;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 69F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(449, 384);
-			this.tableLayoutPanel1.TabIndex = 1;
-			// 
-			// grid_SplitSettings
-			// 
-			this.grid_SplitSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.grid_SplitSettings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.SegmentName,
-            this.Event,
-            this.Delay,
-            this.Action});
-			this.grid_SplitSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.grid_SplitSettings.Location = new System.Drawing.Point(3, 72);
-			this.grid_SplitSettings.Name = "grid_SplitSettings";
-			this.grid_SplitSettings.Size = new System.Drawing.Size(443, 309);
-			this.grid_SplitSettings.TabIndex = 0;
-			// 
-			// SegmentName
-			// 
-			this.SegmentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.SegmentName.HeaderText = "Segment name";
-			this.SegmentName.Name = "SegmentName";
-			this.SegmentName.ReadOnly = true;
-			// 
-			// Event
-			// 
-			this.Event.HeaderText = "Event";
-			this.Event.Name = "Event";
-			// 
-			// Delay
-			// 
-			this.Delay.HeaderText = "Delay";
-			this.Delay.Name = "Delay";
-			// 
-			// Action
-			// 
-			this.Action.HeaderText = "Action";
-			this.Action.Name = "Action";
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.comboBox1);
-			this.panel1.Controls.Add(this.label6);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(3, 3);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(443, 63);
-			this.panel1.TabIndex = 1;
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(3, 6);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(68, 13);
-			this.label6.TabIndex = 0;
-			this.label6.Text = "On run reset:";
-			// 
-			// comboBox1
-			// 
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(77, 3);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(121, 21);
-			this.comboBox1.TabIndex = 1;
+			this.B_SaveSettings.Location = new System.Drawing.Point(6, 127);
+			this.B_SaveSettings.Name = "B_SaveSettings";
+			this.B_SaveSettings.Size = new System.Drawing.Size(96, 23);
+			this.B_SaveSettings.TabIndex = 14;
+			this.B_SaveSettings.Text = "Save";
+			this.B_SaveSettings.UseVisualStyleBackColor = true;
+			this.B_SaveSettings.Click += new System.EventHandler(this.B_SaveSettings_Click);
 			// 
 			// TwitchPredictionsSettings
 			// 
@@ -312,11 +232,6 @@ namespace LiveSplit.TwitchPredictions
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).EndInit();
-			this.groupBox2.ResumeLayout(false);
-			this.tableLayoutPanel1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).EndInit();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -332,19 +247,11 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.TextBox TB_Oauth;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.CheckBox CB_ConnectOnComponentLaunch;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button B_Connect;
 		private System.Windows.Forms.Button B_GenerateAouth;
 		private System.Windows.Forms.TextBox TB_Channel;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.DataGridView grid_SplitSettings;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SegmentName;
-		private System.Windows.Forms.DataGridViewComboBoxColumn Event;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Delay;
-		private System.Windows.Forms.DataGridViewComboBoxColumn Action;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Button B_SaveSettings;
 	}
 }

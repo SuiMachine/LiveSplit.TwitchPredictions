@@ -23,6 +23,7 @@ namespace LiveSplit.TwitchPredictions
 		public string Username { get; set; }
 		public string Oauth { get; set; }
 		public string Channel { get; set; }
+		public bool ConnectOnLaunch { get; set; }
 
 		private string Filename;
 
@@ -35,11 +36,14 @@ namespace LiveSplit.TwitchPredictions
 			InitializeComponent();
 			this.splitStates = splitStates;
 			_twitchConnection = TwitchConnection.GetInstance();
+
+			//Set bindings
 			TB_ServerAdress.DataBindings.Add("Text", this, "Address", false, DataSourceUpdateMode.OnPropertyChanged);
 			NumB_Port.DataBindings.Add("Value", this, "Port", false, DataSourceUpdateMode.OnPropertyChanged);
 			TB_UserName.DataBindings.Add("Text", this, "Username", false, DataSourceUpdateMode.OnPropertyChanged);
 			TB_Oauth.DataBindings.Add("Text", this, "Oauth", false, DataSourceUpdateMode.OnPropertyChanged);
 			TB_Channel.DataBindings.Add("Text", this, "Channel", false, DataSourceUpdateMode.OnPropertyChanged);
+			CB_ConnectOnComponentLaunch.DataBindings.Add("Checked", this, "ConnectOnLaunch", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		internal void _state_RunManuallyModified(object sender, EventArgs e)
@@ -70,6 +74,7 @@ namespace LiveSplit.TwitchPredictions
 			Username = _twitchConnection._connectionData.Username;
 			Oauth = _twitchConnection._connectionData.Oauth;
 			Channel = _twitchConnection._connectionData.Channel;
+			ConnectOnLaunch = _twitchConnection._connectionData.ConnectOnLaunch;
 			GetNewSplits();
 		}
 
@@ -93,6 +98,17 @@ namespace LiveSplit.TwitchPredictions
 				filename.Replace(invalidChars[i], '_');
 			}
 			return filename;
+		}
+
+		private void B_SaveSettings_Click(object sender, EventArgs e)
+		{
+			_twitchConnection._connectionData.Address = Address;
+			_twitchConnection._connectionData.Port = Port;
+			_twitchConnection._connectionData.Username = Username;
+			_twitchConnection._connectionData.Oauth = Oauth;
+			_twitchConnection._connectionData.Channel = Channel;
+			_twitchConnection._connectionData.ConnectOnLaunch = ConnectOnLaunch;
+			_twitchConnection.SaveConfig();
 		}
 	}
 }

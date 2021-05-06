@@ -12,6 +12,7 @@ namespace LiveSplit.TwitchPredictions
 	public class TwitchConnection
 	{
 		private static TwitchConnection _Instance;
+		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
 
@@ -30,6 +31,7 @@ namespace LiveSplit.TwitchPredictions
 			public string Username { get; set; }
 			public string Oauth { get; set; }
 			public string Channel { get; set; }
+			public bool ConnectOnLaunch { get; set; }
 
 			public TwitchConnectionData()
 			{
@@ -38,6 +40,7 @@ namespace LiveSplit.TwitchPredictions
 				Username = "";
 				Oauth = "";
 				Channel = "";
+				ConnectOnLaunch = false;
 			}
 		}
 
@@ -67,6 +70,7 @@ namespace LiveSplit.TwitchPredictions
 			try
 			{
 				XmlSerialiationDeserilation.SaveObjectToXML(_connectionData, Path.Combine(USER_DIRECTORY, USER_FILE));
+				MessageBox.Show("Setting were stored in: %APPDATA%\\LiveSplit.TwitchPredictions to prevent accidently sharing login information in case of sharing layouts.", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			catch(Exception e)
 			{
