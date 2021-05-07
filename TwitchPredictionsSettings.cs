@@ -30,6 +30,7 @@ namespace LiveSplit.TwitchPredictions
 		Model.LiveSplitState splitStates;
 
 		public SplitsToEvents splitToEvents { get; set; }
+		HTTPServer server;
 
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
 		{
@@ -109,6 +110,16 @@ namespace LiveSplit.TwitchPredictions
 			_twitchConnection._connectionData.Channel = Channel;
 			_twitchConnection._connectionData.ConnectOnLaunch = ConnectOnLaunch;
 			_twitchConnection.SaveConfig();
+		}
+
+		private void B_GenerateAouth_Click(object sender, EventArgs e)
+		{
+			if (HTTPServer.IsSupported())
+			{
+				HTTPServer server = new HTTPServer();
+			}
+			else
+				MessageBox.Show("HTTPServer is not supported. Maybe try running LiveSplit as administrator?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 	}
 }

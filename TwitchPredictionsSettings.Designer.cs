@@ -30,6 +30,7 @@ namespace LiveSplit.TwitchPredictions
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.B_SaveSettings = new System.Windows.Forms.Button();
 			this.TB_Channel = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.CB_ConnectOnComponentLaunch = new System.Windows.Forms.CheckBox();
@@ -44,7 +45,6 @@ namespace LiveSplit.TwitchPredictions
 			this.TB_ServerAdress = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.B_SaveSettings = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
 			this.SuspendLayout();
@@ -72,6 +72,16 @@ namespace LiveSplit.TwitchPredictions
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Connection settings";
+			// 
+			// B_SaveSettings
+			// 
+			this.B_SaveSettings.Location = new System.Drawing.Point(6, 127);
+			this.B_SaveSettings.Name = "B_SaveSettings";
+			this.B_SaveSettings.Size = new System.Drawing.Size(96, 23);
+			this.B_SaveSettings.TabIndex = 14;
+			this.B_SaveSettings.Text = "Save";
+			this.B_SaveSettings.UseVisualStyleBackColor = true;
+			this.B_SaveSettings.Click += new System.EventHandler(this.B_SaveSettings_Click);
 			// 
 			// TB_Channel
 			// 
@@ -116,6 +126,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_GenerateAouth.TabIndex = 8;
 			this.B_GenerateAouth.Text = "Generate OAuth";
 			this.B_GenerateAouth.UseVisualStyleBackColor = true;
+			this.B_GenerateAouth.Click += new System.EventHandler(this.B_GenerateAouth_Click);
 			// 
 			// TB_Oauth
 			// 
@@ -210,16 +221,6 @@ namespace LiveSplit.TwitchPredictions
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Prediction settings";
-			// 
-			// B_SaveSettings
-			// 
-			this.B_SaveSettings.Location = new System.Drawing.Point(6, 127);
-			this.B_SaveSettings.Name = "B_SaveSettings";
-			this.B_SaveSettings.Size = new System.Drawing.Size(96, 23);
-			this.B_SaveSettings.TabIndex = 14;
-			this.B_SaveSettings.Text = "Save";
-			this.B_SaveSettings.UseVisualStyleBackColor = true;
-			this.B_SaveSettings.Click += new System.EventHandler(this.B_SaveSettings_Click);
 			// 
 			// TwitchPredictionsSettings
 			// 
