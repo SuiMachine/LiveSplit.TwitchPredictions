@@ -26,7 +26,7 @@ namespace LiveSplit.TwitchPredictions
 	[Serializable]
 	public class SplitsToEvents
 	{
-		[XmlAttribute] public bool UseMessageBoxes { get; set; }
+		[XmlElement] public bool UseMessageBoxes { get; set; }
 		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlIgnore] public string Filename { get; set; }
@@ -35,9 +35,9 @@ namespace LiveSplit.TwitchPredictions
 		public class SplitEvent : ISplitEvent
 		{
 			[XmlIgnore] public string SegmentName { get; set; }
-			public SplitEventType EventType { get; set; }
+			[XmlAttribute] public SplitEventType EventType { get; set; }
 
-			public TimeSpan Delay { get; set; }
+			[XmlElement] public TimeSpan Delay { get; set; }
 			public SplitAction Action { get; set; }
 
 
@@ -62,10 +62,10 @@ namespace LiveSplit.TwitchPredictions
 		[Serializable]
 		public class SplitAction : ICloneable
 		{
-			public bool isUsed { get; set; }
-			public string Header { get; set; }
-			public string Answer1 { get; set; }
-			public string Answer2 { get; set; }
+			[XmlAttribute] public bool isUsed { get; set; }
+			[XmlAttribute] public string Header { get; set; }
+			[XmlAttribute] public string Answer1 { get; set; }
+			[XmlAttribute] public string Answer2 { get; set; }
 
 			public SplitAction()
 			{

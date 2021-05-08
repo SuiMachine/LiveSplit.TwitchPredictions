@@ -59,7 +59,7 @@ namespace LiveSplit.TwitchPredictions
 
 			var segmentNameColumn = new DataGridViewTextBoxColumn();
 			segmentNameColumn.Name = "Segment Name";
-			segmentNameColumn.Width = 100;
+			segmentNameColumn.Width = 350;
 			segmentNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			segmentNameColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
 			grid_SplitSettings.Columns.Add(segmentNameColumn);
@@ -88,7 +88,7 @@ namespace LiveSplit.TwitchPredictions
 
 			var eventActionColumn = new DataGridViewButtonColumn();
 			eventActionColumn.Name = "Action";
-			eventActionColumn.Width = 100;
+			eventActionColumn.Width = 30;
 			eventActionColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 			eventActionColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			eventActionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -117,10 +117,18 @@ namespace LiveSplit.TwitchPredictions
 
 
 		private void Grid_SplitSettings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-		{
+		{	
 			if (e.RowIndex < splitToEventList.Count)
 			{
-				if (e.ColumnIndex == COLUMNINDEX_DELAY)
+				if (e.ColumnIndex == COLUMNINDEX_SEGMENTNAME)
+				{
+					e.Value = splitToEventList[e.RowIndex].SegmentName;
+				}
+				else if (e.ColumnIndex == COLUMNINDEX_EVENT)
+				{
+					e.Value = SplitsToEvents.GetEnumDescription(splitToEventList[e.RowIndex].EventType);
+				}
+				else if (e.ColumnIndex == COLUMNINDEX_DELAY)
 				{
 					var comparisonValue = splitToEventList[e.RowIndex].Delay;
 					if (comparisonValue == null)
@@ -133,14 +141,6 @@ namespace LiveSplit.TwitchPredictions
 						e.Value = TimeFormatter.Format(comparisonValue);
 						e.FormattingApplied = true;
 					}
-				}
-				else if (e.ColumnIndex == COLUMNINDEX_EVENT)
-				{
-					e.Value = SplitsToEvents.GetEnumDescription(splitToEventList[e.RowIndex].EventType);
-				}
-				else if (e.ColumnIndex == COLUMNINDEX_SEGMENTNAME)
-				{
-					e.Value = splitToEventList[e.RowIndex].SegmentName;
 				}
 				else if (e.ColumnIndex == COLUMNINDEX_ACTION)
 				{
