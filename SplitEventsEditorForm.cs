@@ -45,7 +45,8 @@ namespace LiveSplit.TwitchPredictions
 
 			#region Setting up grid
 			TimeFormatter = new ShortTimeFormatter();
-			splitToEventList = new BindingList<ISplitEvent>(splitToEvents.EventList) { AllowNew = false, AllowRemove = false };
+
+			splitToEventList = new BindingList<ISplitEvent>(splitToEvents.EventList.Cast<ISplitEvent>().ToList()) { AllowNew = false, AllowRemove = false };
 			grid_SplitSettings.AutoGenerateColumns = false;
 			grid_SplitSettings.AutoSize = true;
 			grid_SplitSettings.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
@@ -267,18 +268,6 @@ namespace LiveSplit.TwitchPredictions
 			return new ParsingResults(false, null);
 		}
 
-		private void B_Cancel_Click(object sender, EventArgs e)
-		{
-			if (wasChanged && MessageBox.Show("Are you sure you want to close it and abandon changes?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-			{
-				this.Close();
-			}
-			else
-			{
-				this.Close();
-			}
-		}
-
 		private void Grid_SplitSettings_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
 		{
 			eCtl = e.Control;
@@ -314,5 +303,30 @@ namespace LiveSplit.TwitchPredictions
 		{
 			wasChanged = true;
 		}
+
+		#region Button Events
+		#region Left bar
+		#endregion
+
+		#region Save/Load
+		private void B_Save_Click(object sender, EventArgs e)
+		{
+			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
+			splitToEvents.Save();
+		}
+
+		private void B_Cancel_Click(object sender, EventArgs e)
+		{
+			if (wasChanged && MessageBox.Show("Are you sure you want to close it and abandon changes?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				this.Close();
+			}
+			else
+			{
+				this.Close();
+			}
+		}
+		#endregion
+		#endregion
 	}
 }

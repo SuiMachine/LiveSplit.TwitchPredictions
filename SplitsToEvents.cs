@@ -23,10 +23,11 @@ namespace LiveSplit.TwitchPredictions
 		[Description("Complete with Option 2")] CompleteWithOptionTwo
 	}
 
+	[Serializable]
 	public class SplitsToEvents
 	{
 		[XmlAttribute] public bool UseMessageBoxes { get; set; }
-		[XmlArrayItem] public List<ISplitEvent> EventList { get; set; }
+		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlIgnore] public string Filename { get; set; }
 
@@ -88,7 +89,7 @@ namespace LiveSplit.TwitchPredictions
 		public SplitsToEvents()
 		{
 			UseMessageBoxes = false;
-			EventList = new List<ISplitEvent>() { new SplitEvent() { SegmentName = "Test" } };
+			EventList = new List<SplitEvent>();
 			OnTimerResetBehaviour = OnResetEventType.Cancel;
 			Filename = "";
 		}
@@ -130,6 +131,11 @@ namespace LiveSplit.TwitchPredictions
 			}
 
 			return value.ToString();
+		}
+
+		internal void Save()
+		{
+			XmlSerialiationDeserilation.SaveObjectToXML<SplitsToEvents>(this, Filename);
 		}
 	}
 }

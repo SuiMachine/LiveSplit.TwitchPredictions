@@ -40,10 +40,10 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.grid_SplitSettings = new System.Windows.Forms.DataGridView();
 			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-			this.B_MoveUp = new System.Windows.Forms.Button();
 			this.B_MoveDown = new System.Windows.Forms.Button();
-			this.B_ExportEvents = new System.Windows.Forms.Button();
+			this.B_MoveUp = new System.Windows.Forms.Button();
 			this.B_ImportEvents = new System.Windows.Forms.Button();
+			this.B_ExportEvents = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -144,6 +144,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_Save.TabIndex = 0;
 			this.B_Save.Text = "Save";
 			this.B_Save.UseVisualStyleBackColor = true;
+			this.B_Save.Click += new System.EventHandler(this.B_Save_Click);
 			// 
 			// tableLayoutPanel3
 			// 
@@ -192,16 +193,6 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel4.Size = new System.Drawing.Size(169, 252);
 			this.tableLayoutPanel4.TabIndex = 3;
 			// 
-			// B_MoveUp
-			// 
-			this.B_MoveUp.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.B_MoveUp.Location = new System.Drawing.Point(3, 3);
-			this.B_MoveUp.Name = "B_MoveUp";
-			this.B_MoveUp.Size = new System.Drawing.Size(163, 28);
-			this.B_MoveUp.TabIndex = 3;
-			this.B_MoveUp.Text = "Move Events to Previous Split";
-			this.B_MoveUp.UseVisualStyleBackColor = true;
-			// 
 			// B_MoveDown
 			// 
 			this.B_MoveDown.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -212,16 +203,15 @@ namespace LiveSplit.TwitchPredictions
 			this.B_MoveDown.Text = "Move Events To Next Split";
 			this.B_MoveDown.UseVisualStyleBackColor = true;
 			// 
-			// B_ExportEvents
+			// B_MoveUp
 			// 
-			this.B_ExportEvents.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.B_ExportEvents.Enabled = false;
-			this.B_ExportEvents.Location = new System.Drawing.Point(3, 105);
-			this.B_ExportEvents.Name = "B_ExportEvents";
-			this.B_ExportEvents.Size = new System.Drawing.Size(163, 28);
-			this.B_ExportEvents.TabIndex = 5;
-			this.B_ExportEvents.Text = "Export events";
-			this.B_ExportEvents.UseVisualStyleBackColor = true;
+			this.B_MoveUp.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_MoveUp.Location = new System.Drawing.Point(3, 3);
+			this.B_MoveUp.Name = "B_MoveUp";
+			this.B_MoveUp.Size = new System.Drawing.Size(163, 28);
+			this.B_MoveUp.TabIndex = 3;
+			this.B_MoveUp.Text = "Move Events to Previous Split";
+			this.B_MoveUp.UseVisualStyleBackColor = true;
 			// 
 			// B_ImportEvents
 			// 
@@ -233,6 +223,17 @@ namespace LiveSplit.TwitchPredictions
 			this.B_ImportEvents.TabIndex = 6;
 			this.B_ImportEvents.Text = "Import events";
 			this.B_ImportEvents.UseVisualStyleBackColor = true;
+			// 
+			// B_ExportEvents
+			// 
+			this.B_ExportEvents.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_ExportEvents.Enabled = false;
+			this.B_ExportEvents.Location = new System.Drawing.Point(3, 105);
+			this.B_ExportEvents.Name = "B_ExportEvents";
+			this.B_ExportEvents.Size = new System.Drawing.Size(163, 28);
+			this.B_ExportEvents.TabIndex = 5;
+			this.B_ExportEvents.Text = "Export events";
+			this.B_ExportEvents.UseVisualStyleBackColor = true;
 			// 
 			// SplitEventsEditorForm
 			// 
