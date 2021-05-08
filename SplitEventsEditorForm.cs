@@ -31,6 +31,7 @@ namespace LiveSplit.TwitchPredictions
 		protected BindingList<ISplitEvent> splitToEventList { get; set; }
 		private Control eCtl;
 
+		#region Stuff responsible for intiation and display
 		public SplitEventsEditorForm(Model.LiveSplitState splitStates, SplitsToEvents splitToEvents)
 		{
 			this.splitStates = splitStates;
@@ -98,7 +99,6 @@ namespace LiveSplit.TwitchPredictions
 
 			AddComboboxDataSources();
 			CBox_OnRunReset.DataBindings.Add("SelectedValue", splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
-
 		}
 
 		private void AddComboboxDataSources()
@@ -113,22 +113,8 @@ namespace LiveSplit.TwitchPredictions
 				value
 			}).ToList();
 		}
+		#endregion
 
-		private void Grid_SplitSettings_SelectionChanged(object sender, EventArgs e)
-		{
-		}
-
-		private void Grid_SplitSettings_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-		{
-		}
-
-		private void Grid_SplitSettings_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-		{
-		}
-
-		private void Grid_SplitSettings_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
-		{
-		}
 
 		private void Grid_SplitSettings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
@@ -165,8 +151,92 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
+		#region Validation of Numeric data
+		private void Grid_SplitSettings_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+		{
+			if (e.ColumnIndex == COLUMNINDEX_DELAY)
+			{
+				if (string.IsNullOrWhiteSpace(e.FormattedValue.ToString()))
+					return;
+
+				try
+				{
+					TimeSpanParser.Parse(e.FormattedValue.ToString());
+				}
+				catch
+				{
+					e.Cancel = true;
+					grid_SplitSettings.Rows[e.RowIndex].ErrorText = "Invalid Time";
+				}
+			}
+		}
+
+		private void Grid_SplitSettings_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		{
+			grid_SplitSettings.Rows[e.RowIndex].ErrorText = "";
+		}
+		#endregion
+
+
+		private void Grid_SplitSettings_SelectionChanged(object sender, EventArgs e)
+		{
+		}
+
+		private class ParsingResults
+		{
+			public bool Parsed { get; set; }
+			public object Value { get; set; }
+
+			public ParsingResults(bool parsed, object value)
+			{
+				Parsed = parsed;
+				Value = value;
+			}
+		}
+
+		private void Grid_SplitSettings_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+		{
+			var parsingResults = ParseCell(e.Value, e.RowIndex, e.ColumnIndex, true);
+			if (parsingResults.Parsed)
+			{
+				e.ParsingApplied = true;
+				e.Value = parsingResults.Value;
+			}
+			else
+				e.ParsingApplied = false;
+		}
+
+		private ParsingResults ParseCell(object value, int rowIndex, int columnIndex, bool v)
+		{
+			if (string.IsNullOrWhiteSpace(value.ToString()))
+			{
+				value = null;
+				if (columnIndex == COLUMNINDEX_DELAY)
+				{
+					splitToEventList[rowIndex].Delay = TimeSpan.Zero;
+				}
+
+				return new ParsingResults(true, value);
+			}
+
+			try
+			{
+				value = TimeSpanParser.Parse(value.ToString());
+				if (columnIndex == COLUMNINDEX_DELAY)
+				{
+					splitToEventList[rowIndex].Delay = (TimeSpan)value;
+				}
+
+				return new ParsingResults(true, value);
+			}
+			catch { }
+
+			return new ParsingResults(false, null);
+		}
+
 		private void Grid_SplitSettings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
 		{
+
 		}
 
 		private void B_Cancel_Click(object sender, EventArgs e)
@@ -192,7 +262,7 @@ namespace LiveSplit.TwitchPredictions
 
 		private void grid_SplitSettings_KeyDown(object sender, KeyEventArgs e)
 		{
-/*			if (e.KeyCode == Keys.Delete)
+			if (e.KeyCode == Keys.Delete)
 			{
 				foreach (var selectedObject in grid_SplitSettings.SelectedCells.OfType<DataGridViewCell>().Reverse())
 				{
@@ -204,17 +274,17 @@ namespace LiveSplit.TwitchPredictions
 						splitToEvents.EventList[selectedCell.RowIndex].Action.Header = "";
 						splitToEvents.EventList[selectedCell.RowIndex].Action.Answer1 = "";
 						splitToEvents.EventList[selectedCell.RowIndex].Action.Answer2 = "";
-						SetEdited();
+						SetDirty();
 					}
 				}
 
 				grid_SplitSettings.Invalidate();
-			}*/
+			}
 		}
 
-		private void SetEdited()
+		private void SetDirty()
 		{
 			wasChanged = true;
 		}
 	}
-}
+	}
