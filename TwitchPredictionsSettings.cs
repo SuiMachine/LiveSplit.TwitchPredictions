@@ -92,6 +92,13 @@ namespace LiveSplit.TwitchPredictions
 			var fullPath = Path.Combine(SubDir, Filename + ".xml");
 			if (File.Exists(fullPath))
 				splitToEvents = XmlSerialiationDeserilation.ReadFromXMLFile<SplitsToEvents>(fullPath);
+			else
+				splitToEvents = new SplitsToEvents();
+
+			splitToEvents.Filename = fullPath;
+#if DEBUG
+			B_EditSplitEvents_Click(null, null);
+#endif
 		}
 
 		private string ReplaceIncorrectCharacters(string filename)
@@ -146,6 +153,12 @@ namespace LiveSplit.TwitchPredictions
 				if (MessageBox.Show("Received Authorization Token. Do you want to save it now?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
 					B_SaveSettings_Click(null, null);
 			}
+		}
+
+		private void B_EditSplitEvents_Click(object sender, EventArgs e)
+		{
+			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, splitToEvents);
+			splitEventsEditor.ShowDialog();
 		}
 	}
 }

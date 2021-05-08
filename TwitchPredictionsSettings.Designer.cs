@@ -45,8 +45,10 @@ namespace LiveSplit.TwitchPredictions
 			this.TB_ServerAdress = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.B_EditSplitEvents = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
+			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -214,13 +216,24 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.B_EditSplitEvents);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupBox2.Location = new System.Drawing.Point(0, 161);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(455, 376);
+			this.groupBox2.Size = new System.Drawing.Size(455, 64);
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Prediction settings";
+			// 
+			// B_EditSplitEvents
+			// 
+			this.B_EditSplitEvents.Location = new System.Drawing.Point(9, 19);
+			this.B_EditSplitEvents.Name = "B_EditSplitEvents";
+			this.B_EditSplitEvents.Size = new System.Drawing.Size(104, 23);
+			this.B_EditSplitEvents.TabIndex = 0;
+			this.B_EditSplitEvents.Text = "Edit split events";
+			this.B_EditSplitEvents.UseVisualStyleBackColor = true;
+			this.B_EditSplitEvents.Click += new System.EventHandler(this.B_EditSplitEvents_Click);
 			// 
 			// TwitchPredictionsSettings
 			// 
@@ -229,10 +242,11 @@ namespace LiveSplit.TwitchPredictions
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Name = "TwitchPredictionsSettings";
-			this.Size = new System.Drawing.Size(455, 537);
+			this.Size = new System.Drawing.Size(455, 225);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).EndInit();
+			this.groupBox2.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -254,5 +268,6 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Button B_SaveSettings;
+		private System.Windows.Forms.Button B_EditSplitEvents;
 	}
 }
