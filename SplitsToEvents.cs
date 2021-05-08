@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -12,7 +13,7 @@ namespace LiveSplit.TwitchPredictions
 	{
 		[Description("None")] None,
 		[Description("On Split Start")] OnSplitStart,
-		[Description("On Split End")] OnFinish,
+		[Description("On Split End")] OnSplitEnd,
 	}
 
 	public enum OnResetEventType
@@ -115,6 +116,20 @@ namespace LiveSplit.TwitchPredictions
 			}
 
 			return sbIssues.ToString();
+		}
+
+		public static string GetEnumDescription<T>(T value) where T : Enum
+		{
+			FieldInfo fi = value.GetType().GetField(value.ToString());
+
+			DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+			if (attributes != null && attributes.Any())
+			{
+				return attributes.First().Description;
+			}
+
+			return value.ToString();
 		}
 	}
 }

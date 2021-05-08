@@ -50,7 +50,6 @@ namespace LiveSplit.TwitchPredictions
 			grid_SplitSettings.AutoSize = true;
 			grid_SplitSettings.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 			grid_SplitSettings.DataSource = splitToEventList;
-			grid_SplitSettings.CellDoubleClick += Grid_SplitSettings_CellDoubleClick;
 			grid_SplitSettings.CellFormatting += Grid_SplitSettings_CellFormatting;
 			grid_SplitSettings.CellParsing += Grid_SplitSettings_CellParsing;
 			grid_SplitSettings.CellValidating += Grid_SplitSettings_CellValidating;
@@ -69,7 +68,7 @@ namespace LiveSplit.TwitchPredictions
 			//Hide your children
 			eventTypeColumn.Items.AddRange(Enum.GetValues(typeof(SplitEventType)).Cast<Enum>().Select(value => new
 			{
-				(Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute))	as DescriptionAttribute).Description
+				(Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description
 			}.Description).ToArray());
 			eventTypeColumn.Name = "Event Type";
 			eventTypeColumn.Width = 100;
@@ -136,13 +135,13 @@ namespace LiveSplit.TwitchPredictions
 				}
 				else if (e.ColumnIndex == COLUMNINDEX_EVENT)
 				{
-					e.Value = splitToEventList[e.RowIndex].EventType.ToString();
+					e.Value = SplitsToEvents.GetEnumDescription(splitToEventList[e.RowIndex].EventType);
 				}
 				else if (e.ColumnIndex == COLUMNINDEX_SEGMENTNAME)
 				{
 					e.Value = splitToEventList[e.RowIndex].SegmentName;
 				}
-				else if(e.ColumnIndex == COLUMNINDEX_ACTION)
+				else if (e.ColumnIndex == COLUMNINDEX_ACTION)
 				{
 					bool eventUsed = splitToEventList[e.RowIndex].Action.isUsed;
 					e.Value = eventUsed ? "!" : "";
@@ -180,6 +179,24 @@ namespace LiveSplit.TwitchPredictions
 
 		private void Grid_SplitSettings_SelectionChanged(object sender, EventArgs e)
 		{
+			UpdateButtonsStatus();
+		}
+
+		private void UpdateButtonsStatus()
+		{
+			B_MoveUp.Enabled = splitToEventList.Count > 1;
+			List<DataGridViewCell> selectedCells = grid_SplitSettings.SelectedCells.Cast<DataGridViewCell>().OrderBy(o => o.RowIndex).ToList();
+
+			if (selectedCells.FirstOrDefault() != null)
+			{
+				B_MoveUp.Enabled = selectedCells.First().RowIndex > 0;
+				B_MoveDown.Enabled = selectedCells.Last().RowIndex < splitToEventList.Count - 1;
+			}
+			else
+			{
+				B_MoveUp.Enabled = false;
+				B_MoveDown.Enabled = false;
+			}
 		}
 
 		private class ParsingResults
@@ -196,6 +213,11 @@ namespace LiveSplit.TwitchPredictions
 
 		private void Grid_SplitSettings_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
 		{
+			//Do not parse segment names, events and actions
+			if (e.ColumnIndex == COLUMNINDEX_SEGMENTNAME || e.ColumnIndex == COLUMNINDEX_ACTION)
+				return;
+
+			//Parse timespans
 			var parsingResults = ParseCell(e.Value, e.RowIndex, e.ColumnIndex, true);
 			if (parsingResults.Parsed)
 			{
@@ -219,6 +241,17 @@ namespace LiveSplit.TwitchPredictions
 				return new ParsingResults(true, value);
 			}
 
+			if (columnIndex == COLUMNINDEX_EVENT)
+			{
+				var values = Enum.GetValues(typeof(SplitEventType)).Cast<Enum>().Select(enumValues => new
+				{
+					(Attribute.GetCustomAttribute(enumValues.GetType().GetField(enumValues.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description,enumValues
+				}).ToList();
+
+				var enumVal = values.FindIndex(x => x.Description == value.ToString());
+				splitToEventList[rowIndex].EventType = (SplitEventType)enumVal;
+			}
+
 			try
 			{
 				value = TimeSpanParser.Parse(value.ToString());
@@ -232,11 +265,6 @@ namespace LiveSplit.TwitchPredictions
 			catch { }
 
 			return new ParsingResults(false, null);
-		}
-
-		private void Grid_SplitSettings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-		{
-
 		}
 
 		private void B_Cancel_Click(object sender, EventArgs e)
@@ -254,10 +282,10 @@ namespace LiveSplit.TwitchPredictions
 		private void Grid_SplitSettings_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
 		{
 			eCtl = e.Control;
-/*			eCtl.TextChanged -= new EventHandler(eCtl_TextChanged);
-			eCtl.KeyPress -= new KeyPressEventHandler(eCtl_KeyPress);
-			eCtl.TextChanged += new EventHandler(eCtl_TextChanged);
-			eCtl.KeyPress += new KeyPressEventHandler(eCtl_KeyPress);*/
+			/*			eCtl.TextChanged -= new EventHandler(eCtl_TextChanged);
+						eCtl.KeyPress -= new KeyPressEventHandler(eCtl_KeyPress);
+						eCtl.TextChanged += new EventHandler(eCtl_TextChanged);
+						eCtl.KeyPress += new KeyPressEventHandler(eCtl_KeyPress);*/
 		}
 
 		private void grid_SplitSettings_KeyDown(object sender, KeyEventArgs e)
@@ -287,4 +315,4 @@ namespace LiveSplit.TwitchPredictions
 			wasChanged = true;
 		}
 	}
-	}
+}
