@@ -133,8 +133,10 @@ namespace LiveSplit.TwitchPredictions
 			return value.ToString();
 		}
 
-		internal void Save()
+		internal void Save(string filePath = "")
 		{
+			if (filePath == "")
+				filePath = Filename;
 			XmlSerialiationDeserilation.SaveObjectToXML<SplitsToEvents>(this, Filename);
 		}
 	}

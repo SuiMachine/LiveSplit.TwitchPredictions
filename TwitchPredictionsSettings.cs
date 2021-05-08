@@ -87,7 +87,7 @@ namespace LiveSplit.TwitchPredictions
 			if (!Directory.Exists(SubDir))
 				Directory.CreateDirectory(SubDir);
 
-			var newFilename = ReplaceIncorrectCharacters(splitStates != null && splitStates.Run != null ? splitStates.Run.GameName + "##" + splitStates.Run.CategoryName : "Unknown");
+			var Filename = ReplaceIncorrectCharacters(splitStates != null && splitStates.Run != null ? splitStates.Run.GameName + "##" + splitStates.Run.CategoryName : "Unknown");
 
 			var fullPath = Path.Combine(SubDir, Filename + ".xml");
 			if (File.Exists(fullPath))

@@ -312,7 +312,15 @@ namespace LiveSplit.TwitchPredictions
 		private void B_Save_Click(object sender, EventArgs e)
 		{
 			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
-			splitToEvents.Save();
+			try
+			{
+				splitToEvents.Save();
+				MessageBox.Show("Saved successfully!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show("Failed to export to XML:\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		private void B_Cancel_Click(object sender, EventArgs e)
