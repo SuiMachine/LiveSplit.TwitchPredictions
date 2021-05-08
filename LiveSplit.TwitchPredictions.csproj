@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HTTPServer.cs" />
+    <Compile Include="ISplitEvent.cs" />
     <Compile Include="SplitEventsEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

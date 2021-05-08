@@ -38,10 +38,6 @@ namespace LiveSplit.TwitchPredictions
 			this.B_Save = new System.Windows.Forms.Button();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.grid_SplitSettings = new System.Windows.Forms.DataGridView();
-			this.SegmentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Event = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.Delay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Action = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -148,38 +144,12 @@ namespace LiveSplit.TwitchPredictions
 			this.grid_SplitSettings.AllowUserToAddRows = false;
 			this.grid_SplitSettings.AllowUserToDeleteRows = false;
 			this.grid_SplitSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.grid_SplitSettings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.SegmentName,
-            this.Event,
-            this.Delay,
-            this.Action});
 			this.grid_SplitSettings.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.grid_SplitSettings.Location = new System.Drawing.Point(43, 3);
 			this.grid_SplitSettings.Name = "grid_SplitSettings";
 			this.grid_SplitSettings.Size = new System.Drawing.Size(892, 555);
 			this.grid_SplitSettings.TabIndex = 2;
-			// 
-			// SegmentName
-			// 
-			this.SegmentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.SegmentName.HeaderText = "Segment name";
-			this.SegmentName.Name = "SegmentName";
-			this.SegmentName.ReadOnly = true;
-			// 
-			// Event
-			// 
-			this.Event.HeaderText = "Event";
-			this.Event.Name = "Event";
-			// 
-			// Delay
-			// 
-			this.Delay.HeaderText = "Delay";
-			this.Delay.Name = "Delay";
-			// 
-			// Action
-			// 
-			this.Action.HeaderText = "Action";
-			this.Action.Name = "Action";
+			this.grid_SplitSettings.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grid_SplitSettings_KeyDown);
 			// 
 			// SplitEventsEditorForm
 			// 
@@ -210,9 +180,5 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.Button B_Save;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 		public System.Windows.Forms.DataGridView grid_SplitSettings;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SegmentName;
-		private System.Windows.Forms.DataGridViewComboBoxColumn Event;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Delay;
-		private System.Windows.Forms.DataGridViewComboBoxColumn Action;
 	}
 }

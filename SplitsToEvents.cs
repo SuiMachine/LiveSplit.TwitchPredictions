@@ -1,53 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace LiveSplit.TwitchPredictions
 {
+	public enum SplitEventType
+	{
+		OnSpit,
+		OnFinish,
+		OnPB
+	}
+
+	public enum OnResetEventType
+	{
+		Cancel,
+		CompleteWithOptionOne,
+		CompleteWithOptionTwo
+	}
+
 	public class SplitsToEvents
 	{
-		[XmlAttribute] public bool UseMessageBoxes;
-		[XmlArrayItem] public List<SplitEvent> EventList;
-		[XmlElement] public OnResetEventType OnTimerResetBehaviour;
-		[XmlIgnore] public string Filename;
-
-		public enum SplitEventType
-		{
-			OnSpit,
-			OnFinish,
-			OnPB
-		}
-
-		public enum OnResetEventType
-		{
-			Cancel,
-			CompleteWithOptionOne,
-			CompleteWithOptionTwo
-		}
+		[XmlAttribute] public bool UseMessageBoxes { get; set; }
+		[XmlArrayItem] public List<ISplitEvent> EventList { get; set; }
+		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
+		[XmlIgnore] public string Filename { get; set; }
 
 		[Serializable]
-		public class SplitEvent
+		public class SplitEvent : ISplitEvent
 		{
-			[XmlIgnore] public string SegmentName;
-			public int SplitIterator;
-			public SplitEventType EventType;
-			public int Delay;
+			[XmlIgnore] public string SegmentName { get; set; }
+			public SplitEventType EventType { get; set; }
+
+			public TimeSpan Delay { get; set; }
+			public SplitAction Action { get; set; }
+			public Image Icon { get; set; }
+
 
 			public SplitEvent()
 			{
 				SegmentName = "";
-				SplitIterator = 0;
 				EventType = SplitEventType.OnSpit;
-				Delay = 0;
+				Delay = TimeSpan.Zero;
+			}
+
+			public object Clone()
+			{
+				var clone = new SplitEvent();
+				clone.SegmentName = this.SegmentName;
+				clone.EventType = this.EventType;
+				clone.Delay = this.Delay;
+				return clone;
+			}
+		}
+
+		[Serializable]
+		public class SplitAction : ICloneable
+		{
+			public bool isUsed { get; set; }
+			public string Header { get; set; }
+			public string Answer1 { get; set; }
+			public string Answer2 { get; set; }
+
+			public SplitAction()
+			{
+				isUsed = false;
+				Header = "";
+				Answer1 = "";
+				Answer2 = "";
+			}
+
+			public object Clone()
+			{
+				var clone = new SplitAction();
+				clone.isUsed = false;
+				clone.Header = "";
+				clone.Answer1 = "";
+				clone.Answer2 = "";
+				return clone;
 			}
 		}
 
 		public SplitsToEvents()
 		{
 			UseMessageBoxes = false;
-			EventList = new List<SplitEvent>();
+			EventList = new List<ISplitEvent>() { new SplitEvent() { SegmentName = "Test" } };
 			OnTimerResetBehaviour = OnResetEventType.Cancel;
 			Filename = "";
 		}
