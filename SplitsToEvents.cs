@@ -36,7 +36,6 @@ namespace LiveSplit.TwitchPredictions
 
 			public TimeSpan Delay { get; set; }
 			public SplitAction Action { get; set; }
-			public Image Icon { get; set; }
 
 
 			public SplitEvent()
@@ -44,6 +43,7 @@ namespace LiveSplit.TwitchPredictions
 				SegmentName = "";
 				EventType = SplitEventType.OnSpit;
 				Delay = TimeSpan.Zero;
+				Action = new SplitAction();
 			}
 
 			public object Clone()

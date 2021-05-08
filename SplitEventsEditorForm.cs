@@ -1,4 +1,5 @@
 ﻿using LiveSplit.Model;
+using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ namespace LiveSplit.TwitchPredictions
 		Model.LiveSplitState splitStates;
 		SplitsToEvents splitToEvents;
 		bool wasChanged = false;
+		protected ITimeFormatter TimeFormatter { get; set; }
+
 
 		#region Grid_Constants
 		int COLUMNINDEX_SEGMENTNAME = 0;
@@ -39,14 +42,21 @@ namespace LiveSplit.TwitchPredictions
 				//MessageBox.Show("Verification found following issues:\n" + verficationResult, "Notification", MessageBoxButtons.OK);
 			}
 
+			TimeFormatter = new ShortTimeFormatter();
 			splitToEventList = new BindingList<ISplitEvent>(splitToEvents.EventList) { AllowNew = false, AllowRemove = false };
 			grid_SplitSettings.AutoGenerateColumns = false;
 			grid_SplitSettings.AutoSize = true;
 			grid_SplitSettings.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 			grid_SplitSettings.DataSource = splitToEventList;
+			grid_SplitSettings.CellDoubleClick += Grid_SplitSettings_CellDoubleClick;
+			grid_SplitSettings.CellFormatting += Grid_SplitSettings_CellFormatting;
+			grid_SplitSettings.CellParsing += Grid_SplitSettings_CellParsing;
+			grid_SplitSettings.CellValidating += Grid_SplitSettings_CellValidating;
+			grid_SplitSettings.CellEndEdit += Grid_SplitSettings_CellEndEdit;
+			grid_SplitSettings.SelectionChanged += Grid_SplitSettings_SelectionChanged;
 
 			var segmentNameColumn = new DataGridViewTextBoxColumn();
-			segmentNameColumn.Name = "SegmentName";
+			segmentNameColumn.Name = "Segment Name";
 			segmentNameColumn.Width = 100;
 			segmentNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			segmentNameColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -75,6 +85,62 @@ namespace LiveSplit.TwitchPredictions
 			eventActionColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			eventActionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
 			grid_SplitSettings.Columns.Add(eventActionColumn);
+		}
+
+		private void Grid_SplitSettings_SelectionChanged(object sender, EventArgs e)
+		{
+		}
+
+		private void Grid_SplitSettings_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		{
+		}
+
+		private void Grid_SplitSettings_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+		{
+		}
+
+		private void Grid_SplitSettings_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+		{
+		}
+
+		private void Grid_SplitSettings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.RowIndex < splitToEventList.Count)
+			{
+				if (e.ColumnIndex == COLUMNINDEX_DELAY)
+				{
+					var comparisonValue = splitToEventList[e.RowIndex].Delay;
+					if (comparisonValue == null)
+					{
+						e.Value = "";
+						e.FormattingApplied = false;
+					}
+					else
+					{
+						e.Value = TimeFormatter.Format(comparisonValue);
+						e.FormattingApplied = true;
+					}
+				}
+				else if (e.ColumnIndex == COLUMNINDEX_EVENT)
+				{
+					e.Value = splitToEventList[e.RowIndex].EventType.ToString();
+				}
+				else if (e.ColumnIndex == COLUMNINDEX_SEGMENTNAME)
+				{
+					e.Value = splitToEventList[e.RowIndex].SegmentName;
+				}
+				else if(e.ColumnIndex == COLUMNINDEX_ACTION)
+				{
+					bool eventUsed = splitToEventList[e.RowIndex].Action.isUsed;
+					e.Value = eventUsed ? "!" : "";
+					e.CellStyle.BackColor = eventUsed ? Color.Red : Color.Transparent;
+				}
+			}
+		}
+
+		private void Grid_SplitSettings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void B_Cancel_Click(object sender, EventArgs e)
