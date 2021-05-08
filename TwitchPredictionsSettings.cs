@@ -26,11 +26,14 @@ namespace LiveSplit.TwitchPredictions
 		public bool ConnectOnLaunch { get; set; }
 
 		private string Filename;
+		private HTTPServer server;
 
 		Model.LiveSplitState splitStates;
 
 		public SplitsToEvents splitToEvents { get; set; }
-		HTTPServer server;
+
+		public delegate void ResponseReceivedDelagate(string text, string type, string c);  
+
 
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
 		{
@@ -116,10 +119,33 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if (HTTPServer.IsSupported())
 			{
-				HTTPServer server = new HTTPServer();
+				if (server != null)
+				{
+					server.OnReceivedResultEvent -= Server_OnReceivedResultEvent;
+					server.CloseHttpListener();
+				}
+				server = new HTTPServer();
+				server.OnReceivedResultEvent += Server_OnReceivedResultEvent;
 			}
 			else
 				MessageBox.Show("HTTPServer is not supported. Maybe try running LiveSplit as administrator?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
+
+		private void Server_OnReceivedResultEvent(string token, string scope, string tokentype)
+		{
+			if (this.InvokeRequired)
+			{
+				ResponseReceivedDelagate d = new ResponseReceivedDelagate(Server_OnReceivedResultEvent);
+				this.Invoke(d, new object[] { token, scope, tokentype });
+			}
+			else if (token != "")
+			{
+				B_GenerateAouth.Text = token;
+				Oauth = token;
+
+				if (MessageBox.Show("Received Authorization Token. Do you want to save it now?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+					B_SaveSettings_Click(null, null);
+			}
 		}
 	}
 }
