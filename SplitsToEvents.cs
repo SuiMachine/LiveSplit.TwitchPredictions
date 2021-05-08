@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -9,16 +10,16 @@ namespace LiveSplit.TwitchPredictions
 {
 	public enum SplitEventType
 	{
-		OnSpit,
-		OnFinish,
-		OnPB
+		[Description("None")] None,
+		[Description("On Split Start")] OnSplitStart,
+		[Description("On Split End")] OnFinish,
 	}
 
 	public enum OnResetEventType
 	{
-		Cancel,
-		CompleteWithOptionOne,
-		CompleteWithOptionTwo
+		[Description("Cancel prediction")] Cancel,
+		[Description("Complete with Option 1")] CompleteWithOptionOne,
+		[Description("Complete with Option 2")] CompleteWithOptionTwo
 	}
 
 	public class SplitsToEvents
@@ -41,7 +42,7 @@ namespace LiveSplit.TwitchPredictions
 			public SplitEvent()
 			{
 				SegmentName = "";
-				EventType = SplitEventType.OnSpit;
+				EventType = SplitEventType.None;
 				Delay = TimeSpan.Zero;
 				Action = new SplitAction();
 			}

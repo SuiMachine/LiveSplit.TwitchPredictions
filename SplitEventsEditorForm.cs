@@ -16,7 +16,7 @@ namespace LiveSplit.TwitchPredictions
 	public partial class SplitEventsEditorForm : Form
 	{
 		Model.LiveSplitState splitStates;
-		SplitsToEvents splitToEvents;
+		public SplitsToEvents splitToEvents;
 		bool wasChanged = false;
 		protected ITimeFormatter TimeFormatter { get; set; }
 
@@ -29,7 +29,7 @@ namespace LiveSplit.TwitchPredictions
 		#endregion
 
 		protected BindingList<ISplitEvent> splitToEventList { get; set; }
-
+		private Control eCtl;
 
 		public SplitEventsEditorForm(Model.LiveSplitState splitStates, SplitsToEvents splitToEvents)
 		{
@@ -42,6 +42,7 @@ namespace LiveSplit.TwitchPredictions
 				//MessageBox.Show("Verification found following issues:\n" + verficationResult, "Notification", MessageBoxButtons.OK);
 			}
 
+			#region Setting up grid
 			TimeFormatter = new ShortTimeFormatter();
 			splitToEventList = new BindingList<ISplitEvent>(splitToEvents.EventList) { AllowNew = false, AllowRemove = false };
 			grid_SplitSettings.AutoGenerateColumns = false;
@@ -63,6 +64,12 @@ namespace LiveSplit.TwitchPredictions
 			grid_SplitSettings.Columns.Add(segmentNameColumn);
 
 			var eventTypeColumn = new DataGridViewComboBoxColumn();
+
+			//Hide your children
+			eventTypeColumn.Items.AddRange(Enum.GetValues(typeof(SplitEventType)).Cast<Enum>().Select(value => new
+			{
+				(Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute))	as DescriptionAttribute).Description
+			}.Description).ToArray());
 			eventTypeColumn.Name = "Event Type";
 			eventTypeColumn.Width = 100;
 			eventTypeColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -85,6 +92,26 @@ namespace LiveSplit.TwitchPredictions
 			eventActionColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			eventActionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
 			grid_SplitSettings.Columns.Add(eventActionColumn);
+
+			grid_SplitSettings.EditingControlShowing += Grid_SplitSettings_EditingControlShowing;
+			#endregion
+
+			AddComboboxDataSources();
+			CBox_OnRunReset.DataBindings.Add("SelectedValue", splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
+
+		}
+
+		private void AddComboboxDataSources()
+		{
+			CBox_OnRunReset.DisplayMember = "Description";
+			CBox_OnRunReset.ValueMember = "value";
+			CBox_OnRunReset.DataSource = Enum.GetValues(typeof(OnResetEventType)).Cast<Enum>().Select(value =>
+			new
+			{
+				(Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()),
+				typeof(DescriptionAttribute)) as DescriptionAttribute).Description,
+				value
+			}).ToList();
 		}
 
 		private void Grid_SplitSettings_SelectionChanged(object sender, EventArgs e)
@@ -140,7 +167,6 @@ namespace LiveSplit.TwitchPredictions
 
 		private void Grid_SplitSettings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
 		{
-			throw new NotImplementedException();
 		}
 
 		private void B_Cancel_Click(object sender, EventArgs e)
@@ -153,6 +179,15 @@ namespace LiveSplit.TwitchPredictions
 			{
 				this.Close();
 			}
+		}
+
+		private void Grid_SplitSettings_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+		{
+			eCtl = e.Control;
+/*			eCtl.TextChanged -= new EventHandler(eCtl_TextChanged);
+			eCtl.KeyPress -= new KeyPressEventHandler(eCtl_KeyPress);
+			eCtl.TextChanged += new EventHandler(eCtl_TextChanged);
+			eCtl.KeyPress += new KeyPressEventHandler(eCtl_KeyPress);*/
 		}
 
 		private void grid_SplitSettings_KeyDown(object sender, KeyEventArgs e)
@@ -180,17 +215,6 @@ namespace LiveSplit.TwitchPredictions
 		private void SetEdited()
 		{
 			wasChanged = true;
-		}
-
-
-		public void SetGraphicsAndHints()
-		{
-			return;
-			for (int i = 0; i < grid_SplitSettings.Rows.Count; i++)
-			{
-				var actionButton = (Button)grid_SplitSettings[COLUMNINDEX_ACTION, i].Value;
-
-			}
 		}
 	}
 }

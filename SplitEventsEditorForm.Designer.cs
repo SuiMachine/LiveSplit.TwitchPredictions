@@ -29,29 +29,36 @@ namespace LiveSplit.TwitchPredictions
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.CBox_OnRunReset = new System.Windows.Forms.ComboBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.B_Verify = new System.Windows.Forms.Button();
 			this.B_Cancel = new System.Windows.Forms.Button();
 			this.B_Save = new System.Windows.Forms.Button();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.grid_SplitSettings = new System.Windows.Forms.DataGridView();
+			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+			this.B_MoveUp = new System.Windows.Forms.Button();
+			this.B_MoveDown = new System.Windows.Forms.Button();
+			this.B_ExportEvents = new System.Windows.Forms.Button();
+			this.B_ImportEvents = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).BeginInit();
+			this.tableLayoutPanel4.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// comboBox1
+			// CBox_OnRunReset
 			// 
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(77, 3);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(121, 21);
-			this.comboBox1.TabIndex = 3;
+			this.CBox_OnRunReset.FormattingEnabled = true;
+			this.CBox_OnRunReset.Location = new System.Drawing.Point(77, 3);
+			this.CBox_OnRunReset.Name = "CBox_OnRunReset";
+			this.CBox_OnRunReset.Size = new System.Drawing.Size(121, 21);
+			this.CBox_OnRunReset.TabIndex = 3;
 			// 
 			// label6
 			// 
@@ -81,7 +88,7 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// panel1
 			// 
-			this.panel1.Controls.Add(this.comboBox1);
+			this.panel1.Controls.Add(this.CBox_OnRunReset);
 			this.panel1.Controls.Add(this.label6);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -91,23 +98,36 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// tableLayoutPanel2
 			// 
-			this.tableLayoutPanel2.ColumnCount = 2;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel2.Controls.Add(this.B_Cancel, 1, 0);
-			this.tableLayoutPanel2.Controls.Add(this.B_Save, 0, 0);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(726, 604);
+			this.tableLayoutPanel2.ColumnCount = 4;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel2.Controls.Add(this.B_Verify, 0, 0);
+			this.tableLayoutPanel2.Controls.Add(this.B_Cancel, 3, 0);
+			this.tableLayoutPanel2.Controls.Add(this.B_Save, 2, 0);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 604);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(215, 34);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(938, 34);
 			this.tableLayoutPanel2.TabIndex = 3;
+			// 
+			// B_Verify
+			// 
+			this.B_Verify.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_Verify.Location = new System.Drawing.Point(3, 3);
+			this.B_Verify.Name = "B_Verify";
+			this.B_Verify.Size = new System.Drawing.Size(101, 28);
+			this.B_Verify.TabIndex = 2;
+			this.B_Verify.Text = "Verify";
+			this.B_Verify.UseVisualStyleBackColor = true;
 			// 
 			// B_Cancel
 			// 
 			this.B_Cancel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.B_Cancel.Location = new System.Drawing.Point(110, 3);
+			this.B_Cancel.Location = new System.Drawing.Point(833, 3);
 			this.B_Cancel.Name = "B_Cancel";
 			this.B_Cancel.Size = new System.Drawing.Size(102, 28);
 			this.B_Cancel.TabIndex = 1;
@@ -118,7 +138,7 @@ namespace LiveSplit.TwitchPredictions
 			// B_Save
 			// 
 			this.B_Save.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.B_Save.Location = new System.Drawing.Point(3, 3);
+			this.B_Save.Location = new System.Drawing.Point(726, 3);
 			this.B_Save.Name = "B_Save";
 			this.B_Save.Size = new System.Drawing.Size(101, 28);
 			this.B_Save.TabIndex = 0;
@@ -128,9 +148,10 @@ namespace LiveSplit.TwitchPredictions
 			// tableLayoutPanel3
 			// 
 			this.tableLayoutPanel3.ColumnCount = 2;
-			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
 			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel3.Controls.Add(this.grid_SplitSettings, 1, 0);
+			this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
 			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 37);
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -145,11 +166,73 @@ namespace LiveSplit.TwitchPredictions
 			this.grid_SplitSettings.AllowUserToDeleteRows = false;
 			this.grid_SplitSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.grid_SplitSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.grid_SplitSettings.Location = new System.Drawing.Point(43, 3);
+			this.grid_SplitSettings.Location = new System.Drawing.Point(178, 3);
 			this.grid_SplitSettings.Name = "grid_SplitSettings";
-			this.grid_SplitSettings.Size = new System.Drawing.Size(892, 555);
+			this.grid_SplitSettings.Size = new System.Drawing.Size(757, 555);
 			this.grid_SplitSettings.TabIndex = 2;
 			this.grid_SplitSettings.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grid_SplitSettings_KeyDown);
+			// 
+			// tableLayoutPanel4
+			// 
+			this.tableLayoutPanel4.ColumnCount = 1;
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel4.Controls.Add(this.B_MoveDown, 0, 1);
+			this.tableLayoutPanel4.Controls.Add(this.B_MoveUp, 0, 0);
+			this.tableLayoutPanel4.Controls.Add(this.B_ImportEvents, 0, 2);
+			this.tableLayoutPanel4.Controls.Add(this.B_ExportEvents, 0, 3);
+			this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
+			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+			this.tableLayoutPanel4.RowCount = 5;
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(169, 252);
+			this.tableLayoutPanel4.TabIndex = 3;
+			// 
+			// B_MoveUp
+			// 
+			this.B_MoveUp.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_MoveUp.Location = new System.Drawing.Point(3, 3);
+			this.B_MoveUp.Name = "B_MoveUp";
+			this.B_MoveUp.Size = new System.Drawing.Size(163, 28);
+			this.B_MoveUp.TabIndex = 3;
+			this.B_MoveUp.Text = "Move Events to Previous Split";
+			this.B_MoveUp.UseVisualStyleBackColor = true;
+			// 
+			// B_MoveDown
+			// 
+			this.B_MoveDown.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_MoveDown.Location = new System.Drawing.Point(3, 37);
+			this.B_MoveDown.Name = "B_MoveDown";
+			this.B_MoveDown.Size = new System.Drawing.Size(163, 28);
+			this.B_MoveDown.TabIndex = 4;
+			this.B_MoveDown.Text = "Move Events To Next Split";
+			this.B_MoveDown.UseVisualStyleBackColor = true;
+			// 
+			// B_ExportEvents
+			// 
+			this.B_ExportEvents.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_ExportEvents.Enabled = false;
+			this.B_ExportEvents.Location = new System.Drawing.Point(3, 105);
+			this.B_ExportEvents.Name = "B_ExportEvents";
+			this.B_ExportEvents.Size = new System.Drawing.Size(163, 28);
+			this.B_ExportEvents.TabIndex = 5;
+			this.B_ExportEvents.Text = "Export events";
+			this.B_ExportEvents.UseVisualStyleBackColor = true;
+			// 
+			// B_ImportEvents
+			// 
+			this.B_ImportEvents.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.B_ImportEvents.Enabled = false;
+			this.B_ImportEvents.Location = new System.Drawing.Point(3, 71);
+			this.B_ImportEvents.Name = "B_ImportEvents";
+			this.B_ImportEvents.Size = new System.Drawing.Size(163, 28);
+			this.B_ImportEvents.TabIndex = 6;
+			this.B_ImportEvents.Text = "Import events";
+			this.B_ImportEvents.UseVisualStyleBackColor = true;
 			// 
 			// SplitEventsEditorForm
 			// 
@@ -159,19 +242,20 @@ namespace LiveSplit.TwitchPredictions
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.MinimumSize = new System.Drawing.Size(640, 480);
 			this.Name = "SplitEventsEditorForm";
-			this.Text = "SplitEventsEditorForm";
+			this.Text = "Split Events Editor";
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).EndInit();
+			this.tableLayoutPanel4.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.ComboBox CBox_OnRunReset;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.Panel panel1;
@@ -180,5 +264,11 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.Button B_Save;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 		public System.Windows.Forms.DataGridView grid_SplitSettings;
+		private System.Windows.Forms.Button B_Verify;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+		private System.Windows.Forms.Button B_MoveUp;
+		private System.Windows.Forms.Button B_MoveDown;
+		private System.Windows.Forms.Button B_ExportEvents;
+		private System.Windows.Forms.Button B_ImportEvents;
 	}
 }
