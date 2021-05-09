@@ -26,13 +26,9 @@ namespace LiveSplit.TwitchPredictions
 		public bool ConnectOnLaunch { get; set; }
 
 		private HTTPServer server;
-
 		Model.LiveSplitState splitStates;
-
 		public SplitsToEvents splitToEvents { get; set; }
-
 		public delegate void ResponseReceivedDelagate(string text, string type, string c);
-
 
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
 		{
@@ -156,8 +152,11 @@ namespace LiveSplit.TwitchPredictions
 
 		private void B_EditSplitEvents_Click(object sender, EventArgs e)
 		{
-			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, splitToEvents);
-			splitEventsEditor.ShowDialog();
+			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, (SplitsToEvents)splitToEvents.Clone());
+			if(splitEventsEditor.ShowDialog() == DialogResult.OK);
+			{
+				splitToEvents = splitEventsEditor.splitToEvents;
+			}
 		}
 	}
 }

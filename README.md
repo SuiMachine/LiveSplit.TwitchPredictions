@@ -13,5 +13,5 @@ Developement progress
 * Connecting to chat - 5%
 * Storing split-event information per game/category - 80%
 * Split-prediction event editor - 70%
-* Verification of split-events list - 5%
+* Verification of split-events list - 50%
 * Running predictions based on split-event list - 0%

@@ -26,6 +26,7 @@ namespace LiveSplit.TwitchPredictions
 		#endregion
 
 		protected BindingList<ISplitEvent> splitToEventList { get; set; }
+
 		private Control eCtl;
 
 		#region Stuff responsible for intiation and display
@@ -370,6 +371,16 @@ namespace LiveSplit.TwitchPredictions
 		private void CB_UsePBPrediction_CheckedChanged(object sender, EventArgs e)
 		{
 			CBox_RunCompletion.Enabled = !CB_UsePBPrediction.Checked;
+		}
+
+		private void B_Verify_Click(object sender, EventArgs e)
+		{
+			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
+			var result = splitToEvents.Verify(splitStates);
+			if (result != "")
+				MessageBox.Show("Following issues were found:\n" + result, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			else
+				MessageBox.Show("Everything seems fine", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }

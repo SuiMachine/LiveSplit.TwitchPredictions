@@ -26,7 +26,7 @@ namespace LiveSplit.TwitchPredictions
 	}
 
 	[Serializable]
-	public class SplitsToEvents
+	public class SplitsToEvents : ICloneable
 	{
 		[XmlElement] public bool UsePBPrediction { get; set; }
 		[XmlElement] public bool UseMessageBoxes { get; set; }
@@ -34,14 +34,14 @@ namespace LiveSplit.TwitchPredictions
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlElement] public OnResetEventType OnRunCompletion { get; set; }
 		[XmlIgnore] public string Filename { get; set; }
+		[XmlIgnore] public bool RequiresManualFixing { get; set; }
+
 
 		[Serializable]
 		public class SplitEvent : ISplitEvent
 		{
-
 			[XmlIgnore] public string SegmentName { get; set; }
 			[XmlAttribute] public SplitEventType EventType { get; set; }
-
 			[XmlElement] public TimeSpan Delay { get; set; }
 			public SplitAction Action { get; set; }
 
@@ -98,6 +98,7 @@ namespace LiveSplit.TwitchPredictions
 			OnRunCompletion = OnResetEventType.Nothing;
 			Filename = "";
 			UsePBPrediction = true;
+			RequiresManualFixing = false;
 		}
 
 		public string Verify(Model.LiveSplitState splitStates)
@@ -122,6 +123,24 @@ namespace LiveSplit.TwitchPredictions
 				EventList[i].SegmentName = segments[i].Name;
 			}
 
+			RequiresManualFixing = false;
+			bool predictionRunning = false;
+			for (int i = 0; i < EventList.Count; i++)
+			{
+				if (EventList[i].EventType == SplitEventType.None)
+					continue;
+				else if (EventList[i].EventType == SplitEventType.StartPredictionOnSplitStart && !predictionRunning)
+					predictionRunning = true;
+				else if (EventList[i].EventType == SplitEventType.StartPredictionOnSplitStart && predictionRunning)
+				{
+					sbIssues.AppendLine($"- Event list tries to start a prediction before the other prediction is closed (Split #{i + 1}.)");
+					RequiresManualFixing = true;
+					break;
+				}
+				else if (EventList[i].EventType == SplitEventType.FinishPredictionWithOption1 || EventList[i].EventType == SplitEventType.FinishPredictionWithOption2)
+					predictionRunning = false;
+			}
+
 			return sbIssues.ToString();
 		}
 
@@ -144,6 +163,19 @@ namespace LiveSplit.TwitchPredictions
 			if (filePath == "")
 				filePath = Filename;
 			XmlSerialiationDeserilation.SaveObjectToXML<SplitsToEvents>(this, Filename);
+		}
+
+		public object Clone()
+		{
+			var clone = new SplitsToEvents();
+			clone.UsePBPrediction = UsePBPrediction;
+			clone.UseMessageBoxes = UseMessageBoxes;
+			clone.EventList = EventList.Select(x => (SplitEvent)x.Clone()).ToList();
+			clone.OnTimerResetBehaviour = OnTimerResetBehaviour;
+			clone.OnRunCompletion = OnRunCompletion;
+			clone.Filename = Filename;
+			clone.RequiresManualFixing = RequiresManualFixing;
+			return clone;
 		}
 	}
 }

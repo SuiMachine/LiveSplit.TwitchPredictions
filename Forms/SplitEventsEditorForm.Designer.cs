@@ -158,6 +158,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_Verify.TabIndex = 2;
 			this.B_Verify.Text = "Verify";
 			this.B_Verify.UseVisualStyleBackColor = true;
+			this.B_Verify.Click += new System.EventHandler(this.B_Verify_Click);
 			// 
 			// B_Cancel
 			// 
