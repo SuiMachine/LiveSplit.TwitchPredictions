@@ -70,7 +70,7 @@ namespace LiveSplit.TwitchPredictions
 				(Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description
 			}.Description).ToArray());
 			eventTypeColumn.Name = "Event Type";
-			eventTypeColumn.Width = 100;
+			eventTypeColumn.Width = 200;
 			eventTypeColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 			eventTypeColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			eventTypeColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -78,7 +78,7 @@ namespace LiveSplit.TwitchPredictions
 
 			var eventDelayColumn = new DataGridViewTextBoxColumn();
 			eventDelayColumn.Name = "Event delay";
-			eventDelayColumn.Width = 100;
+			eventDelayColumn.Width = 80;
 			eventDelayColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 			eventDelayColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			eventDelayColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -112,6 +112,7 @@ namespace LiveSplit.TwitchPredictions
 					if (form.ShowDialog() == DialogResult.OK)
 					{
 						splitToEventList[e.RowIndex].Action = form.ReturnedAction;
+						SetDirty();
 					}
 				}
 			}
@@ -263,6 +264,7 @@ namespace LiveSplit.TwitchPredictions
 				if (columnIndex == COLUMNINDEX_DELAY)
 				{
 					splitToEventList[rowIndex].Delay = TimeSpan.Zero;
+					SetDirty();
 				}
 
 				return new ParsingResults(true, value);
@@ -278,6 +280,7 @@ namespace LiveSplit.TwitchPredictions
 
 				var enumVal = values.FindIndex(x => x.Description == value.ToString());
 				splitToEventList[rowIndex].EventType = (SplitEventType)enumVal;
+				SetDirty();
 			}
 
 			try
@@ -286,6 +289,7 @@ namespace LiveSplit.TwitchPredictions
 				if (columnIndex == COLUMNINDEX_DELAY)
 				{
 					splitToEventList[rowIndex].Delay = (TimeSpan)value;
+					SetDirty();
 				}
 
 				return new ParsingResults(true, value);

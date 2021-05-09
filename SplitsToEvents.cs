@@ -12,8 +12,9 @@ namespace LiveSplit.TwitchPredictions
 	public enum SplitEventType
 	{
 		[Description("None")] None,
-		[Description("On Split Start")] OnSplitStart,
-		[Description("On Split End")] OnSplitEnd,
+		[Description("Start Prediction")] StartPredictionOnSplitStart,
+		[Description("Finish Prediction with first option")] FinishPredictionWithOption1,
+		[Description("Finish Prediction with second option")] FinishPredictionWithOption2,
 	}
 
 	public enum OnResetEventType
