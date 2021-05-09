@@ -337,6 +337,80 @@ namespace LiveSplit.TwitchPredictions
 
 		#region Button Events
 		#region Left bar
+		private void B_MoveUp_Click(object sender, EventArgs e)
+		{
+			List<DataGridViewCell> selectedCells = grid_SplitSettings.SelectedCells.Cast<DataGridViewCell>().OrderBy(o => o.RowIndex).ToList();
+
+			var selectedInd = selectedCells.First().RowIndex;
+			bool currCell = false;
+
+			if (selectedCells != null)
+			{
+				foreach (DataGridViewCell selectedCell in selectedCells)
+				{
+					selectedInd = selectedCell.RowIndex;
+					if (selectedInd > 0)
+					{
+						SwitchElements(selectedInd - 1);
+
+						if (!currCell)
+						{
+							grid_SplitSettings.CurrentCell = grid_SplitSettings.Rows[selectedInd - 1].Cells[grid_SplitSettings.CurrentCell.ColumnIndex];
+							currCell = true;
+						}
+
+						grid_SplitSettings.Rows[selectedInd - 1].Cells[grid_SplitSettings.CurrentCell.ColumnIndex].Selected = true;
+					}
+				}
+			}
+			grid_SplitSettings.Invalidate();
+		}
+
+		private void SwitchElements(int elementIndex)
+		{
+			var tmpNormalList = splitToEventList.ToList();
+			var firstSegment = tmpNormalList.ElementAt(elementIndex);
+			var firstName = firstSegment.SegmentName;
+			var secondSegment = tmpNormalList.ElementAt(elementIndex + 1);
+			var secondName = secondSegment.SegmentName;
+
+
+			tmpNormalList.RemoveAt(elementIndex + 1);
+			tmpNormalList.Insert(elementIndex, secondSegment);
+			tmpNormalList[elementIndex].SegmentName = firstName;
+			tmpNormalList[elementIndex + 1].SegmentName = secondName;
+			splitToEventList = new BindingList<ISplitEvent>(tmpNormalList);
+
+		}
+
+		private void B_MoveDown_Click(object sender, EventArgs e)
+		{
+			List<DataGridViewCell> selectedCells = grid_SplitSettings.SelectedCells.Cast<DataGridViewCell>().OrderByDescending(o => o.RowIndex).ToList();
+
+			var selectedInd = selectedCells.First().RowIndex;
+			bool currCell = false;
+
+			if (selectedCells != null)
+			{
+				SwitchElements(selectedInd);
+
+				foreach (DataGridViewCell selectedCell in selectedCells)
+				{
+					selectedInd = selectedCell.RowIndex;
+					if (selectedInd < splitToEventList.Count - 1)
+					{
+						if (!currCell)
+						{
+							grid_SplitSettings.CurrentCell = grid_SplitSettings.Rows[selectedInd + 1].Cells[grid_SplitSettings.CurrentCell.ColumnIndex];
+							currCell = true;
+						}
+
+						grid_SplitSettings.Rows[selectedInd + 1].Cells[grid_SplitSettings.CurrentCell.ColumnIndex].Selected = true;
+					}
+				}
+			}
+			grid_SplitSettings.Invalidate();
+		}
 		#endregion
 
 		#region Save/Load

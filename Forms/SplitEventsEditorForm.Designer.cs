@@ -239,6 +239,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_MoveDown.TabIndex = 4;
 			this.B_MoveDown.Text = "Move Events To Next Split";
 			this.B_MoveDown.UseVisualStyleBackColor = true;
+			this.B_MoveDown.Click += new System.EventHandler(this.B_MoveDown_Click);
 			// 
 			// B_MoveUp
 			// 
@@ -249,6 +250,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_MoveUp.TabIndex = 3;
 			this.B_MoveUp.Text = "Move Events to Previous Split";
 			this.B_MoveUp.UseVisualStyleBackColor = true;
+			this.B_MoveUp.Click += new System.EventHandler(this.B_MoveUp_Click);
 			// 
 			// B_ImportEvents
 			// 
