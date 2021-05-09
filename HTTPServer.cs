@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace LiveSplit.TwitchPredictions
 {
 	public class HTTPServer
 	{
-
 		const string REDIRECT_URI = "http://localhost:43628/auth/twitch/callback/";
 		HttpListener listener;
 		Thread t;
@@ -31,7 +26,11 @@ namespace LiveSplit.TwitchPredictions
 				"&client_id=" + TwitchConnection.ClientID +
 				"&redirect_uri=" + REDIRECT_URI +
 				"&force_verify=true" +
-				"&scope=chat:read");
+				"&scope=" +
+				string.Join(" ", new string[] {
+					"chat:edit",
+					"chat:read",
+				}));
 			t = new Thread(ServerThread);
 			t.Start();
 		}
@@ -105,10 +104,9 @@ namespace LiveSplit.TwitchPredictions
 
 	public class FailedToGetProperResponseException : Exception
 	{
-		public FailedToGetProperResponseException() : base()	{}
+		public FailedToGetProperResponseException() : base() { }
 
 		public FailedToGetProperResponseException(string message) : base(message) { }
 		public FailedToGetProperResponseException(string message, Exception innerException) : base(message, innerException) { }
 	}
-
 }

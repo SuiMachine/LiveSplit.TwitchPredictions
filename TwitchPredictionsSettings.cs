@@ -142,7 +142,7 @@ namespace LiveSplit.TwitchPredictions
 			}
 			else if (token != "")
 			{
-				B_GenerateAouth.Text = token;
+				TB_Oauth.Text = token;
 				Oauth = token;
 
 				if (MessageBox.Show("Received Authorization Token. Do you want to save it now?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
