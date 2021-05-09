@@ -17,6 +17,7 @@ namespace LiveSplit.TwitchPredictions
 		#endregion
 
 		private static TwitchConnection _Instance;
+		private IrcDotNet.IrcUser userData;
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
@@ -65,13 +66,51 @@ namespace LiveSplit.TwitchPredictions
 				_irc.Disconnect();
 			}
 
-			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { NickName = _connectionData.Username, UserName = _connectionData.Username, Password = "oauth:" +_connectionData.Oauth });
+			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { NickName = _connectionData.Username, UserName = _connectionData.Username, RealName = _connectionData.Username, Password = "oauth:" +_connectionData.Oauth });
 			_irc.ErrorMessageReceived += _irc_ErrorMessageReceived;
 			_irc.Connected += _irc_Connected;
 			_irc.Disconnected += _irc_Disconnected;
 			_irc.ClientInfoReceived += _irc_ClientInfoReceived;
 			_irc.RawMessageReceived += _irc_RawMessageReceived;
+			_irc.ChannelListReceived += _irc_ChannelListReceived;
+			_irc.Registered += _irc_Registered;
+			_irc.ChannelListReceived += _irc_ChannelListReceived1;
+		}
 
+		private void _irc_ChannelListReceived1(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
+		{
+			Debug.WriteLine("hhh");
+		}
+
+		private void _irc_Registered(object sender, EventArgs e)
+		{
+			Debug.WriteLine("[IRC] Registered.");
+			JoinChannel("suicidemachinebot");
+		}
+
+		private void JoinChannel(string channel)
+		{
+			_irc.Channels.Join(new string[] { "#" + channel.ToLower() });
+		}
+
+		private void _irc_ChannelListReceived(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
+		{
+			if(!e.Channels.Any(x => x.Name == _connectionData.Channel))
+			{
+				Debug.WriteLine("F");
+			}
+			else
+				Debug.WriteLine("E");
+		}
+
+		private void LocalUser_LeftChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
+		{
+			Debug.WriteLine("[IRC] Left channel: " + e.Channel.Name);
+		}
+
+		private void LocalUser_JoinedChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
+		{
+			Debug.WriteLine("[IRC] Joined channel: " + e.Channel.Name);
 		}
 
 		private void _irc_RawMessageReceived(object sender, IrcDotNet.IrcRawMessageEventArgs e)
