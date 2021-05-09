@@ -17,7 +17,6 @@ namespace LiveSplit.TwitchPredictions
 		bool wasChanged = false;
 		protected ITimeFormatter TimeFormatter { get; set; }
 
-
 		#region Grid_Constants
 		int COLUMNINDEX_SEGMENTNAME = 0;
 		int COLUMNINDEX_EVENT = 1;
@@ -26,7 +25,6 @@ namespace LiveSplit.TwitchPredictions
 		#endregion
 
 		protected BindingList<ISplitEvent> splitToEventList { get; set; }
-
 		private Control eCtl;
 
 		#region Stuff responsible for intiation and display
@@ -35,6 +33,7 @@ namespace LiveSplit.TwitchPredictions
 			this.splitStates = splitStates;
 			this.splitToEvents = splitToEvents;
 			InitializeComponent();
+			this.DialogResult = DialogResult.Cancel;
 			var verficationResult = splitToEvents.Verify(splitStates);
 			if (verficationResult != "")
 			{
@@ -413,14 +412,35 @@ namespace LiveSplit.TwitchPredictions
 		}
 		#endregion
 
-		#region Save/Load
+		#region Bottom bar
+		private void B_Verify_Click(object sender, EventArgs e)
+		{
+
+			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
+			var result = splitToEvents.Verify(splitStates);
+			if (result != "")
+				MessageBox.Show("Following issues were found:\n" + result, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			else
+				MessageBox.Show("Everything seems fine", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
 		private void B_Save_Click(object sender, EventArgs e)
 		{
+			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
+			var result = splitToEvents.Verify(splitStates);
+			if (result != "")
+			{
+				MessageBox.Show("Following issues were found:\n" + result, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
+			
 			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
 			try
 			{
 				splitToEvents.Save();
 				MessageBox.Show("Saved successfully!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				this.DialogResult = DialogResult.OK;
+				this.Close();
 			}
 			catch (Exception ex)
 			{
@@ -432,10 +452,12 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if (wasChanged && MessageBox.Show("Are you sure you want to close it and abandon changes?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 			{
+				this.DialogResult = DialogResult.Cancel;
 				this.Close();
 			}
 			else
 			{
+				this.DialogResult = DialogResult.Cancel;
 				this.Close();
 			}
 		}
@@ -445,16 +467,6 @@ namespace LiveSplit.TwitchPredictions
 		private void CB_UsePBPrediction_CheckedChanged(object sender, EventArgs e)
 		{
 			CBox_RunCompletion.Enabled = !CB_UsePBPrediction.Checked;
-		}
-
-		private void B_Verify_Click(object sender, EventArgs e)
-		{
-			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
-			var result = splitToEvents.Verify(splitStates);
-			if (result != "")
-				MessageBox.Show("Following issues were found:\n" + result, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			else
-				MessageBox.Show("Everything seems fine", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }

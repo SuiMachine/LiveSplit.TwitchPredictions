@@ -153,7 +153,7 @@ namespace LiveSplit.TwitchPredictions
 		private void B_EditSplitEvents_Click(object sender, EventArgs e)
 		{
 			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, (SplitsToEvents)splitToEvents.Clone());
-			if(splitEventsEditor.ShowDialog() == DialogResult.OK);
+			if(splitEventsEditor.ShowDialog() == DialogResult.OK)
 			{
 				splitToEvents = splitEventsEditor.splitToEvents;
 			}
