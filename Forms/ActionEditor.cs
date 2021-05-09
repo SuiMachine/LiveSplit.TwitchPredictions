@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static LiveSplit.TwitchPredictions.SplitsToEvents;
 
@@ -13,9 +6,7 @@ namespace LiveSplit.TwitchPredictions.Forms
 {
 	public partial class ActionEditor : Form
 	{
-		const int ANSWER_LENGHT_LIMIT = 25;
 		public SplitAction ReturnedAction { get; internal set; }
-
 
 		public ActionEditor(SplitAction action)
 		{
@@ -52,10 +43,11 @@ namespace LiveSplit.TwitchPredictions.Forms
 
 			if (ReturnedAction.Header == "" || ReturnedAction.Answer1 == "" || ReturnedAction.Answer2 == "")
 				MessageBox.Show("One of the fields is empty! Please fill in all of the necessery fields!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			else if(ReturnedAction.Answer1 == ReturnedAction.Answer2)
+			else if (ReturnedAction.Answer1 == ReturnedAction.Answer2)
 				MessageBox.Show("Outcome 1 and 2 are the same!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			else
 			{
+				ReturnedAction.isUsed = true;
 				DialogResult = DialogResult.OK;
 				this.Close();
 			}

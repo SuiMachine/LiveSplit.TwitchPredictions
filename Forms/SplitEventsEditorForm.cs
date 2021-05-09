@@ -4,11 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LiveSplit.TwitchPredictions
@@ -100,6 +97,8 @@ namespace LiveSplit.TwitchPredictions
 
 			AddComboboxDataSources();
 			CBox_OnRunReset.DataBindings.Add("SelectedValue", splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
+			CBox_RunCompletion.DataBindings.Add("SelectedValue", splitToEvents, "OnRunCompletion", false, DataSourceUpdateMode.OnPropertyChanged);
+			CB_UsePBPrediction.DataBindings.Add("Checked", splitToEvents, "UsePBPrediction", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		private void Grid_SplitSettings_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -110,7 +109,7 @@ namespace LiveSplit.TwitchPredictions
 				{
 					var action = splitToEventList[e.RowIndex].Action;
 					Forms.ActionEditor form = new Forms.ActionEditor(action);
-					if(form.ShowDialog() == DialogResult.OK)
+					if (form.ShowDialog() == DialogResult.OK)
 					{
 						splitToEventList[e.RowIndex].Action = form.ReturnedAction;
 					}
@@ -129,12 +128,22 @@ namespace LiveSplit.TwitchPredictions
 				typeof(DescriptionAttribute)) as DescriptionAttribute).Description,
 				value
 			}).ToList();
+
+			CBox_RunCompletion.DisplayMember = "Description";
+			CBox_RunCompletion.ValueMember = "value";
+			CBox_RunCompletion.DataSource = Enum.GetValues(typeof(OnResetEventType)).Cast<Enum>().Select(value =>
+			new
+			{
+				(Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()),
+				typeof(DescriptionAttribute)) as DescriptionAttribute).Description,
+				value
+			}).ToList();
 		}
 		#endregion
 
 
 		private void Grid_SplitSettings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-		{	
+		{
 			if (e.RowIndex < splitToEventList.Count)
 			{
 				if (e.ColumnIndex == COLUMNINDEX_SEGMENTNAME)
@@ -263,7 +272,8 @@ namespace LiveSplit.TwitchPredictions
 			{
 				var values = Enum.GetValues(typeof(SplitEventType)).Cast<Enum>().Select(enumValues => new
 				{
-					(Attribute.GetCustomAttribute(enumValues.GetType().GetField(enumValues.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description,enumValues
+					(Attribute.GetCustomAttribute(enumValues.GetType().GetField(enumValues.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description,
+					enumValues
 				}).ToList();
 
 				var enumVal = values.FindIndex(x => x.Description == value.ToString());
@@ -334,7 +344,7 @@ namespace LiveSplit.TwitchPredictions
 				splitToEvents.Save();
 				MessageBox.Show("Saved successfully!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show("Failed to export to XML:\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -353,5 +363,10 @@ namespace LiveSplit.TwitchPredictions
 		}
 		#endregion
 		#endregion
+
+		private void CB_UsePBPrediction_CheckedChanged(object sender, EventArgs e)
+		{
+			CBox_RunCompletion.Enabled = !CB_UsePBPrediction.Checked;
+		}
 	}
 }

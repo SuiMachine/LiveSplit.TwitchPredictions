@@ -20,20 +20,24 @@ namespace LiveSplit.TwitchPredictions
 	{
 		[Description("Cancel prediction")] Cancel,
 		[Description("Complete with first outcome")] CompleteWithOptionOne,
-		[Description("Complete with second outcome")] CompleteWithOptionTwo
+		[Description("Complete with second outcome")] CompleteWithOptionTwo,
+		[Description("Do nothing")] Nothing
 	}
 
 	[Serializable]
 	public class SplitsToEvents
 	{
+		[XmlElement] public bool UsePBPrediction { get; set; }
 		[XmlElement] public bool UseMessageBoxes { get; set; }
 		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
+		[XmlElement] public OnResetEventType OnRunCompletion { get; set; }
 		[XmlIgnore] public string Filename { get; set; }
 
 		[Serializable]
 		public class SplitEvent : ISplitEvent
 		{
+
 			[XmlIgnore] public string SegmentName { get; set; }
 			[XmlAttribute] public SplitEventType EventType { get; set; }
 
@@ -90,7 +94,9 @@ namespace LiveSplit.TwitchPredictions
 			UseMessageBoxes = false;
 			EventList = new List<SplitEvent>();
 			OnTimerResetBehaviour = OnResetEventType.Cancel;
+			OnRunCompletion = OnResetEventType.Nothing;
 			Filename = "";
+			UsePBPrediction = true;
 		}
 
 		public string Verify(Model.LiveSplitState splitStates)
