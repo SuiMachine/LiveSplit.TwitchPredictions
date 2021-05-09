@@ -86,7 +86,7 @@ namespace LiveSplit.TwitchPredictions
 
 			var eventActionColumn = new DataGridViewButtonColumn();
 			eventActionColumn.Name = "Action";
-			eventActionColumn.Width = 30;
+			eventActionColumn.Width = 50;
 			eventActionColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 			eventActionColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			eventActionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -99,6 +99,7 @@ namespace LiveSplit.TwitchPredictions
 			CBox_OnRunReset.DataBindings.Add("SelectedValue", splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
 			CBox_RunCompletion.DataBindings.Add("SelectedValue", splitToEvents, "OnRunCompletion", false, DataSourceUpdateMode.OnPropertyChanged);
 			CB_UsePBPrediction.DataBindings.Add("Checked", splitToEvents, "UsePBPrediction", false, DataSourceUpdateMode.OnPropertyChanged);
+			CB_UseMessageboxErrors.DataBindings.Add("Checked", splitToEvents, "UseMessageBoxes", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		private void Grid_SplitSettings_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -142,7 +143,6 @@ namespace LiveSplit.TwitchPredictions
 		}
 		#endregion
 
-
 		private void Grid_SplitSettings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
 			if (e.RowIndex < splitToEventList.Count)
@@ -171,7 +171,7 @@ namespace LiveSplit.TwitchPredictions
 				}
 				else if (e.ColumnIndex == COLUMNINDEX_ACTION)
 				{
-					bool eventUsed = splitToEventList[e.RowIndex].Action.isUsed;
+					bool eventUsed = splitToEventList[e.RowIndex].Action.isUsed && splitToEventList[e.RowIndex].EventType == SplitEventType.StartPredictionOnSplitStart;
 					e.Value = eventUsed ? "!" : "";
 					e.CellStyle.BackColor = eventUsed ? Color.Red : Color.Transparent;
 				}
@@ -203,7 +203,6 @@ namespace LiveSplit.TwitchPredictions
 			grid_SplitSettings.Rows[e.RowIndex].ErrorText = "";
 		}
 		#endregion
-
 
 		private void Grid_SplitSettings_SelectionChanged(object sender, EventArgs e)
 		{

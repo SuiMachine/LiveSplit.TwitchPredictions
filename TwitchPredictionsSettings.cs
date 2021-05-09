@@ -25,14 +25,13 @@ namespace LiveSplit.TwitchPredictions
 		public string Channel { get; set; }
 		public bool ConnectOnLaunch { get; set; }
 
-		private string Filename;
 		private HTTPServer server;
 
 		Model.LiveSplitState splitStates;
 
 		public SplitsToEvents splitToEvents { get; set; }
 
-		public delegate void ResponseReceivedDelagate(string text, string type, string c);  
+		public delegate void ResponseReceivedDelagate(string text, string type, string c);
 
 
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)

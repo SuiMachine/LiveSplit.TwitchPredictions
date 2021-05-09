@@ -33,6 +33,9 @@ namespace LiveSplit.TwitchPredictions
 			this.label6 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.CB_UsePBPrediction = new System.Windows.Forms.CheckBox();
+			this.CBox_RunCompletion = new System.Windows.Forms.ComboBox();
+			this.label2 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.B_Verify = new System.Windows.Forms.Button();
 			this.B_Cancel = new System.Windows.Forms.Button();
@@ -44,9 +47,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_MoveUp = new System.Windows.Forms.Button();
 			this.B_ImportEvents = new System.Windows.Forms.Button();
 			this.B_ExportEvents = new System.Windows.Forms.Button();
-			this.label2 = new System.Windows.Forms.Label();
-			this.CBox_RunCompletion = new System.Windows.Forms.ComboBox();
-			this.CB_UsePBPrediction = new System.Windows.Forms.CheckBox();
+			this.CB_UseMessageboxErrors = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -101,6 +102,34 @@ namespace LiveSplit.TwitchPredictions
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(938, 28);
 			this.panel1.TabIndex = 2;
+			// 
+			// CB_UsePBPrediction
+			// 
+			this.CB_UsePBPrediction.AutoSize = true;
+			this.CB_UsePBPrediction.Location = new System.Drawing.Point(553, 5);
+			this.CB_UsePBPrediction.Name = "CB_UsePBPrediction";
+			this.CB_UsePBPrediction.Size = new System.Drawing.Size(148, 17);
+			this.CB_UsePBPrediction.TabIndex = 8;
+			this.CB_UsePBPrediction.Text = "Finish with option 1 on PB";
+			this.CB_UsePBPrediction.UseVisualStyleBackColor = true;
+			this.CB_UsePBPrediction.CheckedChanged += new System.EventHandler(this.CB_UsePBPrediction_CheckedChanged);
+			// 
+			// CBox_RunCompletion
+			// 
+			this.CBox_RunCompletion.FormattingEnabled = true;
+			this.CBox_RunCompletion.Location = new System.Drawing.Point(357, 3);
+			this.CBox_RunCompletion.Name = "CBox_RunCompletion";
+			this.CBox_RunCompletion.Size = new System.Drawing.Size(190, 21);
+			this.CBox_RunCompletion.TabIndex = 7;
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(273, 6);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(78, 13);
+			this.label2.TabIndex = 6;
+			this.label2.Text = "On completion:";
 			// 
 			// tableLayoutPanel2
 			// 
@@ -187,6 +216,7 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel4.Controls.Add(this.B_MoveUp, 0, 0);
 			this.tableLayoutPanel4.Controls.Add(this.B_ImportEvents, 0, 2);
 			this.tableLayoutPanel4.Controls.Add(this.B_ExportEvents, 0, 3);
+			this.tableLayoutPanel4.Controls.Add(this.CB_UseMessageboxErrors, 0, 4);
 			this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -241,33 +271,15 @@ namespace LiveSplit.TwitchPredictions
 			this.B_ExportEvents.Text = "Export events";
 			this.B_ExportEvents.UseVisualStyleBackColor = true;
 			// 
-			// label2
+			// CB_UseMessageboxErrors
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(273, 6);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(78, 13);
-			this.label2.TabIndex = 6;
-			this.label2.Text = "On completion:";
-			// 
-			// CBox_RunCompletion
-			// 
-			this.CBox_RunCompletion.FormattingEnabled = true;
-			this.CBox_RunCompletion.Location = new System.Drawing.Point(357, 3);
-			this.CBox_RunCompletion.Name = "CBox_RunCompletion";
-			this.CBox_RunCompletion.Size = new System.Drawing.Size(190, 21);
-			this.CBox_RunCompletion.TabIndex = 7;
-			// 
-			// CB_UsePBPrediction
-			// 
-			this.CB_UsePBPrediction.AutoSize = true;
-			this.CB_UsePBPrediction.Location = new System.Drawing.Point(553, 5);
-			this.CB_UsePBPrediction.Name = "CB_UsePBPrediction";
-			this.CB_UsePBPrediction.Size = new System.Drawing.Size(148, 17);
-			this.CB_UsePBPrediction.TabIndex = 8;
-			this.CB_UsePBPrediction.Text = "Finish with option 1 on PB";
-			this.CB_UsePBPrediction.UseVisualStyleBackColor = true;
-			this.CB_UsePBPrediction.CheckedChanged += new System.EventHandler(this.CB_UsePBPrediction_CheckedChanged);
+			this.CB_UseMessageboxErrors.Dock = System.Windows.Forms.DockStyle.Top;
+			this.CB_UseMessageboxErrors.Location = new System.Drawing.Point(3, 139);
+			this.CB_UseMessageboxErrors.Name = "CB_UseMessageboxErrors";
+			this.CB_UseMessageboxErrors.Size = new System.Drawing.Size(163, 47);
+			this.CB_UseMessageboxErrors.TabIndex = 7;
+			this.CB_UseMessageboxErrors.Text = "Notify of errors with Message Boxes (do NOT uses this when grinding runs!)\r\n";
+			this.CB_UseMessageboxErrors.UseVisualStyleBackColor = true;
 			// 
 			// SplitEventsEditorForm
 			// 
@@ -308,5 +320,6 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.CheckBox CB_UsePBPrediction;
 		private System.Windows.Forms.ComboBox CBox_RunCompletion;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.CheckBox CB_UseMessageboxErrors;
 	}
 }
