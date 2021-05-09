@@ -119,6 +119,7 @@ namespace LiveSplit.TwitchPredictions
 			this.B_Connect.TabIndex = 10;
 			this.B_Connect.Text = "Connect";
 			this.B_Connect.UseVisualStyleBackColor = true;
+			this.B_Connect.Click += new System.EventHandler(this.B_Connect_Click);
 			// 
 			// B_GenerateAouth
 			// 

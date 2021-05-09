@@ -91,9 +91,6 @@ namespace LiveSplit.TwitchPredictions
 				splitToEvents = new SplitsToEvents();
 
 			splitToEvents.Filename = fullPath;
-#if DEBUG
-			B_EditSplitEvents_Click(null, null);
-#endif
 		}
 
 		private string ReplaceIncorrectCharacters(string filename)
@@ -157,6 +154,11 @@ namespace LiveSplit.TwitchPredictions
 			{
 				splitToEvents = splitEventsEditor.splitToEvents;
 			}
+		}
+
+		private void B_Connect_Click(object sender, EventArgs e)
+		{
+			TwitchConnection.GetInstance().Connect();
 		}
 	}
 }

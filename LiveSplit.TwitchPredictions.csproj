@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\TwitchConnectionEvents.cs" />
     <Compile Include="Forms\ActionEditor.cs">
       <SubType>Form</SubType>
     </Compile>

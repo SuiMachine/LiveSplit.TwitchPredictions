@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,10 @@ namespace LiveSplit.TwitchPredictions
 {
 	public class TwitchConnection
 	{
+		#region ExternalEvents
+		public event Events.TwitchConnectionEvents.OnMessageReceived OnMessageReceived;
+		#endregion
+
 		private static TwitchConnection _Instance;
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
 
@@ -55,8 +60,43 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
+			else
+			{
+				_irc.Disconnect();
+			}
 
-			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { UserName = _connectionData.Username, Password = _connectionData.Oauth });
+			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { NickName = _connectionData.Username, UserName = _connectionData.Username, Password = "oauth:" +_connectionData.Oauth });
+			_irc.ErrorMessageReceived += _irc_ErrorMessageReceived;
+			_irc.Connected += _irc_Connected;
+			_irc.Disconnected += _irc_Disconnected;
+			_irc.ClientInfoReceived += _irc_ClientInfoReceived;
+			_irc.RawMessageReceived += _irc_RawMessageReceived;
+
+		}
+
+		private void _irc_RawMessageReceived(object sender, IrcDotNet.IrcRawMessageEventArgs e)
+		{
+			Debug.WriteLine("[IRC] Raw Message Received: " + e.ToString());
+		}
+
+		private void _irc_ErrorMessageReceived(object sender, IrcDotNet.IrcErrorMessageEventArgs e)
+		{
+			Debug.WriteLine("[IRC] Error Received: " + e.Message);
+		}
+
+		private void _irc_ClientInfoReceived(object sender, EventArgs e)
+		{
+			Debug.WriteLine("[IRC] Client Info Received.");
+		}
+
+		private void _irc_Connected(object sender, EventArgs e)
+		{
+			Debug.WriteLine("[IRC] Connected!");
+		}
+
+		private void _irc_Disconnected(object sender, EventArgs e)
+		{
+			Debug.WriteLine("[IRC] Disconnected!");
 		}
 
 		internal void Disconnect()
