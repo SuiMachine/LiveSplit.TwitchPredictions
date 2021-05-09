@@ -11,7 +11,7 @@ Developement progress
 * Obtaining oauth - 100%
 * Storing loging information outside of LiveSplit (to prevent data leaking out when a user decides to share layout files) - 100%
 * Connecting to chat - 5%
-* Storing split-event information per game/category - 70%
-* Split-prediction event editor - 60%
+* Storing split-event information per game/category - 80%
+* Split-prediction event editor - 70%
 * Verification of split-events list - 5%
 * Running predictions based on split-event list - 0%
