@@ -64,12 +64,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HTTPServer.cs" />
-    <Compile Include="ISplitEvent.cs" />
-    <Compile Include="SplitEventsEditorForm.cs">
+    <Compile Include="Forms\ActionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SplitEventsEditorForm.Designer.cs">
+    <Compile Include="Forms\ActionEditor.Designer.cs">
+      <DependentUpon>ActionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HTTPServer.cs" />
+    <Compile Include="ISplitEvent.cs" />
+    <Compile Include="Forms\SplitEventsEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplitEventsEditorForm.Designer.cs">
       <DependentUpon>SplitEventsEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SplitsToEvents.cs" />
@@ -87,7 +93,10 @@
     <Compile Include="XmlSerialiationDeserilation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SplitEventsEditorForm.resx">
+    <EmbeddedResource Include="Forms\ActionEditor.resx">
+      <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplitEventsEditorForm.resx">
       <DependentUpon>SplitEventsEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TwitchPredictionsSettings.resx">

@@ -19,8 +19,8 @@ namespace LiveSplit.TwitchPredictions
 	public enum OnResetEventType
 	{
 		[Description("Cancel prediction")] Cancel,
-		[Description("Complete with Option 1")] CompleteWithOptionOne,
-		[Description("Complete with Option 2")] CompleteWithOptionTwo
+		[Description("Complete with first outcome")] CompleteWithOptionOne,
+		[Description("Complete with second outcome")] CompleteWithOptionTwo
 	}
 
 	[Serializable]
@@ -39,7 +39,6 @@ namespace LiveSplit.TwitchPredictions
 
 			[XmlElement] public TimeSpan Delay { get; set; }
 			public SplitAction Action { get; set; }
-
 
 			public SplitEvent()
 			{
@@ -78,10 +77,10 @@ namespace LiveSplit.TwitchPredictions
 			public object Clone()
 			{
 				var clone = new SplitAction();
-				clone.isUsed = false;
-				clone.Header = "";
-				clone.Answer1 = "";
-				clone.Answer2 = "";
+				clone.isUsed = isUsed;
+				clone.Header = Header;
+				clone.Answer1 = Answer1;
+				clone.Answer2 = Answer2;
 				return clone;
 			}
 		}

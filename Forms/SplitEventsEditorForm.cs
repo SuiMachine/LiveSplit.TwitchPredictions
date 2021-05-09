@@ -51,6 +51,7 @@ namespace LiveSplit.TwitchPredictions
 			grid_SplitSettings.AutoSize = true;
 			grid_SplitSettings.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 			grid_SplitSettings.DataSource = splitToEventList;
+			grid_SplitSettings.CellClick += Grid_SplitSettings_CellClick;
 			grid_SplitSettings.CellFormatting += Grid_SplitSettings_CellFormatting;
 			grid_SplitSettings.CellParsing += Grid_SplitSettings_CellParsing;
 			grid_SplitSettings.CellValidating += Grid_SplitSettings_CellValidating;
@@ -99,6 +100,22 @@ namespace LiveSplit.TwitchPredictions
 
 			AddComboboxDataSources();
 			CBox_OnRunReset.DataBindings.Add("SelectedValue", splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
+		}
+
+		private void Grid_SplitSettings_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.RowIndex >= 0 && e.RowIndex < splitToEventList.Count)
+			{
+				if (e.ColumnIndex == COLUMNINDEX_ACTION)
+				{
+					var action = splitToEventList[e.RowIndex].Action;
+					Forms.ActionEditor form = new Forms.ActionEditor(action);
+					if(form.ShowDialog() == DialogResult.OK)
+					{
+						splitToEventList[e.RowIndex].Action = form.ReturnedAction;
+					}
+				}
+			}
 		}
 
 		private void AddComboboxDataSources()
