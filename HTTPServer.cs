@@ -30,6 +30,8 @@ namespace LiveSplit.TwitchPredictions
 				string.Join(" ", new string[] {
 					"chat:edit",
 					"chat:read",
+					"channel:read:predictions",
+					"channel:manage:predictions"
 				}));
 			t = new Thread(ServerThread);
 			t.Start();

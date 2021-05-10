@@ -19,6 +19,7 @@ namespace LiveSplit.TwitchPredictions
 		private static TwitchConnection _Instance;
 		private IrcDotNet.IrcUser userData;
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
+		public string BroadcasterID = "";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
 
@@ -59,6 +60,13 @@ namespace LiveSplit.TwitchPredictions
 
 		internal void Connect()
 		{
+			TwitchRequests.ProvideBearerToken(_connectionData.Oauth);
+			var result = TwitchRequests.PerformGetRequest(
+				TwitchRequests.BuildURI(new string[] { "users" }, new Tuple<string, string>[] { new Tuple<string, string>("login", _connectionData.Channel) }),
+				new Dictionary<string, string>() { }
+				);
+			//var uri = TwitchRequests.BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { new Tuple<string, string>("broadcaster_id", BroadcasterID)});
+			return;
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
 			else

@@ -162,7 +162,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if (filePath == "")
 				filePath = Filename;
-			XmlSerialiationDeserilation.SaveObjectToXML<SplitsToEvents>(this, Filename);
+			XmlSerialiationDeserilation.SaveObjectToXML<SplitsToEvents>(this, filePath);
 		}
 
 		public object Clone()
