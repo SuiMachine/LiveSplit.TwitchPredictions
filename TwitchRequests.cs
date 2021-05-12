@@ -1,11 +1,11 @@
-﻿using System;
+﻿using LiveSplit.Web;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using LiveSplit.Web;
 
 namespace LiveSplit.TwitchPredictions
 {
@@ -17,14 +17,20 @@ namespace LiveSplit.TwitchPredictions
 		static string BroadcasterID = "";
 		static KeyValuePair<string, string> BearerToken;
 		static DateTime lastRequest = DateTime.MinValue;
+		internal enum StartPredictionResult
+		{
+			Successful,
+			PredictionAlreadyRunning,
+			Error
+		}
 
-		public static void ProvideBearerToken(string Token, string ChannelP)
+		internal static void ProvideBearerToken(string Token, string ChannelP)
 		{
 			BearerToken = new KeyValuePair<string, string>("Authorization", "Bearer " + Token.Trim());
 			Channel = ChannelP;
 		}
 
-		public static Uri BuildURI(string[] endpoint, Tuple<string, string>[] parameters)
+		internal static Uri BuildURI(string[] endpoint, Tuple<string, string>[] parameters)
 		{
 			var uri = TwitchAPIURI + string.Join("/", endpoint);
 
@@ -123,7 +129,7 @@ namespace LiveSplit.TwitchPredictions
 
 
 
-		internal static void StartPrediction(string header, string option1, string option2, uint lenght)
+		internal static StartPredictionResult StartPrediction(string header, string option1, string option2, uint lenght)
 		{
 			if (lenght > 1800)
 				lenght = 1779;
@@ -149,19 +155,45 @@ namespace LiveSplit.TwitchPredictions
 
 
 			//modify that
-			var response = PerformPostRequest(
-				BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
-				new Dictionary<string, string>() { }, parameters.ToString()
+			try
+			{
+				var response = PerformPostRequest(
+					BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
+					new Dictionary<string, string>() { }, parameters.ToString()
 				);
 
-			if (response["data"] != null)
-			{
-				var dataNode = ((IEnumerable<dynamic>)response["data"]).First();
-				if (dataNode["id"] != null)
+				if (response["data"] != null)
 				{
-					BroadcasterID = dataNode["id"];
+					var dataNode = ((IEnumerable<dynamic>)response["data"]).First();
+					if (dataNode["id"] != null)
+					{
+						return StartPredictionResult.Successful;
+					}
 				}
+				return StartPredictionResult.Error;
 			}
+			catch (WebException e)
+			{
+				if (e.Status == WebExceptionStatus.ProtocolError)
+				{
+					if(((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
+					{
+						var rawResponse = string.Empty;
+
+						var alreadyClosedStream = e.Response.GetResponseStream() as MemoryStream;
+						using (var brandNewStream = new MemoryStream(alreadyClosedStream.ToArray()))
+						using (var reader = new StreamReader(brandNewStream))
+							rawResponse = reader.ReadToEnd();
+
+						if(rawResponse.Contains("rediction event already active"))
+							return StartPredictionResult.PredictionAlreadyRunning;
+					}
+					return StartPredictionResult.Error;
+
+				}
+				return StartPredictionResult.Error;
+			}
+
 		}
 	}
 }
