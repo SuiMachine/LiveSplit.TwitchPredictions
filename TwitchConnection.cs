@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -28,6 +29,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal TwitchConnectionData _connectionData;
 		private IrcDotNet.IrcClient _irc;
+		private Thread _IrcThread;
 
 		[Serializable]
 		public class TwitchConnectionData
@@ -58,14 +60,13 @@ namespace LiveSplit.TwitchPredictions
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
 
-		internal void Connect()
+		private void Connect()
 		{
-			TwitchRequests.ProvideBearerToken(_connectionData.Oauth);
-			var result = TwitchRequests.PerformGetRequest(
-				TwitchRequests.BuildURI(new string[] { "users" }, new Tuple<string, string>[] { new Tuple<string, string>("login", _connectionData.Channel) }),
-				new Dictionary<string, string>() { }
-				);
-			//var uri = TwitchRequests.BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { new Tuple<string, string>("broadcaster_id", BroadcasterID)});
+			//Move that after connection and events are set!
+			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
+			TwitchRequests.GetUserID();
+			TwitchRequests.StartPrediction("Test", "Response 1", "Response 2", 120);
+
 			return;
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
@@ -162,6 +163,15 @@ namespace LiveSplit.TwitchPredictions
 			catch(Exception e)
 			{
 				MessageBox.Show("Failed to store config to a file: " + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		internal void ConnectUsingThread()
+		{
+			if(_IrcThread == null)
+			{
+				_IrcThread = new Thread(Connect);
+				_IrcThread.Start();
 			}
 		}
 	}

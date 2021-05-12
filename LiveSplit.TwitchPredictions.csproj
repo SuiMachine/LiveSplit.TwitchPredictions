@@ -80,6 +80,7 @@
       <DependentUpon>SplitEventsEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SplitsToEvents.cs" />
+    <Compile Include="StreamPrediction.cs" />
     <Compile Include="TwitchPredictionsComponent.cs" />
     <Compile Include="TwitchPredictionsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

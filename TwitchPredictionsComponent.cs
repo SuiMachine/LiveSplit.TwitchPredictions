@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
+using System.Threading;
 
 namespace LiveSplit.TwitchPredictions
 {
@@ -24,6 +25,7 @@ namespace LiveSplit.TwitchPredictions
 		private TimerModel _timer;
 		private TwitchConnection _twitchConnection;
 		private LiveSplitState _state;
+		private Thread irc_requestThread;
 
 		public TwitchPredictionsComponent(LiveSplitState state, bool isLayoutComponent)
 		{
@@ -36,7 +38,7 @@ namespace LiveSplit.TwitchPredictions
 			_twitchConnection = TwitchConnection.GetInstance();
 			state.OnStart += State_OnStart;
 			if (_twitchConnection._connectionData.ConnectOnLaunch)
-				_twitchConnection.Connect ();
+				_twitchConnection.ConnectUsingThread();
 		}
 
 
