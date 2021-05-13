@@ -25,7 +25,6 @@ namespace LiveSplit.TwitchPredictions
 		private TimerModel _timer;
 		private TwitchConnection _twitchConnection;
 		private LiveSplitState _state;
-		private Thread irc_requestThread;
 
 		public TwitchPredictionsComponent(LiveSplitState state, bool isLayoutComponent)
 		{

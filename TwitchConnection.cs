@@ -65,7 +65,7 @@ namespace LiveSplit.TwitchPredictions
 			//Move that after connection and events are set!
 			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
 			TwitchRequests.GetUserID();
-			TwitchRequests.StartPrediction("Test", "Response 1", "Response 2", 120);
+			var result = TwitchRequests.GetCurrentPrediction();
 
 			return;
 			if (_irc == null)

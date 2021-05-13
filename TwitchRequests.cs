@@ -124,10 +124,18 @@ namespace LiveSplit.TwitchPredictions
 				new Dictionary<string, string>() { }
 				);
 
+			if (requestResult["data"] != null)
+			{
+				var dataNode = ((IEnumerable<dynamic>)requestResult["data"]).First();
+
+				if (dataNode["status"] != null)
+				{
+					return StreamPrediction.ConvertNode(dataNode);
+				}
+			}
+
 			return null;
 		}
-
-
 
 		internal static StartPredictionResult StartPrediction(string header, string option1, string option2, uint lenght)
 		{
@@ -153,8 +161,6 @@ namespace LiveSplit.TwitchPredictions
 			parameters.AppendLine("\"prediction_window\": " + lenght.ToString() + "");
 			parameters.AppendLine("}");
 
-
-			//modify that
 			try
 			{
 				var response = PerformPostRequest(
@@ -185,7 +191,7 @@ namespace LiveSplit.TwitchPredictions
 						using (var reader = new StreamReader(brandNewStream))
 							rawResponse = reader.ReadToEnd();
 
-						if(rawResponse.Contains("rediction event already active"))
+						if(rawResponse.Contains("prediction event already active"))
 							return StartPredictionResult.PredictionAlreadyRunning;
 					}
 					return StartPredictionResult.Error;
