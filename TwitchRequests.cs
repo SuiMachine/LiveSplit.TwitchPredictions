@@ -18,13 +18,6 @@ namespace LiveSplit.TwitchPredictions
 		static KeyValuePair<string, string> BearerToken;
 		static DateTime lastRequest = DateTime.MinValue;
 
-		internal enum StartPredictionResult
-		{
-			Successful,
-			PredictionAlreadyRunning,
-			Error
-		}
-
 		internal static void ProvideBearerToken(string Token, string ChannelP)
 		{
 			BearerToken = new KeyValuePair<string, string>("Authorization", "Bearer " + Token.Trim());
@@ -50,10 +43,12 @@ namespace LiveSplit.TwitchPredictions
 			return new Uri(uri + sb.ToString());
 		}
 
-		internal static void GetUserID()
+
+
+		internal static async System.Threading.Tasks.Task GetUserIDAsync()
 		{
 			DebugLogging.Log("Getting user ID");
-			var userTokenResult = PerformGetRequest(
+			var userTokenResult = await PerformGetRequestAsync(
 				BuildURI(new string[] { "users" }, new Tuple<string, string>[] { new Tuple<string, string>("login", Channel) }),
 				new Dictionary<string, string>() { }
 				);
@@ -71,12 +66,12 @@ namespace LiveSplit.TwitchPredictions
 			DebugLogging.Log("Bad get user ID request!");
 		}
 
-		internal static StreamPrediction GetCurrentPrediction()
+		internal static async System.Threading.Tasks.Task<StreamPrediction> GetCurrentPredictionAsync()
 		{
 			DebugLogging.Log("Getting current prediction");
 
 			if (BroadcasterID == "")
-				GetUserID();
+				await GetUserIDAsync();
 
 			if (BroadcasterID == "")
 			{
@@ -84,7 +79,7 @@ namespace LiveSplit.TwitchPredictions
 				return null;
 			}
 
-			var requestResult = PerformGetRequest(
+			var requestResult = await PerformGetRequestAsync(
 				BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { new Tuple<string, string>("broadcaster_id", BroadcasterID) }),
 				new Dictionary<string, string>() { }
 				);
@@ -106,7 +101,7 @@ namespace LiveSplit.TwitchPredictions
 		}
 
 		#region Get/Post/Patch Request wrappers
-		internal static dynamic PerformGetRequest(Uri uri, Dictionary<string, string> headers)
+		internal static async System.Threading.Tasks.Task<dynamic> PerformGetRequestAsync(Uri uri, Dictionary<string, string> headers)
 		{
 			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
 			if (timeToWait > TimeSpan.Zero)
@@ -118,13 +113,13 @@ namespace LiveSplit.TwitchPredictions
 				request.Headers.Add(header.Key, header.Value);
 
 			lastRequest = DateTime.UtcNow;
-			using (var response = request.GetResponse())
+			using (var response = await request.GetResponseAsync())
 			{
 				return JSON.FromResponse(response);
 			}
 		}
 
-		internal static dynamic PerformPostRequest(Uri uri, Dictionary<string, string> headers, string bodyContent)
+		internal static async System.Threading.Tasks.Task<dynamic> PerformPostRequestAsync(Uri uri, Dictionary<string, string> headers, string bodyContent)
 		{
 			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
 			if (timeToWait > TimeSpan.Zero)
@@ -144,13 +139,13 @@ namespace LiveSplit.TwitchPredictions
 			}
 
 			lastRequest = DateTime.UtcNow;
-			using (var response = request.GetResponse())
+			using (var response = await request.GetResponseAsync())
 			{
 				return JSON.FromResponse(response);
 			}
 		}
 
-		internal static dynamic PerformPatchRequest(Uri uri, Dictionary<string, string> headers, string bodyContent)
+		internal static async System.Threading.Tasks.Task<dynamic> PerformPatchRequestAsync(Uri uri, Dictionary<string, string> headers, string bodyContent)
 		{
 			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
 			if (timeToWait > TimeSpan.Zero)
@@ -170,15 +165,16 @@ namespace LiveSplit.TwitchPredictions
 			}
 
 			lastRequest = DateTime.UtcNow;
-			using (var response = request.GetResponse())
+			using (var response = await request.GetResponseAsync())
 			{
 				return JSON.FromResponse(response);
 			}
 		}
 		#endregion
 
-		internal static StartPredictionResult StartPrediction(string header, string option1, string option2, uint lenght, out StreamPrediction newPrediction)
+		internal static async System.Threading.Tasks.Task<StreamPrediction> StartPredictionAsync(string header, string option1, string option2, uint lenght)
 		{
+			StreamPrediction newPrediction;
 			DebugLogging.Log("Trying to start a new prediction.");
 
 			newPrediction = null;
@@ -206,7 +202,7 @@ namespace LiveSplit.TwitchPredictions
 
 			try
 			{
-				var response = PerformPostRequest(
+				var response = await PerformPostRequestAsync(
 					BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
 					new Dictionary<string, string>() { }, parameters.ToString()
 				);
@@ -220,14 +216,14 @@ namespace LiveSplit.TwitchPredictions
 						{
 							newPrediction = StreamPrediction.ConvertNode(dataNode);
 							DebugLogging.Log("Successfully created a new prediction!");
-							return StartPredictionResult.Successful;
+							return newPrediction;
 						}
 						DebugLogging.Log("[ERROR] Incorrect response?");
-						return StartPredictionResult.Error;
+						return newPrediction;
 					}
 				}
 				DebugLogging.Log("[ERROR] Incorrect response?");
-				return StartPredictionResult.Error;
+				return newPrediction;
 			}
 			catch (WebException e)
 			{
@@ -245,15 +241,15 @@ namespace LiveSplit.TwitchPredictions
 						if (rawResponse.Contains("prediction event already active"))
 						{
 							DebugLogging.Log("[ERROR] Prediction is already running!");
-							return StartPredictionResult.PredictionAlreadyRunning;
+							return newPrediction;
 						}
 					}
 					DebugLogging.Log("[ERROR] " + e);
-					return StartPredictionResult.Error;
+					return newPrediction;
 
 				}
 				DebugLogging.Log("[ERROR] " + e);
-				return StartPredictionResult.Error;
+				return newPrediction;
 			}
 
 		}
@@ -263,11 +259,11 @@ namespace LiveSplit.TwitchPredictions
 			throw new NotImplementedException();
 		}
 
-		internal static void CancelPredictionAsync()
+		internal static async void CancelPredictionAsync()
 		{
 			StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
 			if (prediction == null)
-				prediction = GetCurrentPrediction();
+				prediction = await GetCurrentPredictionAsync();
 
 			if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
 			{
@@ -279,7 +275,7 @@ namespace LiveSplit.TwitchPredictions
 				parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.CANCELED + "\"");
 				parameters.AppendLine("}");
 
-				var response = PerformPatchRequest(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
+				var response = PerformPatchRequestAsync(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
 					new Dictionary<string, string>() { }, parameters.ToString()
 				);
 			}

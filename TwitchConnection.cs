@@ -59,12 +59,12 @@ namespace LiveSplit.TwitchPredictions
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
 
-		internal void Connect()
+		internal async void Connect()
 		{
 			DebugLogging.Log("Connecting");
 			//Move that after connection and events are set!
 			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
-			TwitchRequests.GetUserID();
+			await TwitchRequests.GetUserIDAsync();
 			TwitchRequests.CancelPredictionAsync();
 
 			//currentPrediction = TwitchRequests.GetCurrentPrediction();
@@ -88,10 +88,10 @@ namespace LiveSplit.TwitchPredictions
 			_irc.ChannelListReceived += _irc_ChannelListReceived1;
 		}
 
-		public void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
+		public async void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
 		{
-			var result = TwitchRequests.StartPrediction(Header, Option1, Option2, Lenght, out StreamPrediction newPrediction);
-			if (result == TwitchRequests.StartPredictionResult.Successful)
+			var newPrediction = await TwitchRequests.StartPredictionAsync(Header, Option1, Option2, Lenght);
+			if (newPrediction != null)
 				CurrentPrediction = newPrediction;
 		}
 
