@@ -2,15 +2,8 @@
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
-using System.Threading;
 
 namespace LiveSplit.TwitchPredictions
 {
@@ -37,10 +30,16 @@ namespace LiveSplit.TwitchPredictions
 			_twitchConnection = TwitchConnection.GetInstance();
 			state.OnStart += State_OnStart;
 			if (_twitchConnection._connectionData.ConnectOnLaunch)
-				_twitchConnection.ConnectUsingThread();
+				_twitchConnection.Connect();
+
+			_timer.OnReset += _timer_OnReset;
+
 		}
 
-
+		private void _timer_OnReset(object sender, TimerPhase value)
+		{
+			Settings.SplitsToEventsInstance.DoResetEvent();
+		}
 
 		public override void Dispose()
 		{

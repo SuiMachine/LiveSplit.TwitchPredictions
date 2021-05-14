@@ -27,7 +27,7 @@ namespace LiveSplit.TwitchPredictions
 
 		private HTTPServer server;
 		Model.LiveSplitState splitStates;
-		public SplitsToEvents splitToEvents { get; set; }
+		public SplitsToEvents SplitsToEventsInstance { get; set; }
 		public delegate void ResponseReceivedDelagate(string text, string type, string c);
 
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
@@ -88,11 +88,11 @@ namespace LiveSplit.TwitchPredictions
 
 			var fullPath = Path.Combine(SubDir, Filename + ".xml");
 			if (File.Exists(fullPath))
-				splitToEvents = XmlSerialiationDeserilation.ReadFromXMLFile<SplitsToEvents>(fullPath);
+				SplitsToEventsInstance = XmlSerialiationDeserilation.ReadFromXMLFile<SplitsToEvents>(fullPath);
 			else
-				splitToEvents = new SplitsToEvents();
+				SplitsToEventsInstance = new SplitsToEvents();
 
-			splitToEvents.Filename = fullPath;
+			SplitsToEventsInstance.Filename = fullPath;
 		}
 
 		private string ReplaceIncorrectCharacters(string filename)
@@ -151,10 +151,10 @@ namespace LiveSplit.TwitchPredictions
 
 		private void B_EditSplitEvents_Click(object sender, EventArgs e)
 		{
-			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, (SplitsToEvents)splitToEvents.Clone());
+			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, (SplitsToEvents)SplitsToEventsInstance.Clone());
 			if(splitEventsEditor.ShowDialog() == DialogResult.OK)
 			{
-				splitToEvents = splitEventsEditor.splitToEvents;
+				SplitsToEventsInstance = splitEventsEditor.splitToEvents;
 			}
 		}
 

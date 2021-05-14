@@ -149,6 +149,32 @@ namespace LiveSplit.TwitchPredictions
 				return JSON.FromResponse(response);
 			}
 		}
+
+		internal static dynamic PerformPatchRequest(Uri uri, Dictionary<string, string> headers, string bodyContent)
+		{
+			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
+			if (timeToWait > TimeSpan.Zero)
+				System.Threading.Thread.Sleep((int)(timeToWait.TotalMilliseconds));
+			var request = WebRequest.Create(uri);
+			request.ContentType = "application/json";
+			request.Method = "PATCH";
+
+			request.Headers.Add(clientIDHeader.Key, clientIDHeader.Value);
+			request.Headers.Add(BearerToken.Key, BearerToken.Value);
+			foreach (var header in headers)
+				request.Headers.Add(header.Key, header.Value);
+
+			using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+			{
+				streamWriter.Write(bodyContent);
+			}
+
+			lastRequest = DateTime.UtcNow;
+			using (var response = request.GetResponse())
+			{
+				return JSON.FromResponse(response);
+			}
+		}
 		#endregion
 
 		internal static StartPredictionResult StartPrediction(string header, string option1, string option2, uint lenght, out StreamPrediction newPrediction)
@@ -207,7 +233,7 @@ namespace LiveSplit.TwitchPredictions
 			{
 				if (e.Status == WebExceptionStatus.ProtocolError)
 				{
-					if(((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
+					if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
 					{
 						var rawResponse = string.Empty;
 
@@ -216,7 +242,7 @@ namespace LiveSplit.TwitchPredictions
 						using (var reader = new StreamReader(brandNewStream))
 							rawResponse = reader.ReadToEnd();
 
-						if(rawResponse.Contains("prediction event already active"))
+						if (rawResponse.Contains("prediction event already active"))
 						{
 							DebugLogging.Log("[ERROR] Prediction is already running!");
 							return StartPredictionResult.PredictionAlreadyRunning;
@@ -230,6 +256,33 @@ namespace LiveSplit.TwitchPredictions
 				return StartPredictionResult.Error;
 			}
 
+		}
+
+		internal static void CompleteWithOptionAsync(int v)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal static void CancelPredictionAsync()
+		{
+			StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
+			if (prediction == null)
+				prediction = GetCurrentPrediction();
+
+			if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
+			{
+				var parameters = new StringBuilder();
+				parameters.AppendLine("{");
+				parameters.AppendLine("\"broadcaster_id\": \"" + BroadcasterID + "\",");
+				parameters.AppendLine("\"id\": \"" + prediction.ID + "\",");
+
+				parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.CANCELED + "\"");
+				parameters.AppendLine("}");
+
+				var response = PerformPatchRequest(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
+					new Dictionary<string, string>() { }, parameters.ToString()
+				);
+			}
 		}
 	}
 }

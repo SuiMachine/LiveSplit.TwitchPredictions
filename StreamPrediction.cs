@@ -44,7 +44,7 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		string ID;
+		public string ID { get; private set; }
 		internal PredictionStatus Status;
 		internal string Title;
 		internal StreamPredictionOutcome FirstOutcome;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveSplit.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -28,15 +29,17 @@ namespace LiveSplit.TwitchPredictions
 	[Serializable]
 	public class SplitsToEvents : ICloneable
 	{
+		#region Properties And Sub-class definitions
 		[XmlElement] public bool UsePBPrediction { get; set; }
 		[XmlElement] public bool UseMessageBoxes { get; set; }
 		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlElement] public OnResetEventType OnRunCompletion { get; set; }
+
 		[XmlIgnore] public string Filename { get; set; }
 		[XmlIgnore] public bool RequiresManualFixing { get; set; }
 
-
+		#region Subclasses
 		[Serializable]
 		public class SplitEvent : ISplitEvent
 		{
@@ -89,7 +92,10 @@ namespace LiveSplit.TwitchPredictions
 				return clone;
 			}
 		}
+		#endregion
+		#endregion
 
+		#region Constructor and Clone
 		public SplitsToEvents()
 		{
 			UseMessageBoxes = false;
@@ -101,6 +107,21 @@ namespace LiveSplit.TwitchPredictions
 			RequiresManualFixing = false;
 		}
 
+		public object Clone()
+		{
+			var clone = new SplitsToEvents();
+			clone.UsePBPrediction = UsePBPrediction;
+			clone.UseMessageBoxes = UseMessageBoxes;
+			clone.EventList = EventList.Select(x => (SplitEvent)x.Clone()).ToList();
+			clone.OnTimerResetBehaviour = OnTimerResetBehaviour;
+			clone.OnRunCompletion = OnRunCompletion;
+			clone.Filename = Filename;
+			clone.RequiresManualFixing = RequiresManualFixing;
+			return clone;
+		}
+		#endregion
+
+		#region Verify / Save / Enum Descriptor
 		public string Verify(Model.LiveSplitState splitStates)
 		{
 			StringBuilder sbIssues = new StringBuilder();
@@ -164,18 +185,31 @@ namespace LiveSplit.TwitchPredictions
 				filePath = Filename;
 			XmlSerialiationDeserilation.SaveObjectToXML<SplitsToEvents>(this, filePath);
 		}
+		#endregion
 
-		public object Clone()
+		#region Split Events
+		internal void DoResetEvent()
 		{
-			var clone = new SplitsToEvents();
-			clone.UsePBPrediction = UsePBPrediction;
-			clone.UseMessageBoxes = UseMessageBoxes;
-			clone.EventList = EventList.Select(x => (SplitEvent)x.Clone()).ToList();
-			clone.OnTimerResetBehaviour = OnTimerResetBehaviour;
-			clone.OnRunCompletion = OnRunCompletion;
-			clone.Filename = Filename;
-			clone.RequiresManualFixing = RequiresManualFixing;
-			return clone;
+			if(TwitchConnection.GetInstance().CurrentPrediction != null)
+			{
+				switch (OnTimerResetBehaviour)
+				{
+					case OnResetEventType.Cancel:
+						TwitchRequests.CancelPredictionAsync();
+						return;
+					case OnResetEventType.CompleteWithOptionOne:
+						TwitchRequests.CompleteWithOptionAsync(1);
+						return;
+					case OnResetEventType.CompleteWithOptionTwo:
+						TwitchRequests.CompleteWithOptionAsync(2);
+						return;
+					case OnResetEventType.Nothing:
+						return;
+				}
+			}
 		}
+		#endregion
+
+
 	}
 }

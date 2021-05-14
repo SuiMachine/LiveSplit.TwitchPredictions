@@ -28,7 +28,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal TwitchConnectionData _connectionData;
 		private IrcDotNet.IrcClient _irc;
-		private StreamPrediction currentPrediction;
+		internal StreamPrediction CurrentPrediction { get; private set; }
 
 		[Serializable]
 		public class TwitchConnectionData
@@ -65,9 +65,11 @@ namespace LiveSplit.TwitchPredictions
 			//Move that after connection and events are set!
 			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
 			TwitchRequests.GetUserID();
+			TwitchRequests.CancelPredictionAsync();
 
 			//currentPrediction = TwitchRequests.GetCurrentPrediction();
 
+			return;
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
 			else
@@ -90,7 +92,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			var result = TwitchRequests.StartPrediction(Header, Option1, Option2, Lenght, out StreamPrediction newPrediction);
 			if (result == TwitchRequests.StartPredictionResult.Successful)
-				currentPrediction = newPrediction;
+				CurrentPrediction = newPrediction;
 		}
 
 		private void _irc_ChannelListReceived1(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
@@ -101,7 +103,6 @@ namespace LiveSplit.TwitchPredictions
 		private void _irc_Registered(object sender, EventArgs e)
 		{
 			DebugLogging.Log("[IRC] Registered");
-
 			JoinChannel("suicidemachinebot");
 		}
 
