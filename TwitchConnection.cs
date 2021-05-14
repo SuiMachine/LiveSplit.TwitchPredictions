@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,12 +23,13 @@ namespace LiveSplit.TwitchPredictions
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
 
-		string USER_DIRECTORY => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LiveSplit.TwitchPredictions");
+		string USER_DIRECTORY => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LiveSplit.TwitchPredictions");
 		string USER_FILE => "Config.xml";
 
 		internal TwitchConnectionData _connectionData;
 		private IrcDotNet.IrcClient _irc;
 		private Thread _IrcThread;
+		private StreamPrediction currentPrediction;
 
 		[Serializable]
 		public class TwitchConnectionData
@@ -62,10 +62,14 @@ namespace LiveSplit.TwitchPredictions
 
 		private void Connect()
 		{
+			DebugLogging.Log("Connecting");
 			//Move that after connection and events are set!
 			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
 			TwitchRequests.GetUserID();
-			var result = TwitchRequests.GetCurrentPrediction();
+
+
+
+			//currentPrediction = TwitchRequests.GetCurrentPrediction();
 
 			return;
 			if (_irc == null)
@@ -86,14 +90,22 @@ namespace LiveSplit.TwitchPredictions
 			_irc.ChannelListReceived += _irc_ChannelListReceived1;
 		}
 
+		public void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
+		{
+			var result = TwitchRequests.StartPrediction(Header, Option1, Option2, Lenght, out StreamPrediction newPrediction);
+			if (result == TwitchRequests.StartPredictionResult.Successful)
+				currentPrediction = newPrediction;
+		}
+
 		private void _irc_ChannelListReceived1(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
 		{
-			Debug.WriteLine("hhh");
+			DebugLogging.Log("hhh");
 		}
 
 		private void _irc_Registered(object sender, EventArgs e)
 		{
-			Debug.WriteLine("[IRC] Registered.");
+			DebugLogging.Log("[IRC] Registered");
+
 			JoinChannel("suicidemachinebot");
 		}
 
@@ -106,45 +118,47 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if(!e.Channels.Any(x => x.Name == _connectionData.Channel))
 			{
-				Debug.WriteLine("F");
+				DebugLogging.Log("F");
 			}
 			else
-				Debug.WriteLine("E");
+				DebugLogging.Log("E");
+
 		}
 
 		private void LocalUser_LeftChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
 		{
-			Debug.WriteLine("[IRC] Left channel: " + e.Channel.Name);
+			DebugLogging.Log("[IRC] Left channel: " + e.Channel.Name);
 		}
 
 		private void LocalUser_JoinedChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
 		{
-			Debug.WriteLine("[IRC] Joined channel: " + e.Channel.Name);
+
+			DebugLogging.Log("[IRC] Joined channel: " + e.Channel.Name);
 		}
 
 		private void _irc_RawMessageReceived(object sender, IrcDotNet.IrcRawMessageEventArgs e)
 		{
-			Debug.WriteLine("[IRC] Raw Message Received: " + e.ToString());
+			DebugLogging.Log("[IRC] Raw Message Received: " + e.ToString());
 		}
 
 		private void _irc_ErrorMessageReceived(object sender, IrcDotNet.IrcErrorMessageEventArgs e)
 		{
-			Debug.WriteLine("[IRC] Error Received: " + e.Message);
+			DebugLogging.Log("[IRC] Error Received: " + e.Message);
 		}
 
 		private void _irc_ClientInfoReceived(object sender, EventArgs e)
 		{
-			Debug.WriteLine("[IRC] Client Info Received.");
+			DebugLogging.Log("[IRC] Client Info Received.");
 		}
 
 		private void _irc_Connected(object sender, EventArgs e)
 		{
-			Debug.WriteLine("[IRC] Connected!");
+			DebugLogging.Log("[IRC] Connected!");
 		}
 
 		private void _irc_Disconnected(object sender, EventArgs e)
 		{
-			Debug.WriteLine("[IRC] Disconnected!");
+			DebugLogging.Log("[IRC] Disconnected!");
 		}
 
 		internal void Disconnect()

@@ -33,6 +33,8 @@ namespace LiveSplit.TwitchPredictions
 		public TwitchPredictionsSettings(Model.LiveSplitState splitStates)
 		{
 			InitializeComponent();
+			DebugLogging._settings = this;
+			DebugLogging.Log("Created settings and set reference");
 			this.splitStates = splitStates;
 			_twitchConnection = TwitchConnection.GetInstance();
 

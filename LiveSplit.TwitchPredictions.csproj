@@ -79,6 +79,7 @@
     <Compile Include="Forms\SplitEventsEditorForm.Designer.cs">
       <DependentUpon>SplitEventsEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugLogging.cs" />
     <Compile Include="SplitsToEvents.cs" />
     <Compile Include="StreamPrediction.cs" />
     <Compile Include="TwitchPredictionsComponent.cs" />

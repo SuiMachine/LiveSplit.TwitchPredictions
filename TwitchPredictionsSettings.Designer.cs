@@ -46,6 +46,7 @@ namespace LiveSplit.TwitchPredictions
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.B_EditSplitEvents = new System.Windows.Forms.Button();
+			this.RB_DebugView = new System.Windows.Forms.RichTextBox();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
 			this.groupBox2.SuspendLayout();
@@ -54,6 +55,7 @@ namespace LiveSplit.TwitchPredictions
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.B_SaveSettings);
+			this.groupBox1.Controls.Add(this.B_EditSplitEvents);
 			this.groupBox1.Controls.Add(this.TB_Channel);
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.CB_ConnectOnComponentLaunch);
@@ -217,24 +219,34 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.B_EditSplitEvents);
+			this.groupBox2.Controls.Add(this.RB_DebugView);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupBox2.Location = new System.Drawing.Point(0, 161);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(455, 64);
+			this.groupBox2.Size = new System.Drawing.Size(455, 280);
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Prediction settings";
+			this.groupBox2.Text = "Debug view";
 			// 
 			// B_EditSplitEvents
 			// 
-			this.B_EditSplitEvents.Location = new System.Drawing.Point(9, 19);
+			this.B_EditSplitEvents.Location = new System.Drawing.Point(121, 127);
 			this.B_EditSplitEvents.Name = "B_EditSplitEvents";
 			this.B_EditSplitEvents.Size = new System.Drawing.Size(104, 23);
 			this.B_EditSplitEvents.TabIndex = 0;
 			this.B_EditSplitEvents.Text = "Edit split events";
 			this.B_EditSplitEvents.UseVisualStyleBackColor = true;
 			this.B_EditSplitEvents.Click += new System.EventHandler(this.B_EditSplitEvents_Click);
+			// 
+			// RB_DebugView
+			// 
+			this.RB_DebugView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RB_DebugView.Location = new System.Drawing.Point(3, 16);
+			this.RB_DebugView.MaxLength = 250000;
+			this.RB_DebugView.Name = "RB_DebugView";
+			this.RB_DebugView.Size = new System.Drawing.Size(449, 261);
+			this.RB_DebugView.TabIndex = 1;
+			this.RB_DebugView.Text = "";
 			// 
 			// TwitchPredictionsSettings
 			// 
@@ -243,7 +255,7 @@ namespace LiveSplit.TwitchPredictions
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Name = "TwitchPredictionsSettings";
-			this.Size = new System.Drawing.Size(455, 225);
+			this.Size = new System.Drawing.Size(455, 441);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).EndInit();
@@ -270,5 +282,6 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Button B_SaveSettings;
 		private System.Windows.Forms.Button B_EditSplitEvents;
+		public System.Windows.Forms.RichTextBox RB_DebugView;
 	}
 }
