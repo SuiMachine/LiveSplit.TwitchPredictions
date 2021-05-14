@@ -15,8 +15,8 @@ namespace LiveSplit.TwitchPredictions
 
 		internal class StreamPredictionOutcome
 		{
-			string ID;
-			string Title;
+			public string ID { get; private set; }
+			public string Title { get; private set; }
 
 			internal StreamPredictionOutcome()
 			{
@@ -44,15 +44,15 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		public string ID { get; private set; }
-		internal PredictionStatus Status;
-		internal string Title;
-		internal StreamPredictionOutcome FirstOutcome;
-		internal StreamPredictionOutcome SecondOutcome;
-		internal DateTime CreateAt;
-		internal DateTime? LockedAt;
-		internal DateTime? EndedAt;
-		internal int PredictionWindow;
+		internal string ID { get; private set; }
+		internal PredictionStatus Status { get; private set; }
+		internal string Title { get; private set; }
+		internal StreamPredictionOutcome FirstOutcome { get; private set; }
+		internal StreamPredictionOutcome SecondOutcome { get; private set; }
+		internal DateTime CreateAt { get; private set; }
+		internal DateTime? LockedAt { get; private set; }
+		internal DateTime? EndedAt { get; private set; }
+		internal int PredictionWindow { get; private set; }
 
 		internal StreamPrediction()
 		{

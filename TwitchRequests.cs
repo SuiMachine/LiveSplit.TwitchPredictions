@@ -254,9 +254,27 @@ namespace LiveSplit.TwitchPredictions
 
 		}
 
-		internal static void CompleteWithOptionAsync(int v)
+		internal static async void CompleteWithOptionAsync(int winningOption)
 		{
-			throw new NotImplementedException();
+			StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
+			if (prediction == null)
+				prediction = await GetCurrentPredictionAsync();
+
+			if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
+			{
+				var parameters = new StringBuilder();
+				parameters.AppendLine("{");
+				parameters.AppendLine("\"broadcaster_id\": \"" + BroadcasterID + "\",");
+				parameters.AppendLine("\"id\": \"" + prediction.ID + "\",");
+
+				parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.RESOLVED + "\",");
+				parameters.AppendLine("\"winning_outcome_id\": \"" + (winningOption == 0 ? prediction.FirstOutcome.ID : prediction.SecondOutcome.ID) + "\"");
+				parameters.AppendLine("}");
+
+				var response = PerformPatchRequestAsync(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
+					new Dictionary<string, string>() { }, parameters.ToString()
+				);
+			}
 		}
 
 		internal static async void CancelPredictionAsync()
