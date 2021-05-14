@@ -160,7 +160,7 @@ namespace LiveSplit.TwitchPredictions
 
 		private void B_Connect_Click(object sender, EventArgs e)
 		{
-			TwitchConnection.GetInstance().ConnectUsingThread();
+			TwitchConnection.GetInstance().Connect();
 		}
 	}
 }

@@ -28,7 +28,6 @@ namespace LiveSplit.TwitchPredictions
 
 		internal TwitchConnectionData _connectionData;
 		private IrcDotNet.IrcClient _irc;
-		private Thread _IrcThread;
 		private StreamPrediction currentPrediction;
 
 		[Serializable]
@@ -60,18 +59,15 @@ namespace LiveSplit.TwitchPredictions
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
 
-		private void Connect()
+		internal void Connect()
 		{
 			DebugLogging.Log("Connecting");
 			//Move that after connection and events are set!
 			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
 			TwitchRequests.GetUserID();
 
-
-
 			//currentPrediction = TwitchRequests.GetCurrentPrediction();
 
-			return;
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
 			else
@@ -177,15 +173,6 @@ namespace LiveSplit.TwitchPredictions
 			catch(Exception e)
 			{
 				MessageBox.Show("Failed to store config to a file: " + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
-		}
-
-		internal void ConnectUsingThread()
-		{
-			if(_IrcThread == null)
-			{
-				_IrcThread = new Thread(Connect);
-				_IrcThread.Start();
 			}
 		}
 	}
