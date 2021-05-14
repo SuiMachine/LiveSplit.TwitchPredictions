@@ -1,7 +1,6 @@
 ﻿using LiveSplit.Web;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -251,52 +250,115 @@ namespace LiveSplit.TwitchPredictions
 				DebugLogging.Log("[ERROR] " + e);
 				return newPrediction;
 			}
-
 		}
 
 		internal static async void CompleteWithOptionAsync(int winningOption)
 		{
-			StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
-			if (prediction == null)
-				prediction = await GetCurrentPredictionAsync();
+			if (TwitchConnection.GetInstance().BroadcasterID == "")
+				await TwitchRequests.GetUserIDAsync();
 
-			if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
+			if (TwitchConnection.GetInstance().BroadcasterID != "")
 			{
-				var parameters = new StringBuilder();
-				parameters.AppendLine("{");
-				parameters.AppendLine("\"broadcaster_id\": \"" + BroadcasterID + "\",");
-				parameters.AppendLine("\"id\": \"" + prediction.ID + "\",");
+				StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
+				if (prediction == null)
+					prediction = await GetCurrentPredictionAsync();
 
-				parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.RESOLVED + "\",");
-				parameters.AppendLine("\"winning_outcome_id\": \"" + (winningOption == 0 ? prediction.FirstOutcome.ID : prediction.SecondOutcome.ID) + "\"");
-				parameters.AppendLine("}");
+				if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
+				{
+					DebugLogging.Log("Trying to close a prediction (" + prediction.ID + ") with outcome #" + (winningOption + 1).ToString());
 
-				var response = PerformPatchRequestAsync(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
-					new Dictionary<string, string>() { }, parameters.ToString()
-				);
+					var parameters = new StringBuilder();
+					parameters.AppendLine("{");
+					parameters.AppendLine("\"broadcaster_id\": \"" + BroadcasterID + "\",");
+					parameters.AppendLine("\"id\": \"" + prediction.ID + "\",");
+
+					parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.RESOLVED + "\",");
+					parameters.AppendLine("\"winning_outcome_id\": \"" + (winningOption == 0 ? prediction.FirstOutcome.ID : prediction.SecondOutcome.ID) + "\"");
+					parameters.AppendLine("}");
+
+					var response = await PerformPatchRequestAsync(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
+						new Dictionary<string, string>() { }, parameters.ToString()
+					);
+
+					if (response["data"] != null)
+					{
+						var dataNode = ((IEnumerable<dynamic>)response["data"]).First();
+						if (dataNode["id"] != null)
+						{
+							if (dataNode["status"] != null)
+							{
+								StreamPrediction newPredictionState = StreamPrediction.ConvertNode(dataNode);
+								if (newPredictionState.Status == StreamPrediction.PredictionStatus.CANCELED)
+								{
+									DebugLogging.Log("Successfully closed a prediction!");
+									return;
+								}
+								else
+								{
+									DebugLogging.Log("Failed to close a new prediction!");
+									return;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
 		internal static async void CancelPredictionAsync()
 		{
-			StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
-			if (prediction == null)
-				prediction = await GetCurrentPredictionAsync();
+			if (TwitchConnection.GetInstance().BroadcasterID == "")
+				await TwitchRequests.GetUserIDAsync();
 
-			if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
+			if (TwitchConnection.GetInstance().BroadcasterID != "")
 			{
-				var parameters = new StringBuilder();
-				parameters.AppendLine("{");
-				parameters.AppendLine("\"broadcaster_id\": \"" + BroadcasterID + "\",");
-				parameters.AppendLine("\"id\": \"" + prediction.ID + "\",");
+				StreamPrediction prediction = TwitchConnection.GetInstance().CurrentPrediction;
+				if (prediction == null)
+					prediction = await GetCurrentPredictionAsync();
 
-				parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.CANCELED + "\"");
-				parameters.AppendLine("}");
+				if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
+				{
+					DebugLogging.Log("Trying to cancel a cancel prediction (" + prediction.ID + ")");
 
-				var response = PerformPatchRequestAsync(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
-					new Dictionary<string, string>() { }, parameters.ToString()
-				);
+					var parameters = new StringBuilder();
+					parameters.AppendLine("{");
+					parameters.AppendLine("\"broadcaster_id\": \"" + BroadcasterID + "\",");
+					parameters.AppendLine("\"id\": \"" + prediction.ID + "\",");
+
+					parameters.AppendLine("\"status\": \"" + StreamPrediction.PredictionStatus.CANCELED + "\"");
+					parameters.AppendLine("}");
+
+					var response = await PerformPatchRequestAsync(BuildURI(new string[] { "predictions" }, new Tuple<string, string>[] { }),
+						new Dictionary<string, string>() { }, parameters.ToString()
+					);
+
+					if (response["data"] != null)
+					{
+						var dataNode = ((IEnumerable<dynamic>)response["data"]).First();
+						if (dataNode["id"] != null)
+						{
+							if (dataNode["status"] != null)
+							{
+								StreamPrediction newPredictionState = StreamPrediction.ConvertNode(dataNode);
+								if (newPredictionState.Status == StreamPrediction.PredictionStatus.CANCELED)
+								{
+									DebugLogging.Log("Successfully cancelled a new prediction!");
+									return;
+								}
+								else
+								{
+									DebugLogging.Log("Failed to cancelled a new prediction!");
+									return;
+								}
+							}
+						}
+					}
+					DebugLogging.Log("[ERROR] Incorrect response?");
+					return;
+				}
 			}
+			else
+				DebugLogging.Log("Can not cancel prediction. Broadcaster ID is null!");
 		}
 	}
 }

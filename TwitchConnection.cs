@@ -59,12 +59,11 @@ namespace LiveSplit.TwitchPredictions
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
 
-		internal async void Connect()
+		internal void Connect()
 		{
 			DebugLogging.Log("Connecting");
 			//Move that after connection and events are set!
 			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
-			await TwitchRequests.GetUserIDAsync();
 			TwitchRequests.CancelPredictionAsync();
 
 			//currentPrediction = TwitchRequests.GetCurrentPrediction();
