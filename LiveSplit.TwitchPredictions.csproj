@@ -35,18 +35,22 @@
     <Reference Include="CustomFontDialog, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\LiveSplit\CustomFontDialog.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IrcDotNet, Version=0.1.0.408, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\LiveSplit\IrcDotNet.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IrcDotNet.Common, Version=0.1.0.408, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\LiveSplit\IrcDotNet.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="LiveSplit.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\LiveSplit\LiveSplit.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,6 +65,7 @@
     <Reference Include="UpdateManager, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\LiveSplit\UpdateManager.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
