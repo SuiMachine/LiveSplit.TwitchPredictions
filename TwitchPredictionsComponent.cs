@@ -28,7 +28,6 @@ namespace LiveSplit.TwitchPredictions
 
 			_timer = new TimerModel { CurrentState = state };
 			_twitchConnection = TwitchConnection.GetInstance();
-			state.OnStart += State_OnStart;
 			if (_twitchConnection._connectionData.ConnectOnLaunch)
 				_twitchConnection.Connect();
 
@@ -80,20 +79,17 @@ namespace LiveSplit.TwitchPredictions
 		{
 			this.Disposed = true;
 
-			_state.OnStart -= State_OnStart;
 			_state.RunManuallyModified -= Settings._state_RunManuallyModified;
+			_timer.CurrentState.OnStart -= CurrentState_OnStart;
+			_timer.CurrentState.OnSkipSplit -= CurrentState_OnSkipSplit;
+			_timer.CurrentState.OnSplit -= CurrentState_OnSplit;
+			_timer.CurrentState.OnReset -= CurrentState_OnReset;
 
 			if (_twitchConnection != null)
 			{
 				_twitchConnection.Disconnect();
 			}
 		}
-
-		//May be removed?
-		private void State_OnStart(object sender, EventArgs e)
-		{
-		}
-
 
 		public override XmlNode GetSettings(XmlDocument document)
 		{
