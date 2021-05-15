@@ -46,7 +46,9 @@ namespace LiveSplit.TwitchPredictions
 			[XmlIgnore] public string SegmentName { get; set; }
 			[XmlAttribute] public SplitEventType EventType { get; set; }
 			[XmlElement] public TimeSpan Delay { get; set; }
-			public SplitAction Action { get; set; }
+			[XmlElement] public SplitAction Action { get; set; }
+
+			[XmlIgnore] public bool WasUsed { get; set; }
 
 			public SplitEvent()
 			{
@@ -54,6 +56,7 @@ namespace LiveSplit.TwitchPredictions
 				EventType = SplitEventType.None;
 				Delay = TimeSpan.Zero;
 				Action = new SplitAction();
+				WasUsed = false;
 			}
 
 			public object Clone()
@@ -63,6 +66,7 @@ namespace LiveSplit.TwitchPredictions
 				clone.EventType = this.EventType;
 				clone.Delay = this.Delay;
 				clone.Action = (SplitAction)this.Action.Clone();
+				clone.WasUsed = this.WasUsed;
 				return clone;
 			}
 		}
@@ -192,9 +196,17 @@ namespace LiveSplit.TwitchPredictions
 		#endregion
 
 		#region Split Events
+		internal void ClearWasUsedFlags()
+		{
+			foreach (var element in EventList)
+			{
+				element.WasUsed = false;
+			}
+		}
+
 		internal void DoResetEvent()
 		{
-			if(TwitchConnection.GetInstance().CurrentPrediction != null)
+			if (TwitchConnection.GetInstance().CurrentPrediction != null)
 			{
 				switch (OnTimerResetBehaviour)
 				{
@@ -217,8 +229,13 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if(split < EventList.Count)
 			{
+				if (EventList[split].WasUsed)
+					return;
+
+				EventList[split].WasUsed = true;
 				var actionToPerform = EventList[split];
-				switch(actionToPerform.EventType)
+
+				switch (actionToPerform.EventType)
 				{
 					case SplitEventType.None:
 						return;
@@ -236,9 +253,32 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		internal void DoCompleteRunEvent()
+		internal void DoCompleteRunEvent(bool isPB)
 		{
-
+			if (UsePBPrediction)
+			{
+				if (isPB)
+					TwitchConnection.GetInstance().CompletePrediction(0);
+				else
+					TwitchConnection.GetInstance().CompletePrediction(1);
+			}
+			else
+			{
+				switch(OnRunCompletion)
+				{
+					case OnResetEventType.Nothing:
+						return;
+					case OnResetEventType.Cancel:
+						TwitchConnection.GetInstance().CancelPrediction();
+						return;
+					case OnResetEventType.CompleteWithOptionOne:
+						TwitchConnection.GetInstance().CompletePrediction(0);
+						return;
+					case OnResetEventType.CompleteWithOptionTwo:
+						TwitchConnection.GetInstance().CompletePrediction(1);
+						return;
+				}
+			}
 		}
 		#endregion
 	}

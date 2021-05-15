@@ -174,6 +174,15 @@ namespace LiveSplit.TwitchPredictions
 			StreamPrediction newPrediction;
 			DebugLogging.Log("Trying to start a new prediction.");
 
+			if (BroadcasterID == "")
+				await GetUserIDAsync();
+
+			if (BroadcasterID == "")
+			{
+				DebugLogging.Log("[ERROR] Broadcaster ID wasn't set despite multiple requests!");
+				return null;
+			}
+
 			newPrediction = null;
 			if (lenght > 1800)
 				lenght = 1779;
@@ -235,11 +244,8 @@ namespace LiveSplit.TwitchPredictions
 						using (var reader = new StreamReader(brandNewStream))
 							rawResponse = reader.ReadToEnd();
 
-						if (rawResponse.Contains("prediction event already active"))
-						{
-							DebugLogging.Log("[ERROR] Prediction is already running!");
-							return newPrediction;
-						}
+						DebugLogging.Log("Error creating a prediction: " + rawResponse);
+						return newPrediction;
 					}
 					DebugLogging.Log("[ERROR] " + e);
 					return newPrediction;
@@ -250,7 +256,7 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		internal async System.Threading.Tasks.Task CompleteWithOptionAsync(int winningOption)
+		internal async System.Threading.Tasks.Task<StreamPrediction> CompleteWithOptionAsync(int winningOption)
 		{
 			if (BroadcasterID == "")
 				await GetUserIDAsync();
@@ -289,21 +295,22 @@ namespace LiveSplit.TwitchPredictions
 								if (newPredictionState.Status == StreamPrediction.PredictionStatus.RESOLVED)
 								{
 									DebugLogging.Log("Successfully closed a prediction!");
-									return;
+									return newPredictionState;
 								}
 								else
 								{
 									DebugLogging.Log("Failed to close a new prediction!");
-									return;
+									return null;
 								}
 							}
 						}
 					}
 				}
 			}
+			return null;
 		}
 
-		internal async System.Threading.Tasks.Task CancelPredictionAsync()
+		internal async System.Threading.Tasks.Task<StreamPrediction> CancelPredictionAsync()
 		{
 			if (BroadcasterID == "")
 				await GetUserIDAsync();
@@ -341,22 +348,23 @@ namespace LiveSplit.TwitchPredictions
 								if (newPredictionState.Status == StreamPrediction.PredictionStatus.CANCELED)
 								{
 									DebugLogging.Log("Successfully cancelled a new prediction!");
-									return;
+									return newPredictionState;
 								}
 								else
 								{
 									DebugLogging.Log("Failed to cancelled a new prediction!");
-									return;
+									return null;
 								}
 							}
 						}
 					}
 					DebugLogging.Log("[ERROR] Incorrect response?");
-					return;
+					return null;
 				}
 			}
-			else
-				DebugLogging.Log("Can not cancel prediction. Broadcaster ID is null!");
+			
+			DebugLogging.Log("Can not cancel prediction. Broadcaster ID is null!");
+			return null;
 		}
 	}
 }

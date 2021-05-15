@@ -19,6 +19,10 @@ namespace LiveSplit.TwitchPredictions.Forms
 			RB_Option1.Text = ReturnedAction.Answer1;
 			RB_Option2.Text = ReturnedAction.Answer2;
 			Num_Lenght.Value = ReturnedAction.Lenght;
+
+			L_PreditionLenghtLimit.Text = $"{RB_Prediction_Name.TextLength}/{RB_Prediction_Name.MaxLength}";
+			L_CharactersUsedOutcome1.Text = $"{RB_Option1.TextLength}/{RB_Option1.MaxLength}";
+			L_CharactersUsedOutcome2.Text = $"{RB_Option2.TextLength}/{RB_Option2.MaxLength}";
 		}
 
 		private void RB_Prediction_Name_TextChanged(object sender, EventArgs e)

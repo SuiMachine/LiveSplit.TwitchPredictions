@@ -16,9 +16,9 @@ namespace LiveSplit.TwitchPredictions
 			}
 			else
 			{
-				string textToPost = DateTime.Now.ToShortTimeString() + ": " + text + "\n";
+				string textToPost = DateTime.Now.ToShortTimeString() + ": " + text;
 				Debug.WriteLine("[PredictionsPlugin] " + textToPost);
-				_settings.RB_DebugView.AppendText(textToPost);
+				_settings.RB_DebugView.AppendText(textToPost + "\n");
 			}
 		}
 	}

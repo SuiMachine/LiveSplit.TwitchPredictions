@@ -9,7 +9,7 @@ namespace LiveSplit.TwitchPredictions
 {
 	public class TwitchPredictionsComponent : LogicComponent
 	{
-		public override string ComponentName { get { return "Twitch Predictions"; }	}
+		public override string ComponentName { get { return "Twitch Predictions"; } }
 
 		public TwitchPredictionsSettings Settings { get; set; }
 		public bool Disposed { get; private set; }
@@ -32,13 +32,51 @@ namespace LiveSplit.TwitchPredictions
 			if (_twitchConnection._connectionData.ConnectOnLaunch)
 				_twitchConnection.Connect();
 
-			_timer.OnReset += _timer_OnReset;
-
+			//Set required timer events
+			_timer.CurrentState.OnStart += CurrentState_OnStart;
+			_timer.CurrentState.OnSkipSplit += CurrentState_OnSkipSplit;
+			_timer.CurrentState.OnSplit += CurrentState_OnSplit;
+			_timer.CurrentState.OnReset += CurrentState_OnReset;
 		}
 
-		private void _timer_OnReset(object sender, TimerPhase value)
+		private void CurrentState_OnStart(object sender, EventArgs e)
 		{
-			Settings.SplitsToEventsInstance.DoResetEvent();
+			Settings.SplitsToEventsInstance.ClearWasUsedFlags();
+			//Settings.SplitsToEventsInstance.DoSplitEvent(0);
+		}
+
+		private void CurrentState_OnSkipSplit(object sender, EventArgs e)
+		{
+			var cast = (LiveSplitState)sender;
+			//Settings.SplitsToEventsInstance.DoSplitEvent(cast.CurrentSplitIndex);
+		}
+
+		private void CurrentState_OnSplit(object sender, EventArgs e)
+		{
+			var cast = (LiveSplitState)sender;
+			var runEnded = cast.CurrentSplit == null;
+			if(!runEnded && false)
+				Settings.SplitsToEventsInstance.DoSplitEvent(cast.CurrentSplitIndex);
+			else
+			{
+				var currentTime = cast.CurrentTime;
+				var pbTime = cast.Run[cast.CurrentSplitIndex - 1].PersonalBestSplitTime;
+				var isPB = false;
+
+				if (cast.CurrentTimingMethod == TimingMethod.RealTime)
+					isPB = cast.CurrentTime.RealTime < pbTime.RealTime;
+				else
+				{
+					isPB = currentTime.GameTime != null && pbTime.GameTime != null ? currentTime.GameTime < pbTime.GameTime : cast.CurrentTime.RealTime < pbTime.RealTime;
+				}
+
+				Settings.SplitsToEventsInstance.DoCompleteRunEvent(isPB);
+			}
+		}
+
+		private void CurrentState_OnReset(object sender, TimerPhase value)
+		{
+			//Settings.SplitsToEventsInstance.DoResetEvent();
 		}
 
 		public override void Dispose()

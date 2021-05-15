@@ -92,12 +92,14 @@ namespace LiveSplit.TwitchPredictions
 
 		public async void CompletePrediction(int winningOutcome)
 		{
-			await twitchRequests.CompleteWithOptionAsync(winningOutcome);
+			var result = await twitchRequests.CompleteWithOptionAsync(winningOutcome);
+			CurrentPrediction = result;
 		}
 
 		public async void CancelPrediction()
 		{
-			await twitchRequests.CancelPredictionAsync();
+			var result = await twitchRequests.CancelPredictionAsync();
+			CurrentPrediction = result;
 		}
 
 		private void _irc_ChannelListReceived1(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
