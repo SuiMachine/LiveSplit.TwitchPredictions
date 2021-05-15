@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace LiveSplit.TwitchPredictions
 {
 	public class TwitchConnection
 	{
-		#region ExternalEvents
-		public event Events.TwitchConnectionEvents.OnMessageReceived OnMessageReceived;
-		#endregion
-
 		private static TwitchConnection _Instance;
 		private TwitchRequests twitchRequests;
-		private IrcDotNet.IrcUser userData;
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
@@ -64,23 +54,26 @@ namespace LiveSplit.TwitchPredictions
 			DebugLogging.Log("Connecting");
 			twitchRequests = new TwitchRequests(_connectionData.Channel, _connectionData.Oauth);
 
-			return;
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
 			else
 			{
 				_irc.Disconnect();
+				_irc.ErrorMessageReceived -= _irc_ErrorMessageReceived;
+				_irc.Connected -= _irc_Connected;
+				_irc.Disconnected -= _irc_Disconnected;
+				_irc.ClientInfoReceived -= _irc_ClientInfoReceived;
+				_irc.RawMessageReceived -= _irc_RawMessageReceived;
+				_irc.Registered -= _irc_Registered;
 			}
 
-			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { NickName = _connectionData.Username, UserName = _connectionData.Username, RealName = _connectionData.Username, Password = "oauth:" +_connectionData.Oauth });
+			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { NickName = _connectionData.Username, UserName = _connectionData.Username, RealName = _connectionData.Username, Password = "oauth:" + _connectionData.Oauth });
 			_irc.ErrorMessageReceived += _irc_ErrorMessageReceived;
 			_irc.Connected += _irc_Connected;
 			_irc.Disconnected += _irc_Disconnected;
 			_irc.ClientInfoReceived += _irc_ClientInfoReceived;
 			_irc.RawMessageReceived += _irc_RawMessageReceived;
-			_irc.ChannelListReceived += _irc_ChannelListReceived;
 			_irc.Registered += _irc_Registered;
-			_irc.ChannelListReceived += _irc_ChannelListReceived1;
 		}
 
 		public async void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
@@ -102,11 +95,6 @@ namespace LiveSplit.TwitchPredictions
 			CurrentPrediction = result;
 		}
 
-		private void _irc_ChannelListReceived1(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
-		{
-			DebugLogging.Log("hhh");
-		}
-
 		private void _irc_Registered(object sender, EventArgs e)
 		{
 			DebugLogging.Log("[IRC] Registered");
@@ -118,22 +106,6 @@ namespace LiveSplit.TwitchPredictions
 			_irc.Channels.Join(new string[] { "#" + channel.ToLower() });
 		}
 
-		private void _irc_ChannelListReceived(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)
-		{
-			if(!e.Channels.Any(x => x.Name == _connectionData.Channel))
-			{
-				DebugLogging.Log("F");
-			}
-			else
-				DebugLogging.Log("E");
-
-		}
-
-		private void LocalUser_LeftChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
-		{
-			DebugLogging.Log("[IRC] Left channel: " + e.Channel.Name);
-		}
-
 		private void LocalUser_JoinedChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
 		{
 
@@ -142,7 +114,7 @@ namespace LiveSplit.TwitchPredictions
 
 		private void _irc_RawMessageReceived(object sender, IrcDotNet.IrcRawMessageEventArgs e)
 		{
-			DebugLogging.Log("[IRC] Raw Message Received: " + e.ToString());
+			DebugLogging.Log("[IRC] MSG: " + (e.Message.Source != null ? e.Message.Source + ": " : "") + string.Join(" ", e.Message.Parameters.Where(x => x != null).ToArray()));
 		}
 
 		private void _irc_ErrorMessageReceived(object sender, IrcDotNet.IrcErrorMessageEventArgs e)
@@ -178,7 +150,7 @@ namespace LiveSplit.TwitchPredictions
 				XmlSerialiationDeserilation.SaveObjectToXML(_connectionData, Path.Combine(USER_DIRECTORY, USER_FILE));
 				MessageBox.Show("Setting were stored in: %APPDATA%\\LiveSplit.TwitchPredictions to prevent accidently sharing login information in case of sharing layouts.", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				MessageBox.Show("Failed to store config to a file: " + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}

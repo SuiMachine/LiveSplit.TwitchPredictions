@@ -362,7 +362,7 @@ namespace LiveSplit.TwitchPredictions
 					return null;
 				}
 			}
-			
+
 			DebugLogging.Log("Can not cancel prediction. Broadcaster ID is null!");
 			return null;
 		}

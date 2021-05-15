@@ -1,8 +1,6 @@
-﻿using LiveSplit.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -227,7 +225,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal void DoSplitEvent(int split)
 		{
-			if(split < EventList.Count)
+			if (split < EventList.Count)
 			{
 				if (EventList[split].WasUsed)
 					return;
@@ -264,7 +262,7 @@ namespace LiveSplit.TwitchPredictions
 			}
 			else
 			{
-				switch(OnRunCompletion)
+				switch (OnRunCompletion)
 				{
 					case OnResetEventType.Nothing:
 						return;

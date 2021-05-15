@@ -433,7 +433,7 @@ namespace LiveSplit.TwitchPredictions
 				MessageBox.Show("Following issues were found:\n" + result, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return;
 			}
-			
+
 			splitToEvents.EventList = splitToEventList.Cast<SplitsToEvents.SplitEvent>().ToList();
 			try
 			{

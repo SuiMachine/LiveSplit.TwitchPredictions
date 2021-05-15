@@ -55,20 +55,17 @@ namespace LiveSplit.TwitchPredictions
 		{
 			var cast = (LiveSplitState)sender;
 			var runEnded = cast.CurrentSplit == null;
-			if(!runEnded && false)
+			if (!runEnded)
 				Settings.SplitsToEventsInstance.DoSplitEvent(cast.CurrentSplitIndex);
 			else
 			{
 				var currentTime = cast.CurrentTime;
 				var pbTime = cast.Run[cast.CurrentSplitIndex - 1].PersonalBestSplitTime;
-				var isPB = false;
-
+				bool isPB;
 				if (cast.CurrentTimingMethod == TimingMethod.RealTime)
 					isPB = cast.CurrentTime.RealTime < pbTime.RealTime;
 				else
-				{
 					isPB = currentTime.GameTime != null && pbTime.GameTime != null ? currentTime.GameTime < pbTime.GameTime : cast.CurrentTime.RealTime < pbTime.RealTime;
-				}
 
 				Settings.SplitsToEventsInstance.DoCompleteRunEvent(isPB);
 			}

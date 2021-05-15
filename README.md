@@ -14,4 +14,14 @@ Developement progress
 * Storing split-event information per game/category - 85%
 * Split-prediction event editor - 85%
 * Verification of split-events list - 50%
-* Running predictions based on split-event list - 55%
+* Running predictions based on split-event list - 90%
+
+Bugs so far:
+-------------------
+* Editor is really junky with refreshing preview (colors)
+* Requests make the timer freeze at the moment (this needs to be rewritten to run on seperate thread / task).
+* Events get delayed by request thread sleep.
+
+Possible improvements
+-------------------
+* Editor currently doesn't check whatever a duration of prediction is longer than a combined personal PB split seperating it from the next event.

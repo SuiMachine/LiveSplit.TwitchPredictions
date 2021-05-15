@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -152,7 +145,7 @@ namespace LiveSplit.TwitchPredictions
 		private void B_EditSplitEvents_Click(object sender, EventArgs e)
 		{
 			SplitEventsEditorForm splitEventsEditor = new SplitEventsEditorForm(splitStates, (SplitsToEvents)SplitsToEventsInstance.Clone());
-			if(splitEventsEditor.ShowDialog() == DialogResult.OK)
+			if (splitEventsEditor.ShowDialog() == DialogResult.OK)
 			{
 				SplitsToEventsInstance = splitEventsEditor.splitToEvents;
 			}
