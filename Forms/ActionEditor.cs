@@ -18,6 +18,7 @@ namespace LiveSplit.TwitchPredictions.Forms
 			RB_Prediction_Name.Text = ReturnedAction.Header;
 			RB_Option1.Text = ReturnedAction.Answer1;
 			RB_Option2.Text = ReturnedAction.Answer2;
+			Num_Lenght.Value = ReturnedAction.Lenght;
 		}
 
 		private void RB_Prediction_Name_TextChanged(object sender, EventArgs e)
@@ -40,6 +41,7 @@ namespace LiveSplit.TwitchPredictions.Forms
 			ReturnedAction.Header = RB_Prediction_Name.Text.Trim();
 			ReturnedAction.Answer1 = RB_Option1.Text.Trim();
 			ReturnedAction.Answer2 = RB_Option2.Text.Trim();
+			ReturnedAction.Lenght = (uint)Num_Lenght.Value;
 
 			if (ReturnedAction.Header == "" || ReturnedAction.Answer1 == "" || ReturnedAction.Answer2 == "")
 				MessageBox.Show("One of the fields is empty! Please fill in all of the necessery fields!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);

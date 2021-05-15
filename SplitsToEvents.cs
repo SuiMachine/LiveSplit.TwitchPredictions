@@ -62,6 +62,7 @@ namespace LiveSplit.TwitchPredictions
 				clone.SegmentName = this.SegmentName;
 				clone.EventType = this.EventType;
 				clone.Delay = this.Delay;
+				clone.Action = (SplitAction)this.Action.Clone();
 				return clone;
 			}
 		}
@@ -73,6 +74,7 @@ namespace LiveSplit.TwitchPredictions
 			[XmlAttribute] public string Header { get; set; }
 			[XmlAttribute] public string Answer1 { get; set; }
 			[XmlAttribute] public string Answer2 { get; set; }
+			[XmlAttribute] public uint Lenght { get; set; }
 
 			public SplitAction()
 			{
@@ -80,6 +82,7 @@ namespace LiveSplit.TwitchPredictions
 				Header = "";
 				Answer1 = "";
 				Answer2 = "";
+				Lenght = 30;
 			}
 
 			public object Clone()
@@ -89,6 +92,7 @@ namespace LiveSplit.TwitchPredictions
 				clone.Header = Header;
 				clone.Answer1 = Answer1;
 				clone.Answer2 = Answer2;
+				clone.Lenght = Lenght;
 				return clone;
 			}
 		}
@@ -195,21 +199,47 @@ namespace LiveSplit.TwitchPredictions
 				switch (OnTimerResetBehaviour)
 				{
 					case OnResetEventType.Cancel:
-						TwitchRequests.CancelPredictionAsync();
+						TwitchConnection.GetInstance().CancelPrediction();
 						return;
 					case OnResetEventType.CompleteWithOptionOne:
-						TwitchRequests.CompleteWithOptionAsync(1);
+						TwitchConnection.GetInstance().CompletePrediction(0);
 						return;
 					case OnResetEventType.CompleteWithOptionTwo:
-						TwitchRequests.CompleteWithOptionAsync(2);
+						TwitchConnection.GetInstance().CompletePrediction(1);
 						return;
 					case OnResetEventType.Nothing:
 						return;
 				}
 			}
 		}
+
+		internal void DoSplitEvent(int split)
+		{
+			if(split < EventList.Count)
+			{
+				var actionToPerform = EventList[split];
+				switch(actionToPerform.EventType)
+				{
+					case SplitEventType.None:
+						return;
+					case SplitEventType.FinishPredictionWithOption1:
+						TwitchConnection.GetInstance().CompletePrediction(0);
+						return;
+					case SplitEventType.FinishPredictionWithOption2:
+						TwitchConnection.GetInstance().CompletePrediction(1);
+						return;
+					case SplitEventType.StartPredictionOnSplitStart:
+						if (actionToPerform.Action.isUsed)
+							TwitchConnection.GetInstance().StartNewPrediction(actionToPerform.Action.Header, actionToPerform.Action.Answer1, actionToPerform.Action.Answer2, actionToPerform.Action.Lenght);
+						return;
+				}
+			}
+		}
+
+		internal void DoCompleteRunEvent()
+		{
+
+		}
 		#endregion
-
-
 	}
 }

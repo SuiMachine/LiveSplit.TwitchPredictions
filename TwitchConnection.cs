@@ -17,9 +17,9 @@ namespace LiveSplit.TwitchPredictions
 		#endregion
 
 		private static TwitchConnection _Instance;
+		private TwitchRequests twitchRequests;
 		private IrcDotNet.IrcUser userData;
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
-		public string BroadcasterID = "";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
 
@@ -62,11 +62,7 @@ namespace LiveSplit.TwitchPredictions
 		internal void Connect()
 		{
 			DebugLogging.Log("Connecting");
-			//Move that after connection and events are set!
-			TwitchRequests.ProvideBearerToken (_connectionData.Oauth, _connectionData.Channel);
-			TwitchRequests.CancelPredictionAsync();
-
-			//currentPrediction = TwitchRequests.GetCurrentPrediction();
+			twitchRequests = new TwitchRequests(_connectionData.Channel, _connectionData.Oauth);
 
 			return;
 			if (_irc == null)
@@ -89,9 +85,19 @@ namespace LiveSplit.TwitchPredictions
 
 		public async void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
 		{
-			var newPrediction = await TwitchRequests.StartPredictionAsync(Header, Option1, Option2, Lenght);
+			var newPrediction = await twitchRequests.StartPredictionAsync(Header, Option1, Option2, Lenght);
 			if (newPrediction != null)
 				CurrentPrediction = newPrediction;
+		}
+
+		public async void CompletePrediction(int winningOutcome)
+		{
+			await twitchRequests.CompleteWithOptionAsync(winningOutcome);
+		}
+
+		public async void CancelPrediction()
+		{
+			await twitchRequests.CancelPredictionAsync();
 		}
 
 		private void _irc_ChannelListReceived1(object sender, IrcDotNet.IrcChannelListReceivedEventArgs e)

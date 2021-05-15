@@ -34,30 +34,36 @@ namespace LiveSplit.TwitchPredictions.Forms
 			this.B_Cancel = new System.Windows.Forms.Button();
 			this.B_Ok = new System.Windows.Forms.Button();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.L_PreditionLenghtLimit = new System.Windows.Forms.Label();
-			this.RB_Prediction_Name = new System.Windows.Forms.RichTextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.panel1 = new System.Windows.Forms.Panel();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.L_CharactersUsedOutcome1 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.RB_Option1 = new System.Windows.Forms.RichTextBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.L_CharactersUsedOutcome2 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.RB_Option2 = new System.Windows.Forms.RichTextBox();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.L_CharactersUsedOutcome1 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.RB_Option1 = new System.Windows.Forms.RichTextBox();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.L_PreditionLenghtLimit = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
+			this.RB_Prediction_Name = new System.Windows.Forms.RichTextBox();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.Num_Lenght = new System.Windows.Forms.NumericUpDown();
+			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
-			this.groupBox1.SuspendLayout();
-			this.panel1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
-			this.panel2.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.panel3.SuspendLayout();
+			this.panel2.SuspendLayout();
+			this.groupBox1.SuspendLayout();
+			this.panel1.SuspendLayout();
+			this.groupBox4.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.Num_Lenght)).BeginInit();
+			this.tableLayoutPanel4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -72,7 +78,7 @@ namespace LiveSplit.TwitchPredictions.Forms
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(256, 433);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(333, 484);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tableLayoutPanel2
@@ -83,7 +89,7 @@ namespace LiveSplit.TwitchPredictions.Forms
 			this.tableLayoutPanel2.Controls.Add(this.B_Cancel, 1, 0);
 			this.tableLayoutPanel2.Controls.Add(this.B_Ok, 0, 0);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(9, 398);
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(86, 449);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -115,133 +121,39 @@ namespace LiveSplit.TwitchPredictions.Forms
 			// tableLayoutPanel3
 			// 
 			this.tableLayoutPanel3.ColumnCount = 1;
-			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel3.Controls.Add(this.groupBox3, 0, 1);
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel3.Controls.Add(this.groupBox1, 0, 0);
+			this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 1);
 			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
 			this.tableLayoutPanel3.RowCount = 2;
-			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.56621F));
-			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.43379F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(250, 389);
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 230F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(327, 440);
 			this.tableLayoutPanel3.TabIndex = 1;
-			// 
-			// groupBox1
-			// 
-			this.groupBox1.Controls.Add(this.panel1);
-			this.groupBox1.Controls.Add(this.RB_Prediction_Name);
-			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox1.Location = new System.Drawing.Point(3, 3);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(244, 206);
-			this.groupBox1.TabIndex = 0;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Name the prediction";
-			// 
-			// L_PreditionLenghtLimit
-			// 
-			this.L_PreditionLenghtLimit.AutoSize = true;
-			this.L_PreditionLenghtLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.L_PreditionLenghtLimit.Location = new System.Drawing.Point(96, 0);
-			this.L_PreditionLenghtLimit.Name = "L_PreditionLenghtLimit";
-			this.L_PreditionLenghtLimit.Size = new System.Drawing.Size(42, 13);
-			this.L_PreditionLenghtLimit.TabIndex = 2;
-			this.L_PreditionLenghtLimit.Text = "0 / 45";
-			// 
-			// RB_Prediction_Name
-			// 
-			this.RB_Prediction_Name.Dock = System.Windows.Forms.DockStyle.Top;
-			this.RB_Prediction_Name.Location = new System.Drawing.Point(3, 16);
-			this.RB_Prediction_Name.MaxLength = 45;
-			this.RB_Prediction_Name.Multiline = false;
-			this.RB_Prediction_Name.Name = "RB_Prediction_Name";
-			this.RB_Prediction_Name.Size = new System.Drawing.Size(238, 162);
-			this.RB_Prediction_Name.TabIndex = 1;
-			this.RB_Prediction_Name.Text = "";
-			this.RB_Prediction_Name.TextChanged += new System.EventHandler(this.RB_Prediction_Name_TextChanged);
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(3, 0);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(87, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Characters used:";
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.L_PreditionLenghtLimit);
-			this.panel1.Controls.Add(this.label1);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(3, 178);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(238, 19);
-			this.panel1.TabIndex = 4;
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.Add(this.groupBox2);
 			this.groupBox3.Controls.Add(this.panel2);
 			this.groupBox3.Controls.Add(this.RB_Option1);
 			this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox3.Location = new System.Drawing.Point(3, 215);
+			this.groupBox3.Location = new System.Drawing.Point(3, 3);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(244, 171);
+			this.groupBox3.Size = new System.Drawing.Size(315, 83);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Outcome 1";
-			// 
-			// panel2
-			// 
-			this.panel2.Controls.Add(this.L_CharactersUsedOutcome1);
-			this.panel2.Controls.Add(this.label3);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel2.Location = new System.Drawing.Point(3, 64);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(238, 19);
-			this.panel2.TabIndex = 4;
-			// 
-			// L_CharactersUsedOutcome1
-			// 
-			this.L_CharactersUsedOutcome1.AutoSize = true;
-			this.L_CharactersUsedOutcome1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.L_CharactersUsedOutcome1.Location = new System.Drawing.Point(96, 0);
-			this.L_CharactersUsedOutcome1.Name = "L_CharactersUsedOutcome1";
-			this.L_CharactersUsedOutcome1.Size = new System.Drawing.Size(42, 13);
-			this.L_CharactersUsedOutcome1.TabIndex = 2;
-			this.L_CharactersUsedOutcome1.Text = "0 / 25";
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 0);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(87, 13);
-			this.label3.TabIndex = 0;
-			this.label3.Text = "Characters used:";
-			// 
-			// RB_Option1
-			// 
-			this.RB_Option1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.RB_Option1.Location = new System.Drawing.Point(3, 16);
-			this.RB_Option1.MaxLength = 25;
-			this.RB_Option1.Multiline = false;
-			this.RB_Option1.Name = "RB_Option1";
-			this.RB_Option1.Size = new System.Drawing.Size(238, 48);
-			this.RB_Option1.TabIndex = 1;
-			this.RB_Option1.Text = "";
-			this.RB_Option1.TextChanged += new System.EventHandler(this.RB_Option1_TextChanged);
 			// 
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.panel3);
 			this.groupBox2.Controls.Add(this.RB_Option2);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox2.Location = new System.Drawing.Point(3, 83);
+			this.groupBox2.Location = new System.Drawing.Point(3, 92);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(238, 85);
+			this.groupBox2.Size = new System.Drawing.Size(315, 83);
 			this.groupBox2.TabIndex = 5;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Outcome 2";
@@ -253,7 +165,7 @@ namespace LiveSplit.TwitchPredictions.Forms
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel3.Location = new System.Drawing.Point(3, 64);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(232, 19);
+			this.panel3.Size = new System.Drawing.Size(309, 19);
 			this.panel3.TabIndex = 4;
 			// 
 			// L_CharactersUsedOutcome2
@@ -282,16 +194,161 @@ namespace LiveSplit.TwitchPredictions.Forms
 			this.RB_Option2.MaxLength = 25;
 			this.RB_Option2.Multiline = false;
 			this.RB_Option2.Name = "RB_Option2";
-			this.RB_Option2.Size = new System.Drawing.Size(232, 48);
+			this.RB_Option2.Size = new System.Drawing.Size(309, 48);
 			this.RB_Option2.TabIndex = 1;
 			this.RB_Option2.Text = "";
 			this.RB_Option2.TextChanged += new System.EventHandler(this.RB_Option2_TextChanged);
+			// 
+			// panel2
+			// 
+			this.panel2.Controls.Add(this.L_CharactersUsedOutcome1);
+			this.panel2.Controls.Add(this.label3);
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel2.Location = new System.Drawing.Point(3, 64);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(309, 19);
+			this.panel2.TabIndex = 4;
+			// 
+			// L_CharactersUsedOutcome1
+			// 
+			this.L_CharactersUsedOutcome1.AutoSize = true;
+			this.L_CharactersUsedOutcome1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.L_CharactersUsedOutcome1.Location = new System.Drawing.Point(96, 0);
+			this.L_CharactersUsedOutcome1.Name = "L_CharactersUsedOutcome1";
+			this.L_CharactersUsedOutcome1.Size = new System.Drawing.Size(42, 13);
+			this.L_CharactersUsedOutcome1.TabIndex = 2;
+			this.L_CharactersUsedOutcome1.Text = "0 / 25";
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(3, 0);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(87, 13);
+			this.label3.TabIndex = 0;
+			this.label3.Text = "Characters used:";
+			// 
+			// RB_Option1
+			// 
+			this.RB_Option1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.RB_Option1.Location = new System.Drawing.Point(3, 16);
+			this.RB_Option1.MaxLength = 25;
+			this.RB_Option1.Multiline = false;
+			this.RB_Option1.Name = "RB_Option1";
+			this.RB_Option1.Size = new System.Drawing.Size(309, 48);
+			this.RB_Option1.TabIndex = 1;
+			this.RB_Option1.Text = "";
+			this.RB_Option1.TextChanged += new System.EventHandler(this.RB_Option1_TextChanged);
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.panel1);
+			this.groupBox1.Controls.Add(this.RB_Prediction_Name);
+			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.groupBox1.Location = new System.Drawing.Point(3, 3);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(321, 204);
+			this.groupBox1.TabIndex = 0;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Name the prediction";
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.L_PreditionLenghtLimit);
+			this.panel1.Controls.Add(this.label1);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel1.Location = new System.Drawing.Point(3, 178);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(315, 19);
+			this.panel1.TabIndex = 4;
+			// 
+			// L_PreditionLenghtLimit
+			// 
+			this.L_PreditionLenghtLimit.AutoSize = true;
+			this.L_PreditionLenghtLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.L_PreditionLenghtLimit.Location = new System.Drawing.Point(96, 0);
+			this.L_PreditionLenghtLimit.Name = "L_PreditionLenghtLimit";
+			this.L_PreditionLenghtLimit.Size = new System.Drawing.Size(42, 13);
+			this.L_PreditionLenghtLimit.TabIndex = 2;
+			this.L_PreditionLenghtLimit.Text = "0 / 45";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(3, 0);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(87, 13);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Characters used:";
+			// 
+			// RB_Prediction_Name
+			// 
+			this.RB_Prediction_Name.Dock = System.Windows.Forms.DockStyle.Top;
+			this.RB_Prediction_Name.Location = new System.Drawing.Point(3, 16);
+			this.RB_Prediction_Name.MaxLength = 45;
+			this.RB_Prediction_Name.Multiline = false;
+			this.RB_Prediction_Name.Name = "RB_Prediction_Name";
+			this.RB_Prediction_Name.Size = new System.Drawing.Size(315, 162);
+			this.RB_Prediction_Name.TabIndex = 1;
+			this.RB_Prediction_Name.Text = "";
+			this.RB_Prediction_Name.TextChanged += new System.EventHandler(this.RB_Prediction_Name_TextChanged);
+			// 
+			// groupBox4
+			// 
+			this.groupBox4.Controls.Add(this.Num_Lenght);
+			this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.groupBox4.Location = new System.Drawing.Point(3, 181);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(315, 40);
+			this.groupBox4.TabIndex = 5;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Prediction Lenght (seconds):";
+			// 
+			// Num_Lenght
+			// 
+			this.Num_Lenght.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Num_Lenght.Location = new System.Drawing.Point(3, 16);
+			this.Num_Lenght.Maximum = new decimal(new int[] {
+            1800,
+            0,
+            0,
+            0});
+			this.Num_Lenght.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+			this.Num_Lenght.Name = "Num_Lenght";
+			this.Num_Lenght.Size = new System.Drawing.Size(309, 20);
+			this.Num_Lenght.TabIndex = 0;
+			this.Num_Lenght.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+			// 
+			// tableLayoutPanel4
+			// 
+			this.tableLayoutPanel4.ColumnCount = 1;
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel4.Controls.Add(this.groupBox4, 0, 2);
+			this.tableLayoutPanel4.Controls.Add(this.groupBox2, 0, 1);
+			this.tableLayoutPanel4.Controls.Add(this.groupBox3, 0, 0);
+			this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 213);
+			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+			this.tableLayoutPanel4.RowCount = 3;
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(321, 224);
+			this.tableLayoutPanel4.TabIndex = 3;
 			// 
 			// ActionEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(256, 433);
+			this.ClientSize = new System.Drawing.Size(333, 484);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
@@ -301,15 +358,18 @@ namespace LiveSplit.TwitchPredictions.Forms
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
-			this.groupBox1.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
 			this.groupBox3.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
 			this.panel3.PerformLayout();
+			this.panel2.ResumeLayout(false);
+			this.panel2.PerformLayout();
+			this.groupBox1.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
+			this.groupBox4.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.Num_Lenght)).EndInit();
+			this.tableLayoutPanel4.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -336,5 +396,8 @@ namespace LiveSplit.TwitchPredictions.Forms
 		private System.Windows.Forms.Label L_CharactersUsedOutcome1;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.RichTextBox RB_Option1;
+		private System.Windows.Forms.GroupBox groupBox4;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+		private System.Windows.Forms.NumericUpDown Num_Lenght;
 	}
 }
