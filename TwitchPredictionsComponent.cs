@@ -33,7 +33,7 @@ namespace LiveSplit.TwitchPredictions
 
 			//Set required timer events
 			_timer.CurrentState.OnStart += CurrentState_OnStart;
-			_timer.CurrentState.OnSkipSplit += CurrentState_OnSkipSplit;
+			_timer.CurrentState.OnSkipSplit -= CurrentState_OnSplit; //essentially identical on split
 			_timer.CurrentState.OnSplit += CurrentState_OnSplit;
 			_timer.CurrentState.OnReset += CurrentState_OnReset;
 		}
@@ -41,13 +41,7 @@ namespace LiveSplit.TwitchPredictions
 		private void CurrentState_OnStart(object sender, EventArgs e)
 		{
 			Settings.SplitsToEventsInstance.ClearWasUsedFlags();
-			//Settings.SplitsToEventsInstance.DoSplitEvent(0);
-		}
-
-		private void CurrentState_OnSkipSplit(object sender, EventArgs e)
-		{
-			var cast = (LiveSplitState)sender;
-			//Settings.SplitsToEventsInstance.DoSplitEvent(cast.CurrentSplitIndex);
+			Settings.SplitsToEventsInstance.DoSplitEvent(0);
 		}
 
 		private void CurrentState_OnSplit(object sender, EventArgs e)
@@ -72,7 +66,7 @@ namespace LiveSplit.TwitchPredictions
 
 		private void CurrentState_OnReset(object sender, TimerPhase value)
 		{
-			//Settings.SplitsToEventsInstance.DoResetEvent();
+			Settings.SplitsToEventsInstance.DoResetEvent();
 		}
 
 		public override void Dispose()
@@ -81,7 +75,7 @@ namespace LiveSplit.TwitchPredictions
 
 			_state.RunManuallyModified -= Settings._state_RunManuallyModified;
 			_timer.CurrentState.OnStart -= CurrentState_OnStart;
-			_timer.CurrentState.OnSkipSplit -= CurrentState_OnSkipSplit;
+			_timer.CurrentState.OnSkipSplit -= CurrentState_OnStart;
 			_timer.CurrentState.OnSplit -= CurrentState_OnSplit;
 			_timer.CurrentState.OnReset -= CurrentState_OnReset;
 
