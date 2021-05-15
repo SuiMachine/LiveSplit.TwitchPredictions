@@ -20,6 +20,7 @@ Bugs so far:
 -------------------
 * Editor is really junky with refreshing preview (colors)
 * Events get delayed by request thread sleep.
+* **Event delays are not implemented at all yet**.
 
 Possible improvements
 -------------------
