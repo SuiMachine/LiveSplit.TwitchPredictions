@@ -19,7 +19,6 @@ Developement progress
 Bugs so far:
 -------------------
 * Editor is really junky with refreshing preview (colors)
-* Requests make the timer freeze at the moment (this needs to be rewritten to run on seperate thread / task).
 * Events get delayed by request thread sleep.
 
 Possible improvements

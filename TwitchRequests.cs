@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LiveSplit.TwitchPredictions
 {
@@ -42,7 +43,7 @@ namespace LiveSplit.TwitchPredictions
 			return new Uri(uri + sb.ToString());
 		}
 
-		internal async System.Threading.Tasks.Task GetUserIDAsync()
+		internal async Task GetUserIDAsync()
 		{
 			DebugLogging.Log("Getting user ID");
 			var userTokenResult = await PerformGetRequestAsync(
@@ -63,7 +64,7 @@ namespace LiveSplit.TwitchPredictions
 			DebugLogging.Log("Bad get user ID request!");
 		}
 
-		internal async System.Threading.Tasks.Task<StreamPrediction> GetCurrentPredictionAsync()
+		internal async Task<StreamPrediction> GetCurrentPredictionAsync()
 		{
 			DebugLogging.Log("Getting current prediction");
 
@@ -98,11 +99,11 @@ namespace LiveSplit.TwitchPredictions
 		}
 
 		#region Get/Post/Patch Request wrappers
-		internal async System.Threading.Tasks.Task<dynamic> PerformGetRequestAsync(Uri uri, Dictionary<string, string> headers)
+		internal async Task<dynamic> PerformGetRequestAsync(Uri uri, Dictionary<string, string> headers)
 		{
 			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
 			if (timeToWait > TimeSpan.Zero)
-				System.Threading.Thread.Sleep((int)(timeToWait.TotalMilliseconds));
+				await Task.Delay((int)(timeToWait.TotalMilliseconds));
 			var request = WebRequest.Create(uri);
 			request.Headers.Add(clientIDHeader.Key, clientIDHeader.Value);
 			request.Headers.Add(BearerToken.Key, BearerToken.Value);
@@ -116,11 +117,11 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		internal async System.Threading.Tasks.Task<dynamic> PerformPostRequestAsync(Uri uri, Dictionary<string, string> headers, string bodyContent)
+		internal async Task<dynamic> PerformPostRequestAsync(Uri uri, Dictionary<string, string> headers, string bodyContent)
 		{
 			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
 			if (timeToWait > TimeSpan.Zero)
-				System.Threading.Thread.Sleep((int)(timeToWait.TotalMilliseconds));
+				await Task.Delay((int)(timeToWait.TotalMilliseconds));
 			var request = WebRequest.Create(uri);
 			request.ContentType = "application/json";
 			request.Method = "POST";
@@ -142,11 +143,11 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		internal async System.Threading.Tasks.Task<dynamic> PerformPatchRequestAsync(Uri uri, Dictionary<string, string> headers, string bodyContent)
+		internal async Task<dynamic> PerformPatchRequestAsync(Uri uri, Dictionary<string, string> headers, string bodyContent)
 		{
 			var timeToWait = ((lastRequest + TimeSpan.FromSeconds(2)) - DateTime.UtcNow);
 			if (timeToWait > TimeSpan.Zero)
-				System.Threading.Thread.Sleep((int)(timeToWait.TotalMilliseconds));
+				await Task.Delay((int)(timeToWait.TotalMilliseconds));
 			var request = WebRequest.Create(uri);
 			request.ContentType = "application/json";
 			request.Method = "PATCH";
@@ -169,7 +170,7 @@ namespace LiveSplit.TwitchPredictions
 		}
 		#endregion
 
-		internal async System.Threading.Tasks.Task<StreamPrediction> StartPredictionAsync(string header, string option1, string option2, uint lenght)
+		internal async Task<StreamPrediction> StartPredictionAsync(string header, string option1, string option2, uint lenght)
 		{
 			StreamPrediction newPrediction;
 			DebugLogging.Log("Trying to start a new prediction.");
@@ -256,7 +257,7 @@ namespace LiveSplit.TwitchPredictions
 			}
 		}
 
-		internal async System.Threading.Tasks.Task<StreamPrediction> CompleteWithOptionAsync(int winningOption)
+		internal async Task<StreamPrediction> CompleteWithOptionAsync(int winningOption)
 		{
 			if (BroadcasterID == "")
 				await GetUserIDAsync();
@@ -310,7 +311,7 @@ namespace LiveSplit.TwitchPredictions
 			return null;
 		}
 
-		internal async System.Threading.Tasks.Task<StreamPrediction> CancelPredictionAsync()
+		internal async Task<StreamPrediction> CancelPredictionAsync()
 		{
 			if (BroadcasterID == "")
 				await GetUserIDAsync();

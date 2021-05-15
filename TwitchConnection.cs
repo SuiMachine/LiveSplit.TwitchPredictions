@@ -45,6 +45,7 @@ namespace LiveSplit.TwitchPredictions
 		public TwitchConnection()
 		{
 			_connectionData = XmlSerialiationDeserilation.ReadFromXMLFile<TwitchConnectionData>(Path.Combine(USER_DIRECTORY, USER_FILE));
+			twitchRequests = new TwitchRequests(_connectionData.Channel, _connectionData.Oauth);
 		}
 
 		//https://dev.twitch.tv/docs/api/reference#create-prediction
@@ -52,7 +53,6 @@ namespace LiveSplit.TwitchPredictions
 		internal void Connect()
 		{
 			DebugLogging.Log("Connecting");
-			twitchRequests = new TwitchRequests(_connectionData.Channel, _connectionData.Oauth);
 
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
