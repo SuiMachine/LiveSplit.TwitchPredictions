@@ -31,6 +31,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.B_SaveSettings = new System.Windows.Forms.Button();
+			this.B_EditSplitEvents = new System.Windows.Forms.Button();
 			this.TB_Channel = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.CB_ConnectOnComponentLaunch = new System.Windows.Forms.CheckBox();
@@ -45,7 +46,6 @@ namespace LiveSplit.TwitchPredictions
 			this.TB_ServerAdress = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.B_EditSplitEvents = new System.Windows.Forms.Button();
 			this.RB_DebugView = new System.Windows.Forms.RichTextBox();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NumB_Port)).BeginInit();
@@ -79,13 +79,23 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// B_SaveSettings
 			// 
-			this.B_SaveSettings.Location = new System.Drawing.Point(6, 127);
+			this.B_SaveSettings.Location = new System.Drawing.Point(108, 98);
 			this.B_SaveSettings.Name = "B_SaveSettings";
 			this.B_SaveSettings.Size = new System.Drawing.Size(96, 23);
 			this.B_SaveSettings.TabIndex = 14;
 			this.B_SaveSettings.Text = "Save";
 			this.B_SaveSettings.UseVisualStyleBackColor = true;
 			this.B_SaveSettings.Click += new System.EventHandler(this.B_SaveSettings_Click);
+			// 
+			// B_EditSplitEvents
+			// 
+			this.B_EditSplitEvents.Location = new System.Drawing.Point(9, 127);
+			this.B_EditSplitEvents.Name = "B_EditSplitEvents";
+			this.B_EditSplitEvents.Size = new System.Drawing.Size(195, 23);
+			this.B_EditSplitEvents.TabIndex = 0;
+			this.B_EditSplitEvents.Text = "Edit split events";
+			this.B_EditSplitEvents.UseVisualStyleBackColor = true;
+			this.B_EditSplitEvents.Click += new System.EventHandler(this.B_EditSplitEvents_Click);
 			// 
 			// TB_Channel
 			// 
@@ -110,16 +120,16 @@ namespace LiveSplit.TwitchPredictions
 			this.CB_ConnectOnComponentLaunch.Name = "CB_ConnectOnComponentLaunch";
 			this.CB_ConnectOnComponentLaunch.Size = new System.Drawing.Size(126, 30);
 			this.CB_ConnectOnComponentLaunch.TabIndex = 11;
-			this.CB_ConnectOnComponentLaunch.Text = "Connect on component launch";
+			this.CB_ConnectOnComponentLaunch.Text = "Connect to IRC on component launch";
 			this.CB_ConnectOnComponentLaunch.UseVisualStyleBackColor = true;
 			// 
 			// B_Connect
 			// 
-			this.B_Connect.Location = new System.Drawing.Point(345, 131);
+			this.B_Connect.Location = new System.Drawing.Point(315, 131);
 			this.B_Connect.Name = "B_Connect";
-			this.B_Connect.Size = new System.Drawing.Size(96, 23);
+			this.B_Connect.Size = new System.Drawing.Size(126, 23);
 			this.B_Connect.TabIndex = 10;
-			this.B_Connect.Text = "Connect";
+			this.B_Connect.Text = "Connect to IRC";
 			this.B_Connect.UseVisualStyleBackColor = true;
 			this.B_Connect.Click += new System.EventHandler(this.B_Connect_Click);
 			// 
@@ -227,16 +237,6 @@ namespace LiveSplit.TwitchPredictions
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Debug view";
-			// 
-			// B_EditSplitEvents
-			// 
-			this.B_EditSplitEvents.Location = new System.Drawing.Point(121, 127);
-			this.B_EditSplitEvents.Name = "B_EditSplitEvents";
-			this.B_EditSplitEvents.Size = new System.Drawing.Size(104, 23);
-			this.B_EditSplitEvents.TabIndex = 0;
-			this.B_EditSplitEvents.Text = "Edit split events";
-			this.B_EditSplitEvents.UseVisualStyleBackColor = true;
-			this.B_EditSplitEvents.Click += new System.EventHandler(this.B_EditSplitEvents_Click);
 			// 
 			// RB_DebugView
 			// 

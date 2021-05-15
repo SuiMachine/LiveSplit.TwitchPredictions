@@ -307,6 +307,8 @@ namespace LiveSplit.TwitchPredictions
 						}
 					}
 				}
+				DebugLogging.Log("Prediction already closed");
+				return prediction;
 			}
 			return null;
 		}
@@ -362,9 +364,11 @@ namespace LiveSplit.TwitchPredictions
 					DebugLogging.Log("[ERROR] Incorrect response?");
 					return null;
 				}
+				DebugLogging.Log("Prediction already closed");
+				return prediction;
 			}
 
-			DebugLogging.Log("Can not cancel prediction. Broadcaster ID is null!");
+			DebugLogging.Log("[ERROR] Can not cancel prediction. Broadcaster ID is null!");
 			return null;
 		}
 	}

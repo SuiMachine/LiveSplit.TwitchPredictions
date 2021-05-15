@@ -1,4 +1,12 @@
 <updates>
+  <update version="0.1.1">
+    <files>
+      <file path="Components/LiveSplit.TwitchPredictions.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>Reduced amount of requests done (no more nulling out current request on prediction close and cancel).</change>
+    </changelog>
+  </update>
   <update version="0.1">
     <files>
       <file path="Components/LiveSplit.TwitchPredictions.dll" status="changed"/>
