@@ -10,17 +10,16 @@ Developement progress
 -------------------
 * Obtaining oauth - 100%
 * Storing loging information outside of LiveSplit (to prevent data leaking out when a user decides to share layout files) - 100%
-* Connecting to chat - 60%
-* Storing split-event information per game/category - 85%
-* Split-prediction event editor - 85%
-* Verification of split-events list - 50%
-* Running predictions based on split-event list - 90%
+* Connecting to chat - 80%
+* Storing split-event information per game/category - 95%
+* Split-prediction event editor - 90%
+* Verification of split-events list - 70%
+* Running predictions based on split-event list - 95%
 
 Bugs so far:
 -------------------
 * Editor is really junky with refreshing preview (colors)
 * Events get delayed by request thread sleep.
-* **Event delays are not implemented at all yet**.
 
 Possible improvements
 -------------------

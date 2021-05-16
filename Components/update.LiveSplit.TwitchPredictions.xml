@@ -1,4 +1,13 @@
 <updates>
+  <update version="0.2.0">
+    <files>
+      <file path="Components/LiveSplit.TwitchPredictions.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>Added event delays and their fixed serialization.</change>
+	  <change>Improved connecting to IRC and posting messages via IRC.</change>
+    </changelog>
+  </update>
   <update version="0.1.1">
     <files>
       <file path="Components/LiveSplit.TwitchPredictions.dll" status="changed"/>
