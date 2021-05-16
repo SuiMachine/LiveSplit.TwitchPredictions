@@ -98,7 +98,7 @@ namespace LiveSplit.TwitchPredictions
 		private void _irc_Registered(object sender, EventArgs e)
 		{
 			DebugLogging.Log("[IRC] Registered");
-			JoinChannel("suicidemachinebot");
+			JoinChannel(_connectionData.Channel);
 		}
 
 		private void JoinChannel(string channel)

@@ -4,6 +4,14 @@
       <file path="Components/LiveSplit.TwitchPredictions.dll" status="changed"/>
     </files>
     <changelog>
+      <change>Replaced joining suicidemachinebot IRC channel with one specified in settings (not that it's useful for anything at the moment).</change>
+    </changelog>
+  </update>
+  <update version="0.1.1">
+    <files>
+      <file path="Components/LiveSplit.TwitchPredictions.dll" status="changed"/>
+    </files>
+    <changelog>
       <change>Reduced amount of requests done (no more nulling out current request on prediction close and cancel).</change>
     </changelog>
   </update>
