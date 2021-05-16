@@ -19,7 +19,7 @@ namespace LiveSplit.TwitchPredictions
 				string textToPost = DateTime.Now.ToShortTimeString() + ": " + text;
 				Debug.WriteLine("[PredictionsPlugin] " + textToPost);
 				_settings.RB_DebugView.AppendText(textToPost + "\n");
-				if (_settings.SplitsToEventsInstance.NotifyOfErrorsInChat && !dontPostInChat)
+				if (_settings.SplitsToEventsInstance?.NotifyOfErrorsInChat ?? false && !dontPostInChat)
 					TwitchConnection.GetInstance().WriteInChat("[Prediction Plugin] " + text);
 			}
 		}
