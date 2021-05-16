@@ -32,6 +32,7 @@ namespace LiveSplit.TwitchPredictions
 		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlElement] public OnResetEventType OnRunCompletion { get; set; }
+		[XmlElement] public TimeSpan OnRunCompletionDelay { get; set; }
 
 		[XmlIgnore] public string Filename { get; set; }
 		[XmlIgnore] public bool RequiresManualFixing { get; set; }
@@ -108,6 +109,7 @@ namespace LiveSplit.TwitchPredictions
 			EventList = new List<SplitEvent>();
 			OnTimerResetBehaviour = OnResetEventType.Cancel;
 			OnRunCompletion = OnResetEventType.Nothing;
+			OnRunCompletionDelay = TimeSpan.Zero;
 			Filename = "";
 			UsePBPrediction = true;
 			RequiresManualFixing = false;
@@ -122,6 +124,7 @@ namespace LiveSplit.TwitchPredictions
 			clone.EventList = EventList.Select(x => (SplitEvent)x.Clone()).ToList();
 			clone.OnTimerResetBehaviour = OnTimerResetBehaviour;
 			clone.OnRunCompletion = OnRunCompletion;
+			clone.OnRunCompletionDelay = OnRunCompletionDelay;
 			clone.Filename = Filename;
 			clone.RequiresManualFixing = RequiresManualFixing;
 			return clone;
@@ -210,13 +213,13 @@ namespace LiveSplit.TwitchPredictions
 				switch (OnTimerResetBehaviour)
 				{
 					case OnResetEventType.Cancel:
-						TwitchConnection.GetInstance().CancelPrediction();
+						TwitchConnection.GetInstance().CancelPrediction(TimeSpan.Zero);
 						return;
 					case OnResetEventType.CompleteWithOptionOne:
-						TwitchConnection.GetInstance().CompletePrediction(0);
+						TwitchConnection.GetInstance().CompletePrediction(0, TimeSpan.Zero);
 						return;
 					case OnResetEventType.CompleteWithOptionTwo:
-						TwitchConnection.GetInstance().CompletePrediction(1);
+						TwitchConnection.GetInstance().CompletePrediction(1, TimeSpan.Zero);
 						return;
 					case OnResetEventType.Nothing:
 						return;
@@ -239,10 +242,10 @@ namespace LiveSplit.TwitchPredictions
 					case SplitEventType.None:
 						return;
 					case SplitEventType.FinishPredictionWithOption1:
-						TwitchConnection.GetInstance().CompletePrediction(0);
+						TwitchConnection.GetInstance().CompletePrediction(0, actionToPerform.Delay);
 						return;
 					case SplitEventType.FinishPredictionWithOption2:
-						TwitchConnection.GetInstance().CompletePrediction(1);
+						TwitchConnection.GetInstance().CompletePrediction(1, actionToPerform.Delay);
 						return;
 					case SplitEventType.StartPredictionOnSplitStart:
 						if (actionToPerform.Action.isUsed)
@@ -257,9 +260,9 @@ namespace LiveSplit.TwitchPredictions
 			if (UsePBPrediction)
 			{
 				if (isPB)
-					TwitchConnection.GetInstance().CompletePrediction(0);
+					TwitchConnection.GetInstance().CompletePrediction(0, OnRunCompletionDelay);
 				else
-					TwitchConnection.GetInstance().CompletePrediction(1);
+					TwitchConnection.GetInstance().CompletePrediction(1, OnRunCompletionDelay);
 			}
 			else
 			{
@@ -268,13 +271,13 @@ namespace LiveSplit.TwitchPredictions
 					case OnResetEventType.Nothing:
 						return;
 					case OnResetEventType.Cancel:
-						TwitchConnection.GetInstance().CancelPrediction();
+						TwitchConnection.GetInstance().CancelPrediction(OnRunCompletionDelay);
 						return;
 					case OnResetEventType.CompleteWithOptionOne:
-						TwitchConnection.GetInstance().CompletePrediction(0);
+						TwitchConnection.GetInstance().CompletePrediction(0, OnRunCompletionDelay);
 						return;
 					case OnResetEventType.CompleteWithOptionTwo:
-						TwitchConnection.GetInstance().CompletePrediction(1);
+						TwitchConnection.GetInstance().CompletePrediction(1, OnRunCompletionDelay);
 						return;
 				}
 			}

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace LiveSplit.TwitchPredictions
@@ -28,7 +29,7 @@ namespace LiveSplit.TwitchPredictions
 		private Control eCtl;
 
 		#region Stuff responsible for intiation and display
-		public SplitEventsEditorForm(Model.LiveSplitState splitStates, SplitsToEvents splitToEvents)
+		public SplitEventsEditorForm(LiveSplitState splitStates, SplitsToEvents splitToEvents)
 		{
 			this.splitStates = splitStates;
 			this.splitToEvents = splitToEvents;
@@ -100,6 +101,7 @@ namespace LiveSplit.TwitchPredictions
 			CBox_RunCompletion.DataBindings.Add("SelectedValue", this.splitToEvents, "OnRunCompletion", false, DataSourceUpdateMode.OnPropertyChanged);
 			CB_UsePBPrediction.DataBindings.Add("Checked", this.splitToEvents, "UsePBPrediction", false, DataSourceUpdateMode.OnPropertyChanged);
 			CB_NotifyOfErrorsInChat.DataBindings.Add("Checked", this.splitToEvents, "NotifyOfErrorsInChat", false, DataSourceUpdateMode.OnPropertyChanged);
+			TB_OnCompletionDelay.DataBindings.Add("Text", this, "EndSplitOffset");
 		}
 
 		private void Grid_SplitSettings_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -235,6 +237,26 @@ namespace LiveSplit.TwitchPredictions
 			{
 				Parsed = parsed;
 				Value = value;
+			}
+		}
+
+		public string EndSplitOffset
+		{
+			get
+			{
+				return TimeFormatter.Format(splitToEvents.OnRunCompletionDelay);
+			}
+			set
+			{
+				if (Regex.IsMatch(value, "[^0-9:.\\-−]"))
+					return;
+
+				try
+				{
+					splitToEvents.OnRunCompletionDelay = TimeSpanParser.Parse(value);
+					SetDirty();
+				}
+				catch { }
 			}
 		}
 

@@ -49,6 +49,8 @@ namespace LiveSplit.TwitchPredictions
 			this.B_ExportEvents = new System.Windows.Forms.Button();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.CB_NotifyOfErrorsInChat = new System.Windows.Forms.CheckBox();
+			this.TB_OnCompletionDelay = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -95,6 +97,8 @@ namespace LiveSplit.TwitchPredictions
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.label1);
+			this.panel1.Controls.Add(this.TB_OnCompletionDelay);
 			this.panel1.Controls.Add(this.CB_UsePBPrediction);
 			this.panel1.Controls.Add(this.CBox_RunCompletion);
 			this.panel1.Controls.Add(this.label2);
@@ -109,7 +113,7 @@ namespace LiveSplit.TwitchPredictions
 			// CB_UsePBPrediction
 			// 
 			this.CB_UsePBPrediction.AutoSize = true;
-			this.CB_UsePBPrediction.Location = new System.Drawing.Point(553, 5);
+			this.CB_UsePBPrediction.Location = new System.Drawing.Point(771, 5);
 			this.CB_UsePBPrediction.Name = "CB_UsePBPrediction";
 			this.CB_UsePBPrediction.Size = new System.Drawing.Size(148, 17);
 			this.CB_UsePBPrediction.TabIndex = 8;
@@ -304,6 +308,22 @@ namespace LiveSplit.TwitchPredictions
 			this.CB_NotifyOfErrorsInChat.UseVisualStyleBackColor = true;
 			this.CB_NotifyOfErrorsInChat.CheckedChanged += new System.EventHandler(this.CB_NotifyOfErrorsInChat_CheckedChanged);
 			// 
+			// TB_OnCompletionDelay
+			// 
+			this.TB_OnCompletionDelay.Location = new System.Drawing.Point(665, 4);
+			this.TB_OnCompletionDelay.Name = "TB_OnCompletionDelay";
+			this.TB_OnCompletionDelay.Size = new System.Drawing.Size(100, 20);
+			this.TB_OnCompletionDelay.TabIndex = 9;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(553, 6);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(106, 13);
+			this.label1.TabIndex = 10;
+			this.label1.Text = "On completion delay:";
+			// 
 			// SplitEventsEditorForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -347,5 +367,7 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
 		private System.Windows.Forms.CheckBox CB_NotifyOfErrorsInChat;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox TB_OnCompletionDelay;
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace LiveSplit.TwitchPredictions
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
+		private List<Task> delayTasksRunning = new List<Task>();
 
 		string USER_DIRECTORY => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LiveSplit.TwitchPredictions");
 		string USER_FILE => "Config.xml";
@@ -137,14 +139,35 @@ namespace LiveSplit.TwitchPredictions
 				CurrentPrediction = newPrediction;
 		}
 
-		public async void CompletePrediction(int winningOutcome)
+		public async void CompletePrediction(int winningOutcome, TimeSpan delay)
 		{
+			if(delay != TimeSpan.Zero)
+			{
+				var waitTask = Task.Delay(delay);
+				delayTasksRunning.Add(waitTask);
+				await waitTask;
+				if (!delayTasksRunning.Contains(waitTask))
+					return;
+				delayTasksRunning.Remove(waitTask);
+			}
+
+
 			var result = await twitchRequests.CompleteWithOptionAsync(winningOutcome);
 			CurrentPrediction = result;
 		}
 
-		public async void CancelPrediction()
+		public async void CancelPrediction(TimeSpan delay)
 		{
+			if (delay != TimeSpan.Zero)
+			{
+				var waitTask = Task.Delay(delay);
+				delayTasksRunning.Add(waitTask);
+				await waitTask;
+				if (!delayTasksRunning.Contains(waitTask))
+					return;
+				delayTasksRunning.Remove(waitTask);
+			}
+
 			var result = await twitchRequests.CancelPredictionAsync();
 			CurrentPrediction = result;
 		}
