@@ -32,7 +32,7 @@ namespace LiveSplit.TwitchPredictions
 		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlElement] public OnResetEventType OnRunCompletion { get; set; }
-		[XmlElement] public TimeSpan OnRunCompletionDelay { get; set; }
+		[XmlElement] public uint OnRunCompletionDelay { get; set; }
 
 		[XmlIgnore] public string Filename { get; set; }
 		[XmlIgnore] public bool RequiresManualFixing { get; set; }
@@ -109,7 +109,7 @@ namespace LiveSplit.TwitchPredictions
 			EventList = new List<SplitEvent>();
 			OnTimerResetBehaviour = OnResetEventType.Cancel;
 			OnRunCompletion = OnResetEventType.Nothing;
-			OnRunCompletionDelay = TimeSpan.Zero;
+			OnRunCompletionDelay = 0;
 			Filename = "";
 			UsePBPrediction = true;
 			RequiresManualFixing = false;
@@ -260,9 +260,9 @@ namespace LiveSplit.TwitchPredictions
 			if (UsePBPrediction)
 			{
 				if (isPB)
-					TwitchConnection.GetInstance().CompletePrediction(0, OnRunCompletionDelay);
+					TwitchConnection.GetInstance().CompletePrediction(0, TimeSpan.FromSeconds(OnRunCompletionDelay));
 				else
-					TwitchConnection.GetInstance().CompletePrediction(1, OnRunCompletionDelay);
+					TwitchConnection.GetInstance().CompletePrediction(1, TimeSpan.FromSeconds(OnRunCompletionDelay));
 			}
 			else
 			{
@@ -271,13 +271,13 @@ namespace LiveSplit.TwitchPredictions
 					case OnResetEventType.Nothing:
 						return;
 					case OnResetEventType.Cancel:
-						TwitchConnection.GetInstance().CancelPrediction(OnRunCompletionDelay);
+						TwitchConnection.GetInstance().CancelPrediction(TimeSpan.FromSeconds(OnRunCompletionDelay));
 						return;
 					case OnResetEventType.CompleteWithOptionOne:
-						TwitchConnection.GetInstance().CompletePrediction(0, OnRunCompletionDelay);
+						TwitchConnection.GetInstance().CompletePrediction(0, TimeSpan.FromSeconds(OnRunCompletionDelay));
 						return;
 					case OnResetEventType.CompleteWithOptionTwo:
-						TwitchConnection.GetInstance().CompletePrediction(1, OnRunCompletionDelay);
+						TwitchConnection.GetInstance().CompletePrediction(1, TimeSpan.FromSeconds(OnRunCompletionDelay));
 						return;
 				}
 			}

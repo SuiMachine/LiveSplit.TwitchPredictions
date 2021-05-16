@@ -244,7 +244,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			get
 			{
-				return TimeFormatter.Format(splitToEvents.OnRunCompletionDelay);
+				return TimeFormatter.Format(TimeSpan.FromSeconds(splitToEvents.OnRunCompletionDelay));
 			}
 			set
 			{
@@ -253,7 +253,7 @@ namespace LiveSplit.TwitchPredictions
 
 				try
 				{
-					splitToEvents.OnRunCompletionDelay = TimeSpanParser.Parse(value);
+					splitToEvents.OnRunCompletionDelay = (uint)TimeSpanParser.Parse(value).TotalSeconds;
 					SetDirty();
 				}
 				catch { }
