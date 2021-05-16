@@ -27,7 +27,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			InitializeComponent();
 			DebugLogging._settings = this;
-			DebugLogging.Log("Created settings and set reference");
+			DebugLogging.Log("Created settings and set reference", true);
 			this.splitStates = splitStates;
 			_twitchConnection = TwitchConnection.GetInstance();
 

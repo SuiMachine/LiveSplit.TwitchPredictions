@@ -47,13 +47,15 @@ namespace LiveSplit.TwitchPredictions
 			this.B_MoveUp = new System.Windows.Forms.Button();
 			this.B_ImportEvents = new System.Windows.Forms.Button();
 			this.B_ExportEvents = new System.Windows.Forms.Button();
-			this.CB_UseMessageboxErrors = new System.Windows.Forms.CheckBox();
+			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+			this.CB_NotifyOfErrorsInChat = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).BeginInit();
 			this.tableLayoutPanel4.SuspendLayout();
+			this.tableLayoutPanel5.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// CBox_OnRunReset
@@ -63,6 +65,7 @@ namespace LiveSplit.TwitchPredictions
 			this.CBox_OnRunReset.Name = "CBox_OnRunReset";
 			this.CBox_OnRunReset.Size = new System.Drawing.Size(190, 21);
 			this.CBox_OnRunReset.TabIndex = 3;
+			this.CBox_OnRunReset.SelectedIndexChanged += new System.EventHandler(this.CBox_OnRunReset_SelectedIndexChanged);
 			// 
 			// label6
 			// 
@@ -121,6 +124,7 @@ namespace LiveSplit.TwitchPredictions
 			this.CBox_RunCompletion.Name = "CBox_RunCompletion";
 			this.CBox_RunCompletion.Size = new System.Drawing.Size(190, 21);
 			this.CBox_RunCompletion.TabIndex = 7;
+			this.CBox_RunCompletion.SelectedIndexChanged += new System.EventHandler(this.CBox_RunCompletion_SelectedIndexChanged);
 			// 
 			// label2
 			// 
@@ -217,7 +221,7 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel4.Controls.Add(this.B_MoveUp, 0, 0);
 			this.tableLayoutPanel4.Controls.Add(this.B_ImportEvents, 0, 2);
 			this.tableLayoutPanel4.Controls.Add(this.B_ExportEvents, 0, 3);
-			this.tableLayoutPanel4.Controls.Add(this.CB_UseMessageboxErrors, 0, 4);
+			this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 4);
 			this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -274,15 +278,31 @@ namespace LiveSplit.TwitchPredictions
 			this.B_ExportEvents.Text = "Export events";
 			this.B_ExportEvents.UseVisualStyleBackColor = true;
 			// 
-			// CB_UseMessageboxErrors
+			// tableLayoutPanel5
 			// 
-			this.CB_UseMessageboxErrors.Dock = System.Windows.Forms.DockStyle.Top;
-			this.CB_UseMessageboxErrors.Location = new System.Drawing.Point(3, 139);
-			this.CB_UseMessageboxErrors.Name = "CB_UseMessageboxErrors";
-			this.CB_UseMessageboxErrors.Size = new System.Drawing.Size(163, 47);
-			this.CB_UseMessageboxErrors.TabIndex = 7;
-			this.CB_UseMessageboxErrors.Text = "Notify of errors with Message Boxes (do NOT uses this when grinding runs!)\r\n";
-			this.CB_UseMessageboxErrors.UseVisualStyleBackColor = true;
+			this.tableLayoutPanel5.ColumnCount = 1;
+			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel5.Controls.Add(this.CB_NotifyOfErrorsInChat, 0, 0);
+			this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 139);
+			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+			this.tableLayoutPanel5.RowCount = 2;
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel5.Size = new System.Drawing.Size(163, 110);
+			this.tableLayoutPanel5.TabIndex = 7;
+			// 
+			// CB_NotifyOfErrorsInChat
+			// 
+			this.CB_NotifyOfErrorsInChat.AutoSize = true;
+			this.CB_NotifyOfErrorsInChat.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.CB_NotifyOfErrorsInChat.Location = new System.Drawing.Point(3, 3);
+			this.CB_NotifyOfErrorsInChat.Name = "CB_NotifyOfErrorsInChat";
+			this.CB_NotifyOfErrorsInChat.Size = new System.Drawing.Size(157, 49);
+			this.CB_NotifyOfErrorsInChat.TabIndex = 0;
+			this.CB_NotifyOfErrorsInChat.Text = "Notify of errors in chat";
+			this.CB_NotifyOfErrorsInChat.UseVisualStyleBackColor = true;
+			this.CB_NotifyOfErrorsInChat.CheckedChanged += new System.EventHandler(this.CB_NotifyOfErrorsInChat_CheckedChanged);
 			// 
 			// SplitEventsEditorForm
 			// 
@@ -300,6 +320,8 @@ namespace LiveSplit.TwitchPredictions
 			this.tableLayoutPanel3.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.grid_SplitSettings)).EndInit();
 			this.tableLayoutPanel4.ResumeLayout(false);
+			this.tableLayoutPanel5.ResumeLayout(false);
+			this.tableLayoutPanel5.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -323,6 +345,7 @@ namespace LiveSplit.TwitchPredictions
 		private System.Windows.Forms.CheckBox CB_UsePBPrediction;
 		private System.Windows.Forms.ComboBox CBox_RunCompletion;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.CheckBox CB_UseMessageboxErrors;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+		private System.Windows.Forms.CheckBox CB_NotifyOfErrorsInChat;
 	}
 }

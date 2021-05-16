@@ -96,10 +96,10 @@ namespace LiveSplit.TwitchPredictions
 			#endregion
 
 			AddComboboxDataSources();
-			CBox_OnRunReset.DataBindings.Add("SelectedValue", splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
-			CBox_RunCompletion.DataBindings.Add("SelectedValue", splitToEvents, "OnRunCompletion", false, DataSourceUpdateMode.OnPropertyChanged);
-			CB_UsePBPrediction.DataBindings.Add("Checked", splitToEvents, "UsePBPrediction", false, DataSourceUpdateMode.OnPropertyChanged);
-			CB_UseMessageboxErrors.DataBindings.Add("Checked", splitToEvents, "UseMessageBoxes", false, DataSourceUpdateMode.OnPropertyChanged);
+			CBox_OnRunReset.DataBindings.Add("SelectedValue", this.splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
+			CBox_RunCompletion.DataBindings.Add("SelectedValue", this.splitToEvents, "OnRunCompletion", false, DataSourceUpdateMode.OnPropertyChanged);
+			CB_UsePBPrediction.DataBindings.Add("Checked", this.splitToEvents, "UsePBPrediction", false, DataSourceUpdateMode.OnPropertyChanged);
+			CB_NotifyOfErrorsInChat.DataBindings.Add("Checked", this.splitStates, "NotifyOfErrorsInChat", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		private void Grid_SplitSettings_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -362,6 +362,7 @@ namespace LiveSplit.TwitchPredictions
 					}
 				}
 			}
+			SetDirty();
 			grid_SplitSettings.Invalidate();
 		}
 
@@ -408,6 +409,7 @@ namespace LiveSplit.TwitchPredictions
 					}
 				}
 			}
+			SetDirty();
 			grid_SplitSettings.Invalidate();
 		}
 		#endregion
@@ -467,6 +469,22 @@ namespace LiveSplit.TwitchPredictions
 		private void CB_UsePBPrediction_CheckedChanged(object sender, EventArgs e)
 		{
 			CBox_RunCompletion.Enabled = !CB_UsePBPrediction.Checked;
+			SetDirty();
+		}
+
+		private void CB_NotifyOfErrorsInChat_CheckedChanged(object sender, EventArgs e)
+		{
+			SetDirty();
+		}
+
+		private void CBox_OnRunReset_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetDirty();
+		}
+
+		private void CBox_RunCompletion_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetDirty();
 		}
 	}
 }

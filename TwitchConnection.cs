@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LiveSplit.TwitchPredictions
@@ -17,8 +18,10 @@ namespace LiveSplit.TwitchPredictions
 		string USER_FILE => "Config.xml";
 
 		internal TwitchConnectionData _connectionData;
+
 		private IrcDotNet.IrcClient _irc;
 		internal StreamPrediction CurrentPrediction { get; private set; }
+		private bool TriedConnectingToIrc = false;
 
 		[Serializable]
 		public class TwitchConnectionData
@@ -48,23 +51,15 @@ namespace LiveSplit.TwitchPredictions
 			twitchRequests = new TwitchRequests(_connectionData.Channel, _connectionData.Oauth);
 		}
 
-		//https://dev.twitch.tv/docs/api/reference#create-prediction
-
 		internal void Connect()
 		{
-			DebugLogging.Log("Connecting");
+			DebugLogging.Log("Connecting", true);
 
 			if (_irc == null)
 				_irc = new IrcDotNet.IrcClient();
 			else
 			{
-				_irc.Disconnect();
-				_irc.ErrorMessageReceived -= _irc_ErrorMessageReceived;
-				_irc.Connected -= _irc_Connected;
-				_irc.Disconnected -= _irc_Disconnected;
-				_irc.ClientInfoReceived -= _irc_ClientInfoReceived;
-				_irc.RawMessageReceived -= _irc_RawMessageReceived;
-				_irc.Registered -= _irc_Registered;
+				Disconnect();
 			}
 
 			_irc.Connect(_connectionData.Address, _connectionData.Port, new IrcDotNet.IrcUserRegistrationInfo() { NickName = _connectionData.Username, UserName = _connectionData.Username, RealName = _connectionData.Username, Password = "oauth:" + _connectionData.Oauth });
@@ -74,6 +69,67 @@ namespace LiveSplit.TwitchPredictions
 			_irc.ClientInfoReceived += _irc_ClientInfoReceived;
 			_irc.RawMessageReceived += _irc_RawMessageReceived;
 			_irc.Registered += _irc_Registered;
+		}
+
+		internal async void WriteInChat(string text)
+		{
+			if (TriedConnectingToIrc)
+				return;
+
+			if (_irc == null || !_irc.IsConnected)
+			{
+				Connect();
+				await Task.Delay(2 * 1000);
+			}
+
+			if(!_irc.IsConnected)
+			{
+				DebugLogging.Log("Failed to connect to IRC!", true);
+				TriedConnectingToIrc = true;
+				return;
+			}
+
+			if(!_irc.IsRegistered)
+				await Task.Delay(2 * 1000);
+
+			if (!_irc.IsRegistered)
+			{
+				DebugLogging.Log("Failed to register with IRC!", true);
+				TriedConnectingToIrc = true;
+				return;
+			}
+
+			if(!_irc.Channels.Any(x => x.Name == _connectionData.Channel))
+			{
+				if(_irc.LocalUser == null )
+				{
+					DebugLogging.Log("Local user was null!", true);
+					TriedConnectingToIrc = true;
+					return;
+				}
+				_irc.LocalUser.JoinedChannel += LocalUser_JoinedChannel1;
+				_irc.Channels.Join("#" + _connectionData.Channel);
+				await Task.Delay(1 * 1000);
+			}
+
+			var channel = _irc.Channels.FirstOrDefault(x => x.Name == "#" + _connectionData.Channel.ToLower());
+
+			if (channel == null)
+			{
+				DebugLogging.Log("Failed to join specified channel!", true);
+				TriedConnectingToIrc = true;
+				return;
+			}
+			else
+			{
+				_irc.LocalUser.SendMessage(channel, text);
+			}
+
+		}
+
+		private void LocalUser_JoinedChannel1(object sender, IrcDotNet.IrcChannelEventArgs e)
+		{
+			DebugLogging.Log("[IRC] Joined channel " + e.Channel, true);
 		}
 
 		public async void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
@@ -97,34 +153,27 @@ namespace LiveSplit.TwitchPredictions
 
 		private void _irc_Registered(object sender, EventArgs e)
 		{
-			DebugLogging.Log("[IRC] Registered");
-			JoinChannel(_connectionData.Channel);
-		}
-
-		private void JoinChannel(string channel)
-		{
-			_irc.Channels.Join(new string[] { "#" + channel.ToLower() });
+			DebugLogging.Log("[IRC] Registered", true);
 		}
 
 		private void LocalUser_JoinedChannel(object sender, IrcDotNet.IrcChannelEventArgs e)
 		{
-
-			DebugLogging.Log("[IRC] Joined channel: " + e.Channel.Name);
+			DebugLogging.Log("[IRC] Joined channel: " + e.Channel.Name, true);
 		}
 
 		private void _irc_RawMessageReceived(object sender, IrcDotNet.IrcRawMessageEventArgs e)
 		{
-			DebugLogging.Log("[IRC] MSG: " + (e.Message.Source != null ? e.Message.Source + ": " : "") + string.Join(" ", e.Message.Parameters.Where(x => x != null).ToArray()));
+			DebugLogging.Log("[IRC] MSG: " + (e.Message.Source != null ? e.Message.Source + ": " : "") + string.Join(" ", e.Message.Parameters.Where(x => x != null).ToArray()), true);
 		}
 
 		private void _irc_ErrorMessageReceived(object sender, IrcDotNet.IrcErrorMessageEventArgs e)
 		{
-			DebugLogging.Log("[IRC] Error Received: " + e.Message);
+			DebugLogging.Log("[IRC] Error Received: " + e.Message, true);
 		}
 
 		private void _irc_ClientInfoReceived(object sender, EventArgs e)
 		{
-			DebugLogging.Log("[IRC] Client Info Received.");
+			DebugLogging.Log("[IRC] Client Info Received.", true);
 		}
 
 		private void _irc_Connected(object sender, EventArgs e)
@@ -134,13 +183,21 @@ namespace LiveSplit.TwitchPredictions
 
 		private void _irc_Disconnected(object sender, EventArgs e)
 		{
-			DebugLogging.Log("[IRC] Disconnected!");
+			DebugLogging.Log("[IRC] Disconnected!", true);
 		}
 
 		internal void Disconnect()
 		{
 			if (_irc != null && _irc.IsConnected)
+			{
 				_irc.Disconnect();
+				_irc.ErrorMessageReceived -= _irc_ErrorMessageReceived;
+				_irc.Connected -= _irc_Connected;
+				_irc.Disconnected -= _irc_Disconnected;
+				_irc.ClientInfoReceived -= _irc_ClientInfoReceived;
+				_irc.RawMessageReceived -= _irc_RawMessageReceived;
+				_irc.Registered -= _irc_Registered;
+			}
 		}
 
 		internal void SaveConfig()

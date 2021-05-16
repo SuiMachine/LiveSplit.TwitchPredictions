@@ -29,13 +29,14 @@ namespace LiveSplit.TwitchPredictions
 	{
 		#region Properties And Sub-class definitions
 		[XmlElement] public bool UsePBPrediction { get; set; }
-		[XmlElement] public bool UseMessageBoxes { get; set; }
 		[XmlArrayItem] public List<SplitEvent> EventList { get; set; }
 		[XmlElement] public OnResetEventType OnTimerResetBehaviour { get; set; }
 		[XmlElement] public OnResetEventType OnRunCompletion { get; set; }
 
 		[XmlIgnore] public string Filename { get; set; }
 		[XmlIgnore] public bool RequiresManualFixing { get; set; }
+		[XmlElement] public bool NotifyOfErrorsInChat { get; set; }
+
 
 		#region Subclasses
 		[Serializable]
@@ -104,20 +105,20 @@ namespace LiveSplit.TwitchPredictions
 		#region Constructor and Clone
 		public SplitsToEvents()
 		{
-			UseMessageBoxes = false;
 			EventList = new List<SplitEvent>();
 			OnTimerResetBehaviour = OnResetEventType.Cancel;
 			OnRunCompletion = OnResetEventType.Nothing;
 			Filename = "";
 			UsePBPrediction = true;
 			RequiresManualFixing = false;
+			NotifyOfErrorsInChat = false;
 		}
 
 		public object Clone()
 		{
 			var clone = new SplitsToEvents();
 			clone.UsePBPrediction = UsePBPrediction;
-			clone.UseMessageBoxes = UseMessageBoxes;
+			clone.NotifyOfErrorsInChat = NotifyOfErrorsInChat;
 			clone.EventList = EventList.Select(x => (SplitEvent)x.Clone()).ToList();
 			clone.OnTimerResetBehaviour = OnTimerResetBehaviour;
 			clone.OnRunCompletion = OnRunCompletion;

@@ -45,7 +45,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal async Task GetUserIDAsync()
 		{
-			DebugLogging.Log("Getting user ID");
+			DebugLogging.Log("Getting user ID", true);
 			var userTokenResult = await PerformGetRequestAsync(
 				BuildURI(new string[] { "users" }, new Tuple<string, string>[] { new Tuple<string, string>("login", Channel) }),
 				new Dictionary<string, string>() { }
@@ -56,17 +56,17 @@ namespace LiveSplit.TwitchPredictions
 				var dataNode = ((IEnumerable<dynamic>)userTokenResult["data"]).First();
 				if (dataNode["id"] != null)
 				{
-					DebugLogging.Log("Request returned user ID!");
+					DebugLogging.Log("Request returned user ID!", true);
 					BroadcasterID = dataNode["id"];
 					return;
 				}
 			}
-			DebugLogging.Log("Bad get user ID request!");
+			DebugLogging.Log("Incorrect \"get user ID\" request!");
 		}
 
 		internal async Task<StreamPrediction> GetCurrentPredictionAsync()
 		{
-			DebugLogging.Log("Getting current prediction");
+			DebugLogging.Log("Getting current prediction", true);
 
 			if (BroadcasterID == "")
 				await GetUserIDAsync();
@@ -88,9 +88,9 @@ namespace LiveSplit.TwitchPredictions
 
 				if (dataNode["status"] != null)
 				{
-					DebugLogging.Log("Converting response to Stream Prediction object.");
+					DebugLogging.Log("Converting response to Stream Prediction object.", true);
 					StreamPrediction prediction = StreamPrediction.ConvertNode(dataNode);
-					DebugLogging.Log("Current prediction is: '" + prediction.Title + "' and the status is " + prediction.Status);
+					DebugLogging.Log("Current prediction is: '" + prediction.Title + "' and the status is " + prediction.Status, true);
 					return prediction;
 				}
 			}
@@ -173,7 +173,7 @@ namespace LiveSplit.TwitchPredictions
 		internal async Task<StreamPrediction> StartPredictionAsync(string header, string option1, string option2, uint lenght)
 		{
 			StreamPrediction newPrediction;
-			DebugLogging.Log("Trying to start a new prediction.");
+			DebugLogging.Log("Trying to start a new prediction.", true);
 
 			if (BroadcasterID == "")
 				await GetUserIDAsync();
@@ -222,7 +222,7 @@ namespace LiveSplit.TwitchPredictions
 						if (dataNode["status"] != null)
 						{
 							newPrediction = StreamPrediction.ConvertNode(dataNode);
-							DebugLogging.Log("Successfully created a new prediction!");
+							DebugLogging.Log("Successfully created a new prediction!", true);
 							return newPrediction;
 						}
 						DebugLogging.Log("[ERROR] Incorrect response?");
@@ -270,7 +270,7 @@ namespace LiveSplit.TwitchPredictions
 
 				if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
 				{
-					DebugLogging.Log("Trying to close a prediction (" + prediction.ID + ") with outcome #" + (winningOption + 1).ToString());
+					DebugLogging.Log("Trying to close a prediction (" + prediction.ID + ") with outcome #" + (winningOption + 1).ToString(), true);
 
 					var parameters = new StringBuilder();
 					parameters.AppendLine("{");
@@ -295,7 +295,7 @@ namespace LiveSplit.TwitchPredictions
 								StreamPrediction newPredictionState = StreamPrediction.ConvertNode(dataNode);
 								if (newPredictionState.Status == StreamPrediction.PredictionStatus.RESOLVED)
 								{
-									DebugLogging.Log("Successfully closed a prediction!");
+									DebugLogging.Log("Successfully closed a prediction!", true);
 									return newPredictionState;
 								}
 								else
@@ -307,7 +307,7 @@ namespace LiveSplit.TwitchPredictions
 						}
 					}
 				}
-				DebugLogging.Log("Prediction already closed");
+				DebugLogging.Log("Prediction already closed", true);
 				return prediction;
 			}
 			return null;
@@ -326,7 +326,7 @@ namespace LiveSplit.TwitchPredictions
 
 				if (prediction != null && (prediction.Status == StreamPrediction.PredictionStatus.ACTIVE || prediction.Status == StreamPrediction.PredictionStatus.LOCKED))
 				{
-					DebugLogging.Log("Trying to cancel a cancel prediction (" + prediction.ID + ")");
+					DebugLogging.Log("Trying to cancel a cancel prediction (" + prediction.ID + ")", true);
 
 					var parameters = new StringBuilder();
 					parameters.AppendLine("{");
@@ -350,7 +350,7 @@ namespace LiveSplit.TwitchPredictions
 								StreamPrediction newPredictionState = StreamPrediction.ConvertNode(dataNode);
 								if (newPredictionState.Status == StreamPrediction.PredictionStatus.CANCELED)
 								{
-									DebugLogging.Log("Successfully cancelled a new prediction!");
+									DebugLogging.Log("Successfully cancelled a new prediction!", true);
 									return newPredictionState;
 								}
 								else
@@ -364,7 +364,7 @@ namespace LiveSplit.TwitchPredictions
 					DebugLogging.Log("[ERROR] Incorrect response?");
 					return null;
 				}
-				DebugLogging.Log("Prediction already closed");
+				DebugLogging.Log("Prediction already closed", true);
 				return prediction;
 			}
 
