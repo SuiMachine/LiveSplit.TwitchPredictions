@@ -16,10 +16,11 @@ namespace LiveSplit.TwitchPredictions
 			}
 			else
 			{
+
 				string textToPost = DateTime.Now.ToShortTimeString() + ": " + text;
 				Debug.WriteLine("[PredictionsPlugin] " + textToPost);
 				_settings.RB_DebugView.AppendText(textToPost + "\n");
-				if (_settings.SplitsToEventsInstance?.NotifyOfErrorsInChat ?? false && !dontPostInChat)
+				if ((_settings.SplitsToEventsInstance?.NotifyOfErrorsInChat ?? false) && !dontPostInChat)
 					TwitchConnection.GetInstance().WriteInChat("[Prediction Plugin] " + text);
 			}
 		}
