@@ -99,7 +99,7 @@ namespace LiveSplit.TwitchPredictions
 			CBox_OnRunReset.DataBindings.Add("SelectedValue", this.splitToEvents, "OnTimerResetBehaviour", false, DataSourceUpdateMode.OnPropertyChanged);
 			CBox_RunCompletion.DataBindings.Add("SelectedValue", this.splitToEvents, "OnRunCompletion", false, DataSourceUpdateMode.OnPropertyChanged);
 			CB_UsePBPrediction.DataBindings.Add("Checked", this.splitToEvents, "UsePBPrediction", false, DataSourceUpdateMode.OnPropertyChanged);
-			CB_NotifyOfErrorsInChat.DataBindings.Add("Checked", this.splitStates, "NotifyOfErrorsInChat", false, DataSourceUpdateMode.OnPropertyChanged);
+			CB_NotifyOfErrorsInChat.DataBindings.Add("Checked", this.splitToEvents, "NotifyOfErrorsInChat", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		private void Grid_SplitSettings_CellClick(object sender, DataGridViewCellEventArgs e)
