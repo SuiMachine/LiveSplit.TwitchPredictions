@@ -301,7 +301,10 @@ namespace LiveSplit.TwitchPredictions
 				value = TimeSpanParser.Parse(value.ToString());
 				if (columnIndex == COLUMNINDEX_DELAY)
 				{
-					splitToEventList[rowIndex].Delay = (uint)((TimeSpan)value).TotalSeconds;
+					var tempValue = (uint)((TimeSpan)value).TotalSeconds;
+					if (tempValue > 1800)
+						tempValue = 1800;
+					splitToEventList[rowIndex].Delay = tempValue;
 					SetDirty();
 				}
 
