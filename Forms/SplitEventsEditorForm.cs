@@ -160,16 +160,8 @@ namespace LiveSplit.TwitchPredictions
 				else if (e.ColumnIndex == COLUMNINDEX_DELAY)
 				{
 					var comparisonValue = splitToEventList[e.RowIndex].Delay;
-					if (comparisonValue == null)
-					{
-						e.Value = "";
-						e.FormattingApplied = false;
-					}
-					else
-					{
-						e.Value = TimeFormatter.Format(comparisonValue);
-						e.FormattingApplied = true;
-					}
+					e.Value = TimeFormatter.Format(TimeSpan.FromSeconds(comparisonValue));
+					e.FormattingApplied = true;
 				}
 				else if (e.ColumnIndex == COLUMNINDEX_ACTION)
 				{
@@ -284,7 +276,7 @@ namespace LiveSplit.TwitchPredictions
 				value = null;
 				if (columnIndex == COLUMNINDEX_DELAY)
 				{
-					splitToEventList[rowIndex].Delay = TimeSpan.Zero;
+					splitToEventList[rowIndex].Delay = 0;
 					SetDirty();
 				}
 
@@ -309,7 +301,7 @@ namespace LiveSplit.TwitchPredictions
 				value = TimeSpanParser.Parse(value.ToString());
 				if (columnIndex == COLUMNINDEX_DELAY)
 				{
-					splitToEventList[rowIndex].Delay = (TimeSpan)value;
+					splitToEventList[rowIndex].Delay = (uint)((TimeSpan)value).TotalSeconds;
 					SetDirty();
 				}
 

@@ -76,7 +76,11 @@ namespace LiveSplit.TwitchPredictions.Forms
 			ReturnedAction.Answer2 = RB_Option2.Text.Trim();
 			ReturnedAction.Lenght = (uint)PredictionLenght.TotalSeconds;
 
-			if (ReturnedAction.Header == "" || ReturnedAction.Answer1 == "" || ReturnedAction.Answer2 == "")
+			if(ReturnedAction.Lenght < 1 )
+				MessageBox.Show("Prediction can not least less than 1 second!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			else if (ReturnedAction.Lenght > 1800)
+				MessageBox.Show("Prediction can not least longer than 30 minutes!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			else if (ReturnedAction.Header == "" || ReturnedAction.Answer1 == "" || ReturnedAction.Answer2 == "")
 				MessageBox.Show("One of the fields is empty! Please fill in all of the necessery fields!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			else if (ReturnedAction.Answer1 == ReturnedAction.Answer2)
 				MessageBox.Show("Outcome 1 and 2 are the same!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -14,7 +14,7 @@ namespace LiveSplit.TwitchPredictions
 		public const string ClientID = "sz9g0b3arar4db1l4is6dk95wj9sfo";
 
 		internal static TwitchConnection GetInstance() { return _Instance != null ? _Instance : (_Instance = new TwitchConnection()); }
-		private List<Task> delayTasksRunning = new List<Task>();
+		private volatile List<Task> delayTasksRunning = new List<Task>();
 
 		string USER_DIRECTORY => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LiveSplit.TwitchPredictions");
 		string USER_FILE => "Config.xml";
@@ -132,8 +132,19 @@ namespace LiveSplit.TwitchPredictions
 			DebugLogging.Log("[IRC] Joined channel " + e.Channel, true);
 		}
 
-		public async void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght)
+		public async void StartNewPrediction(string Header, string Option1, string Option2, uint Lenght, TimeSpan delay)
 		{
+			delayTasksRunning.Clear();
+			if (delay != TimeSpan.Zero)
+			{
+				var waitTask = Task.Delay(delay);
+				delayTasksRunning.Add(waitTask);
+				await waitTask;
+				if (!delayTasksRunning.Contains(waitTask))
+					return;
+				delayTasksRunning.Remove(waitTask);
+			}
+
 			var newPrediction = await twitchRequests.StartPredictionAsync(Header, Option1, Option2, Lenght);
 			if (newPrediction != null)
 				CurrentPrediction = newPrediction;
@@ -141,7 +152,8 @@ namespace LiveSplit.TwitchPredictions
 
 		public async void CompletePrediction(int winningOutcome, TimeSpan delay)
 		{
-			if(delay != TimeSpan.Zero)
+			delayTasksRunning.Clear();
+			if (delay != TimeSpan.Zero)
 			{
 				var waitTask = Task.Delay(delay);
 				delayTasksRunning.Add(waitTask);
@@ -158,6 +170,7 @@ namespace LiveSplit.TwitchPredictions
 
 		public async void CancelPrediction(TimeSpan delay)
 		{
+			delayTasksRunning.Clear();
 			if (delay != TimeSpan.Zero)
 			{
 				var waitTask = Task.Delay(delay);
@@ -205,6 +218,11 @@ namespace LiveSplit.TwitchPredictions
 		private void _irc_Disconnected(object sender, EventArgs e)
 		{
 			DebugLogging.Log("[IRC] Disconnected!", true);
+		}
+
+		internal void ClearTaskList()
+		{
+			delayTasksRunning.Clear();
 		}
 
 		internal void Disconnect()

@@ -45,7 +45,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			[XmlIgnore] public string SegmentName { get; set; }
 			[XmlAttribute] public SplitEventType EventType { get; set; }
-			[XmlElement] public TimeSpan Delay { get; set; }
+			[XmlElement] public uint Delay { get; set; }
 			[XmlElement] public SplitAction Action { get; set; }
 
 			[XmlIgnore] public bool WasUsed { get; set; }
@@ -54,7 +54,7 @@ namespace LiveSplit.TwitchPredictions
 			{
 				SegmentName = "";
 				EventType = SplitEventType.None;
-				Delay = TimeSpan.Zero;
+				Delay = 0;
 				Action = new SplitAction();
 				WasUsed = false;
 			}
@@ -208,6 +208,7 @@ namespace LiveSplit.TwitchPredictions
 
 		internal void DoResetEvent()
 		{
+			TwitchConnection.GetInstance().ClearTaskList();
 			if (TwitchConnection.GetInstance().CurrentPrediction != null)
 			{
 				switch (OnTimerResetBehaviour)
@@ -242,14 +243,14 @@ namespace LiveSplit.TwitchPredictions
 					case SplitEventType.None:
 						return;
 					case SplitEventType.FinishPredictionWithOption1:
-						TwitchConnection.GetInstance().CompletePrediction(0, actionToPerform.Delay);
+						TwitchConnection.GetInstance().CompletePrediction(0, TimeSpan.FromSeconds(actionToPerform.Delay));
 						return;
 					case SplitEventType.FinishPredictionWithOption2:
-						TwitchConnection.GetInstance().CompletePrediction(1, actionToPerform.Delay);
+						TwitchConnection.GetInstance().CompletePrediction(1, TimeSpan.FromSeconds(actionToPerform.Delay));
 						return;
 					case SplitEventType.StartPredictionOnSplitStart:
 						if (actionToPerform.Action.isUsed)
-							TwitchConnection.GetInstance().StartNewPrediction(actionToPerform.Action.Header, actionToPerform.Action.Answer1, actionToPerform.Action.Answer2, actionToPerform.Action.Lenght);
+							TwitchConnection.GetInstance().StartNewPrediction(actionToPerform.Action.Header, actionToPerform.Action.Answer1, actionToPerform.Action.Answer2, actionToPerform.Action.Lenght, TimeSpan.FromSeconds(actionToPerform.Delay));
 						return;
 				}
 			}
