@@ -21,7 +21,7 @@ namespace LiveSplit.TwitchPredictions
 
 		private IrcDotNet.IrcClient _irc;
 		internal StreamPrediction CurrentPrediction { get; private set; }
-		private bool TriedConnectingToIrc = false;
+		private volatile bool TriedConnectingToIrc = false;
 
 		[Serializable]
 		public class TwitchConnectionData
@@ -75,6 +75,7 @@ namespace LiveSplit.TwitchPredictions
 		{
 			if (TriedConnectingToIrc)
 				return;
+			TriedConnectingToIrc = true;
 
 			if (_irc == null || !_irc.IsConnected)
 			{
@@ -85,7 +86,6 @@ namespace LiveSplit.TwitchPredictions
 			if(!_irc.IsConnected)
 			{
 				DebugLogging.Log("Failed to connect to IRC!", true);
-				TriedConnectingToIrc = true;
 				return;
 			}
 
@@ -95,7 +95,6 @@ namespace LiveSplit.TwitchPredictions
 			if (!_irc.IsRegistered)
 			{
 				DebugLogging.Log("Failed to register with IRC!", true);
-				TriedConnectingToIrc = true;
 				return;
 			}
 
@@ -104,7 +103,6 @@ namespace LiveSplit.TwitchPredictions
 				if(_irc.LocalUser == null )
 				{
 					DebugLogging.Log("Local user was null!", true);
-					TriedConnectingToIrc = true;
 					return;
 				}
 				_irc.LocalUser.JoinedChannel += LocalUser_JoinedChannel1;
@@ -117,11 +115,11 @@ namespace LiveSplit.TwitchPredictions
 			if (channel == null)
 			{
 				DebugLogging.Log("Failed to join specified channel!", true);
-				TriedConnectingToIrc = true;
 				return;
 			}
 			else
 			{
+				TriedConnectingToIrc = false;
 				_irc.LocalUser.SendMessage(channel, text);
 			}
 
