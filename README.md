@@ -4,7 +4,7 @@ A plugin for LiveSplit allowing for managing Twitch Predictions based on Splits.
 
 Manual Installation
 -------------------
-Download "Components/LiveSplit.TwitchPredictions.dll" and place it into the subdirectory "Components" of your LiveSplit folder. You can then add it to your layout (category "Information").
+Download "Components/LiveSplit.TwitchPredictions.dll" and place it into the subdirectory "Components" of your LiveSplit folder. You can then add it to your layout (category "Control").
 
 Developement progress
 -------------------
